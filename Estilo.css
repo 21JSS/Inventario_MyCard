@@ -1,0 +1,90 @@
+body{
+    background-color: rgb(255, 255, 255);
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.Tarjeta{
+    border-radius: 12px;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    padding: 14px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100vw;
+}
+
+.Titulo{
+    font-weight: 200;
+    font-size: x-large;
+    color: rgb(255, 255, 255);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.titulo1{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 200 bold;
+}
+
+.presionarparaver{
+    border-radius: 12px;
+    border: 2px solid #3a9ff1;
+    position: relative;
+    width: 85%;
+    height: 13%;
+    display: grid;
+    align-items: center;
+    text-align: center;
+    background-color: transparent;
+    color: #3a9ff1;
+}
+
+.presionarparaver::after{
+    content: "";
+    position: absolute;
+    border-radius: 11px;
+    width: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #3a9ff1;
+    transition: width 0.3s ease;
+    z-index: -1;
+}
+
+.presionarparaver:hover::after{
+    width: 100%;
+    border-radius: 11px;
+}
+
+.presionarparaver:hover{
+    color: white;
+}
+
+.BotonPrimario{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 10px 20px; /*Aqui se define el padding para que quede en medio*/
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+    place-items: center;
+    justify-content: center;
+}
+
+.Boton{
+    display: flex;
+    place-items: center;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+.texto{
+    text-align: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
