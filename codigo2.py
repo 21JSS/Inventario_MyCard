@@ -1,8 +1,30 @@
+import os 
+from cerebras.cloud.sdk import Cerebras
 import mysql.connector
 import qrcode 
 from PIL import Image, ImageDraw, ImageFont 
 from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
 from qrcode.image.styledpil import StyledPilImage
+
+
+client = Cerebras(
+api_key="csk-erfnhvh9dr4vjfyw9pcf5v8mf85ew4jjphkhpync4v6wrr4j"
+        )
+
+completion = client.chat.completions.create(   
+        messages=
+        [{ "role":"user", "content":""
+
+        }],
+        model = "llama-3.3-70b",
+        max_completion_tokens=1024,
+        temperature=0.2,
+        top_p=1,
+        stream=False 
+        )
+
+print(completion.choices[0].message.content)
+
 
 db=mysql.connector.connect(
     host="localhost",
