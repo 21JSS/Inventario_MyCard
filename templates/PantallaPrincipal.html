@@ -9,6 +9,8 @@
 </head>
     
 <body>
+
+    
         <div class="Titulo">
             <H1 class="titulo1">Inventario de MyCard.</H1>
         </div>
@@ -20,6 +22,13 @@
             <button class="presionarparaver" ><span class="texto"><a id="redireccion" href="PantallaSecundaria.html">Pulsa para ver todo el inventario</span></a></button>
         </div>
     </div>
+
+    {% if equipo %}
+
+    <h2>{{equipo.nombre}}Escaneada</h2>
+    <p><strong>Marca:</strong>{{equipo.marca}}</p>
+    <p><strong>Modelo:</strong>{{equipo.modelo}}</p>
+    {% endif %}
     
     
 </body>
