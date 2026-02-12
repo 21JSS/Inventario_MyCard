@@ -13,7 +13,7 @@ db=mysql.connector.connect(
 cursor = db.cursor(dictionary=True)
 
 
-cursor.execute("SELECT id, redireccion FROM pc_2")
+cursor.execute("SELECT id, redireccion FROM equipos_pc")
 resultados = cursor.fetchall()
 
 
@@ -43,7 +43,6 @@ for fila in resultados:
   
     img_logo = Image.open("img/logo_MyCard.jpeg").convert("RGBA")
     
-    #  logo en el centro del QR antes de ponerlo en el fondo
     logo_size = min(img_qr.size[0], img_qr.size[1]) // 4
     img_logo = img_logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
     pos = ((img_qr.size[0] - logo_size) // 2, (img_qr.size[1] - logo_size) // 2)

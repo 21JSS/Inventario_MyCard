@@ -17,7 +17,7 @@
         </div>
 
         <div class="stats-container">
-            <div class="stat-card">
+            <div class="stat-card" onclick="toggleTabla()" style="cursor: pointer;">
                 <div class="stat-label">Total de Equipos</div>
                 <div class="stat-value" id="totalEquipos">0</div>
             </div>
@@ -29,13 +29,9 @@
                 <div class="stat-label">En Uso</div>
                 <div class="stat-value" id="totalEnUso">0</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Mantenimiento</div>
-                <div class="stat-value" id="totalMantenimiento">0</div>
-            </div>
         </div>
 
-        <div class="controls">
+        <div class="controls" id="controls" style="display: none;">
             <div class="button-group">
                 <button onclick="exportarDatos()"> Exportar a CSV</button>
                 <input type="text" class="search-box" id="searchBox" placeholder=" Buscar por nombre, marca o modelo..."
@@ -43,7 +39,7 @@
             </div>
         </div>
 
-        <div class="table-container">
+        <div class="table-container" id="tableContainer" style="display: none;">
             <table id="inventarioTable">
                 <thead>
                     <tr>
@@ -52,42 +48,53 @@
                         <th>Tipo</th>
                         <th>Marca</th>
                         <th>Modelo</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody id="inventarioBody">
-                    <!-- Los datos se cargarán dinámicamente -->
                 </tbody>
             </table>
         </div>
     </div>
     <script>
-        // Variable global para almacenar los datos del inventario
         let inventario = [];
 
-        // Cargar datos al iniciar
         window.onload = function () {
             cargarInventario();
         };
 
-        // Función para cargar datos desde la API
+        // Función para obtener parámetros de la URL
+        function obtenerParametroURL(nombre) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nombre);
+        }
+
         async function cargarInventario() {
             try {
-                // Hacer petición a la API PHP
+
                 const response = await fetch('api_inventario.php');
                 const result = await response.json();
 
                 if (result.success) {
-                    // Guardar los datos en la variable global
+
                     inventario = result.data;
 
-                    // Actualizar estadísticas
+
                     document.getElementById('totalEquipos').textContent = result.stats.total_equipos;
                     document.getElementById('totalDisponibles').textContent = result.stats.total_disponibles;
                     document.getElementById('totalEnUso').textContent = result.stats.total_en_uso;
-                    document.getElementById('totalMantenimiento').textContent = result.stats.total_ocupadas;
 
-                    // Cargar la tabla
+
                     cargarTabla();
+
+                    // Si hay un ID en la URL (desde QR), resaltar ese equipo
+                    const equipoId = obtenerParametroURL('id');
+                    if (equipoId) {
+                        // Mostrar la tabla automáticamente si viene desde QR
+                        document.getElementById('controls').style.display = 'block';
+                        document.getElementById('tableContainer').style.display = 'block';
+                        resaltarEquipo(equipoId);
+                    }
                 } else {
                     console.error('Error al cargar datos:', result.error);
                     alert('Error al cargar los datos del inventario: ' + result.error);
@@ -98,24 +105,105 @@
             }
         }
 
+        function toggleTabla() {
+            const controls = document.getElementById('controls');
+            const tableContainer = document.getElementById('tableContainer');
+
+            if (tableContainer.style.display === 'none') {
+                controls.style.display = 'block';
+                tableContainer.style.display = 'block';
+            } else {
+                controls.style.display = 'none';
+                tableContainer.style.display = 'none';
+            }
+        }
+
         function cargarTabla() {
             const tbody = document.getElementById('inventarioBody');
             tbody.innerHTML = '';
 
             inventario.forEach(item => {
                 const tr = document.createElement('tr');
+                tr.setAttribute('data-id', item.id); // Agregar atributo para identificar la fila
+
+                // Determinar el color del estado
+                let estadoClass = '';
+                let estadoTexto = item.estado || 'N/A';
+
+                switch (item.estado) {
+                    case 'disponible':
+                        estadoClass = 'style="color: #10b981; font-weight: 600;"';
+                        estadoTexto = 'Disponible';
+                        break;
+                    case 'en_uso':
+                        estadoClass = 'style="color: #3b82f6; font-weight: 600;"';
+                        estadoTexto = 'En Uso';
+                        break;
+                    case 'ocupada':
+                        estadoClass = 'style="color: #f59e0b; font-weight: 600;"';
+                        estadoTexto = 'Ocupada';
+                        break;
+                    case 'mantenimiento':
+                        estadoClass = 'style="color: #ef4444; font-weight: 600;"';
+                        estadoTexto = 'Mantenimiento';
+                        break;
+                }
+
                 tr.innerHTML = `
                     <td>${item.id}</td>
                     <td><strong>${item.nombre}</strong></td>
                     <td>${item.tipo}</td>
                     <td>${item.marca}</td>
                     <td>${item.modelo}</td>
+                    <td ${estadoClass}>${estadoTexto}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // Función para filtrar la tabla
+
+        function resaltarEquipo(equipoId) {
+            // Buscar la fila del equipo
+            const fila = document.querySelector(`tr[data-id="${equipoId}"]`);
+
+            if (fila) {
+                // Aplicar estilo de resaltado
+                fila.style.backgroundColor = '#fef3c7';
+                fila.style.border = '2px solid #f59e0b';
+                fila.style.transition = 'all 0.3s ease';
+
+                // Hacer scroll hacia el equipo
+                setTimeout(() => {
+                    fila.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+
+                // Mostrar mensaje informativo
+                const nombreEquipo = inventario.find(item => item.id == equipoId)?.nombre || 'Equipo';
+                const mensaje = document.createElement('div');
+                mensaje.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #10b981;
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    z-index: 1000;
+                    font-weight: 600;
+                `;
+                mensaje.textContent = `✓ Equipo encontrado: ${nombreEquipo}`;
+                document.body.appendChild(mensaje);
+
+                // Remover el mensaje después de 3 segundos
+                setTimeout(() => {
+                    mensaje.style.opacity = '0';
+                    mensaje.style.transition = 'opacity 0.5s';
+                    setTimeout(() => mensaje.remove(), 500);
+                }, 3000);
+            }
+        }
+
         function filtrarTabla() {
             const searchTerm = document.getElementById('searchBox').value.toLowerCase();
             const rows = document.querySelectorAll('#inventarioBody tr');
@@ -126,17 +214,17 @@
             });
         }
 
-        // Función para exportar datos a CSV
+
         function exportarDatos() {
             if (inventario.length === 0) {
                 alert('No hay datos para exportar');
                 return;
             }
 
-            let csv = 'ID,Nombre,Tipo,Marca,Modelo\n';
+            let csv = 'ID,Nombre,Tipo,Marca,Modelo,Estado\n';
 
             inventario.forEach(item => {
-                csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}"\n`;
+                csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.estado || 'N/A'}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv' });
