@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de PCs y Periféricos - MyCard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles_inventario.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1> Inventario de PCs y Periféricos</h1>
+            <p style="color: #666; font-size: 1.1em;">Sistema de gestión de equipos MyCard</p>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-label">Total de Equipos</div>
+                <div class="stat-value" id="totalEquipos">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Disponibles</div>
+                <div class="stat-value" id="totalDisponibles">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">En Uso</div>
+                <div class="stat-value" id="totalEnUso">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Mantenimiento</div>
+                <div class="stat-value" id="totalMantenimiento">0</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="button-group">
+                <button onclick="abrirModal()">Agregar Equipo</button>
+                <button onclick="exportarDatos()"> Exportar a CSV</button>
+                <input type="text" class="search-box" id="searchBox" placeholder=" Buscar por nombre, marca o modelo..."
+                    onkeyup="filtrarTabla()">
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="inventarioTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Serie</th>
+                        <th>Estado</th>
+                        <th>Ubicación</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="inventarioBody">
+                    <!-- Los datos se cargarán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar equipos -->
+    <div class="modal" id="equipoModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Agregar Nuevo Equipo</h2>
+            <form id="equipoForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre del Equipo *</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="tipo">Tipo de Equipo *</label>
+                    <select id="tipo" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="PC Escritorio">PC Escritorio</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Monitor">Monitor</option>
+                        <option value="Teclado">Teclado</option>
+                        <option value="Mouse">Mouse</option>
+                        <option value="Impresora">Impresora</option>
+                        <option value="Scanner">Scanner</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="marca">Marca *</label>
+                    <input type="text" id="marca" required>
+                </div>
+                <div class="form-group">
+                    <label for="modelo">Modelo *</label>
+                    <input type="text" id="modelo" required>
+                </div>
+                <div class="form-group">
+                    <label for="serie">Número de Serie</label>
+                    <input type="text" id="serie">
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado *</label>
+                    <select id="estado" required>
+                        <option value="Disponible">Disponible</option>
+                        <option value="En Uso">En Uso</option>
+                        <option value="Mantenimiento">Mantenimiento</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ubicacion">Ubicación</label>
+                    <input type="text" id="ubicacion" placeholder="Ej: Oficina 101, Almacén, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="notas">Notas Adicionales</label>
+                    <textarea id="notas" rows="3" placeholder="Especificaciones, observaciones, etc."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+                    <button type="submit" class="btn-save">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos simulada (en producción usar una base de datos real)
+        let inventario = JSON.parse(localStorage.getItem('inventarioPCs')) || [
+            {
+                id: 1,
+                nombre: 'PC-001',
+                tipo: 'PC Escritorio',
+                marca: 'Dell',
+                modelo: 'OptiPlex 7090',
+                serie: 'DL7090-2024-001',
+                estado: 'Disponible',
+                ubicacion: 'Almacén Principal',
+                notas: 'Intel i7-11700, 16GB RAM DDR4, 512GB SSD NVMe, Windows 11 Pro'
+            },
+            {
+                id: 2,
+                nombre: 'PC-002',
+                tipo: 'PC Escritorio',
+                marca: 'HP',
+                modelo: 'ProDesk 600 G6',
+                serie: 'HP600-2024-002',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 101 - Contabilidad',
+                notas: 'Intel i5-10500, 8GB RAM, 256GB SSD, Asignado a María González'
+            },
+            {
+                id: 3,
+                nombre: 'PC-003',
+                tipo: 'PC Escritorio',
+                marca: 'Lenovo',
+                modelo: 'ThinkCentre M720',
+                serie: 'LN720-2023-015',
+                estado: 'Mantenimiento',
+                ubicacion: 'Taller de Reparación',
+                notas: 'Requiere cambio de disco duro. Intel i5-9500, 8GB RAM'
+            },
+            {
+                id: 4,
+                nombre: 'LAPTOP-001',
+                tipo: 'Laptop',
+                marca: 'HP',
+                modelo: 'EliteBook 840 G8',
+                serie: 'HP840-2024-101',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 205 - Gerencia',
+                notas: 'Intel i7-1165G7, 16GB RAM, 512GB SSD, Asignada a Juan Pérez - Gerente'
+            },
+            {
+                id: 5,
+                nombre: 'LAPTOP-002',
+                tipo: 'Laptop',
+                marca: 'Dell',
+                modelo: 'Latitude 5420',
+                serie: 'DL5420-2024-102',
+                estado: 'Disponible',
+                ubicacion: 'Almacén Principal',
+                notas: 'Intel i5-1145G7, 8GB RAM, 256GB SSD, Para asignación'
+            },
+            {
+                id: 6,
+                nombre: 'LAPTOP-003',
+                tipo: 'Laptop',
+                marca: 'Lenovo',
+                modelo: 'ThinkPad T14',
+                serie: 'LN-T14-2023-103',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 102 - Ventas',
+                notas: 'AMD Ryzen 5 PRO, 16GB RAM, 512GB SSD, Asignada a Carlos Ramírez'
+            },
+            {
+                id: 7,
+                nombre: 'MONITOR-001',
+                tipo: 'Monitor',
+                marca: 'Samsung',
+                modelo: 'S24F350',
+                serie: 'SM24-2024-201',
+                estado: 'Disponible',
+                ubicacion: 'Almacén Principal',
+                notas: '24 pulgadas, Full HD 1920x1080, HDMI/VGA'
+            },
+            {
+                id: 8,
+                nombre: 'MONITOR-002',
+                tipo: 'Monitor',
+                marca: 'LG',
+                modelo: '27UL500',
+                serie: 'LG27-2024-202',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 101 - Contabilidad',
+                notas: '27 pulgadas, 4K UHD, IPS, HDR10'
+            },
+            {
+                id: 9,
+                nombre: 'MONITOR-003',
+                tipo: 'Monitor',
+                marca: 'Dell',
+                modelo: 'P2422H',
+                serie: 'DL-P24-2024-203',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 205 - Gerencia',
+                notas: '24 pulgadas, Full HD, Ajustable en altura'
+            },
+            {
+                id: 10,
+                nombre: 'MONITOR-004',
+                tipo: 'Monitor',
+                marca: 'BenQ',
+                modelo: 'GW2480',
+                serie: 'BQ-GW24-2023-204',
+                estado: 'Mantenimiento',
+                ubicacion: 'Taller de Reparación',
+                notas: 'Problema con retroiluminación, 24 pulgadas Full HD'
+            },
+            {
+                id: 11,
+                nombre: 'TECLADO-001',
+                tipo: 'Teclado',
+                marca: 'Logitech',
+                modelo: 'K120',
+                serie: 'LG-K120-301',
+                estado: 'Disponible',
+                ubicacion: 'Almacén Principal',
+                notas: 'Teclado USB estándar, español latinoamericano'
+            },
+            {
+                id: 12,
+                nombre: 'TECLADO-002',
+                tipo: 'Teclado',
+                marca: 'Microsoft',
+                modelo: 'Ergonomic Keyboard',
+                serie: 'MS-ERG-302',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 101 - Contabilidad',
+                notas: 'Teclado ergonómico inalámbrico'
+            },
+            {
+                id: 13,
+                nombre: 'MOUSE-001',
+                tipo: 'Mouse',
+                marca: 'Logitech',
+                modelo: 'M185',
+                serie: 'LG-M185-401',
+                estado: 'Disponible',
+                ubicacion: 'Almacén Principal',
+                notas: 'Mouse inalámbrico, incluye receptor USB'
+            },
+            {
+                id: 14,
+                nombre: 'MOUSE-002',
+                tipo: 'Mouse',
+                marca: 'HP',
+                modelo: 'X3000',
+                serie: 'HP-X3000-402',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 205 - Gerencia',
+                notas: 'Mouse inalámbrico negro'
+            },
+            {
+                id: 15,
+                nombre: 'IMPRESORA-001',
+                tipo: 'Impresora',
+                marca: 'HP',
+                modelo: 'LaserJet Pro M404dn',
+                serie: 'HP-LJ404-501',
+                estado: 'En Uso',
+                ubicacion: 'Sala de Impresión - Piso 1',
+                notas: 'Impresora láser monocromática, red ethernet, 38 ppm'
+            },
+            {
+                id: 16,
+                nombre: 'IMPRESORA-002',
+                tipo: 'Impresora',
+                marca: 'Canon',
+                modelo: 'PIXMA G3110',
+                serie: 'CN-G3110-502',
+                estado: 'Disponible',
+                ubicacion: 'Almacén Principal',
+                notas: 'Multifuncional de tinta continua, WiFi, escáner incluido'
+            },
+            {
+                id: 17,
+                nombre: 'IMPRESORA-003',
+                tipo: 'Impresora',
+                marca: 'Epson',
+                modelo: 'EcoTank L3250',
+                serie: 'EP-L3250-503',
+                estado: 'Mantenimiento',
+                ubicacion: 'Taller de Reparación',
+                notas: 'Requiere limpieza de cabezales, multifuncional WiFi'
+            },
+            {
+                id: 18,
+                nombre: 'SCANNER-001',
+                tipo: 'Scanner',
+                marca: 'Epson',
+                modelo: 'WorkForce DS-1630',
+                serie: 'EP-DS1630-601',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 103 - Archivo',
+                notas: 'Scanner de documentos, alimentador automático 50 hojas'
+            },
+            {
+                id: 19,
+                nombre: 'UPS-001',
+                tipo: 'Otro',
+                marca: 'APC',
+                modelo: 'Back-UPS 850VA',
+                serie: 'APC-850-701',
+                estado: 'En Uso',
+                ubicacion: 'Oficina 205 - Gerencia',
+                notas: 'UPS 850VA/450W, 6 tomas, protección contra sobretensión'
+            },
+            {
+                id: 20,
+                nombre: 'UPS-002',
+                tipo: 'Otro',
+                marca: 'Tripp Lite',
+                modelo: 'SMART1500LCD',
+                serie: 'TL-1500-702',
+                estado: 'Disponible',
+                ubicacion: 'Almacén Principal',
+                notas: 'UPS 1500VA/900W, pantalla LCD, 8 tomas'
+            }
+        ];
+
+        let editandoId = null;
+
+        // Cargar datos al iniciar
+        window.onload = function () {
+            cargarTabla();
+            actualizarEstadisticas();
+        };
+
+        function cargarTabla() {
+            const tbody = document.getElementById('inventarioBody');
+            tbody.innerHTML = '';
+
+            inventario.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.id}</td>
+                    <td><strong>${item.nombre}</strong></td>
+                    <td>${item.tipo}</td>
+                    <td>${item.marca}</td>
+                    <td>${item.modelo}</td>
+                    <td>${item.serie || 'N/A'}</td>
+                    <td><span class="status-badge status-${item.estado.toLowerCase().replace(' ', '-')}">${item.estado}</span></td>
+                    <td>${item.ubicacion || 'N/A'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editarEquipo(${item.id})">✏️ Editar</button>
+                            <button class="btn-delete" onclick="eliminarEquipo(${item.id})">🗑️ Eliminar</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function actualizarEstadisticas() {
+            const total = inventario.length;
+            const disponibles = inventario.filter(i => i.estado === 'Disponible').length;
+            const enUso = inventario.filter(i => i.estado === 'En Uso').length;
+            const mantenimiento = inventario.filter(i => i.estado === 'Mantenimiento').length;
+
+            document.getElementById('totalEquipos').textContent = total;
+            document.getElementById('totalDisponibles').textContent = disponibles;
+            document.getElementById('totalEnUso').textContent = enUso;
+            document.getElementById('totalMantenimiento').textContent = mantenimiento;
+        }
+
+        function abrirModal() {
+            editandoId = null;
+            document.getElementById('modalTitle').textContent = 'Agregar Nuevo Equipo';
+            document.getElementById('equipoForm').reset();
+            document.getElementById('equipoModal').classList.add('active');
+        }
+
+        function cerrarModal() {
+            document.getElementById('equipoModal').classList.remove('active');
+        }
+
+        function editarEquipo(id) {
+            editandoId = id;
+            const equipo = inventario.find(i => i.id === id);
+
+            document.getElementById('modalTitle').textContent = 'Editar Equipo';
+            document.getElementById('nombre').value = equipo.nombre;
+            document.getElementById('tipo').value = equipo.tipo;
+            document.getElementById('marca').value = equipo.marca;
+            document.getElementById('modelo').value = equipo.modelo;
+            document.getElementById('serie').value = equipo.serie || '';
+            document.getElementById('estado').value = equipo.estado;
+            document.getElementById('ubicacion').value = equipo.ubicacion || '';
+            document.getElementById('notas').value = equipo.notas || '';
+
+            document.getElementById('equipoModal').classList.add('active');
+        }
+
+        function eliminarEquipo(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar este equipo?')) {
+                inventario = inventario.filter(i => i.id !== id);
+                guardarDatos();
+                cargarTabla();
+                actualizarEstadisticas();
+            }
+        }
+
+        document.getElementById('equipoForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const nuevoEquipo = {
+                nombre: document.getElementById('nombre').value,
+                tipo: document.getElementById('tipo').value,
+                marca: document.getElementById('marca').value,
+                modelo: document.getElementById('modelo').value,
+                serie: document.getElementById('serie').value,
+                estado: document.getElementById('estado').value,
+                ubicacion: document.getElementById('ubicacion').value,
+                notas: document.getElementById('notas').value
+            };
+
+            if (editandoId) {
+                // Editar existente
+                const index = inventario.findIndex(i => i.id === editandoId);
+                inventario[index] = { ...inventario[index], ...nuevoEquipo };
+            } else {
+                // Agregar nuevo
+                const nuevoId = inventario.length > 0 ? Math.max(...inventario.map(i => i.id)) + 1 : 1;
+                inventario.push({ id: nuevoId, ...nuevoEquipo });
+            }
+
+            guardarDatos();
+            cargarTabla();
+            actualizarEstadisticas();
+            cerrarModal();
+        });
+
+        function guardarDatos() {
+            localStorage.setItem('inventarioPCs', JSON.stringify(inventario));
+        }
+
+        function filtrarTabla() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const rows = document.querySelectorAll('#inventarioBody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        function exportarDatos() {
+            let csv = 'ID,Nombre,Tipo,Marca,Modelo,Serie,Estado,Ubicación,Notas\n';
+
+            inventario.forEach(item => {
+                csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.serie || ''}","${item.estado}","${item.ubicacion || ''}","${item.notas || ''}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `inventario_pcs_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('equipoModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                cerrarModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
