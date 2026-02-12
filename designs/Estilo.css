@@ -103,6 +103,50 @@ body{
     text-align: center;
 }
 
+.TarjetaEquipo{
+    margin-top: 40px;
+    width: 420px;
+    padding:30px;
+    border-radius:20px;
+    background:rgb(20 25 45/0.6);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px rgb(39 105 220 / 0.35);
+    text-align: center;
+    animation: aparecer 0.6s ease;
+}
+
+.tituloEquipo{
+    font-family: 'Bricolage Grotesque';
+    font-weight:700;
+    font-size:1.5rem;
+    color: white;
+    margin-bottom:20px;
+}
+
+.infoEquipo p{
+    font-family: 'Bricolage Grotesque';
+    font-weight:400;
+    color:white;
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.infoEquipo span{
+    font-weight:600;
+    color:#5aa2ff;
+}
+
+@keyframes aparecer{
+    from{
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 @media (max-width: 768px){
     .Tarjeta{

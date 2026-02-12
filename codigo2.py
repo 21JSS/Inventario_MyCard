@@ -36,7 +36,7 @@ def generar_qrs():
         resultados = cursor.fetchall()
 
 
-        ip = "192.168.137.1"
+        ip = "192.168.1.222"
 
 
         for fila in resultados:

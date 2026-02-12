@@ -23,12 +23,17 @@
         </div>
     </div>
 
-    {% if equipo %}
+   {% if equipo %}
+<div class="TarjetaEquipo">
+    <h2 class="tituloEquipo">{{equipo.nombre}} Escaneada</h2>
 
-    <h2>{{equipo.nombre}} Escaneada</h2>
-    <p><strong>Marca: </strong>{{equipo.marca}}</p>
-    <p><strong>Modelo: </strong>{{equipo.modelo}}</p>
-    {% endif %}
+    <div class="infoEquipo">
+        <p><span>ID:</span> {{equipo.id}}</p>
+        <p><span>Marca:</span> {{equipo.marca}}</p>
+        <p><span>Modelo:</span> {{equipo.modelo}}</p>
+    </div>
+</div>
+{% endif %}
     
     
 </body>
