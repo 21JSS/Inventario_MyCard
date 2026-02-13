@@ -39,6 +39,10 @@
                         <span class="label">Modelo:</span>
                         <span id="detalle-modelo"></span>
                     </div>
+                    <div class="info-item">
+                        <span class="label">Descripción:</span>
+                        <span id="detalle-descripcion"></span>
+                    </div>
                     <div class="detalle-row">
                         <span class="detalle-label">Estado:</span>
                         <span class="detalle-badge" id="detalle-estado"></span>
@@ -53,30 +57,37 @@
         </div>
 
         <div class="stats-container">
-            <div class="stat-card" onclick="toggleTabla()" style="cursor: pointer;">
+            <div class="stat-card" onclick="filtrarPorEstado('todos')" style="cursor: pointer;" id="cardTodos">
                 <div class="stat-label">Total de Equipos</div>
                 <div class="stat-value" id="totalEquipos">0</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="filtrarPorEstado('disponible')" style="cursor: pointer;"
+                id="cardDisponible">
                 <div class="stat-label">Disponibles</div>
                 <div class="stat-value" id="totalDisponibles">0</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="filtrarPorEstado('ocupada')" style="cursor: pointer;" id="cardOcupada">
                 <div class="stat-label">Ocupadas</div>
                 <div class="stat-value" id="totalOcupadas">0</div>
             </div>
         </div>
 
-        <div class="controls" id="controls" style="display: none;">
+        <!-- Indicador de filtro activo -->
+        <div id="filtroIndicador"
+            style="text-align: center; margin: 20px 0; font-size: 1.1em; color: #666; display: none;">
+            <span id="filtroTexto">Mostrando: Todos los equipos</span>
+        </div>
+
+        <div class="controls" id="controls" style="display: block;">
             <div class="button-group">
                 <button onclick="abrirModal()">+ Agregar Equipo</button>
-                <button onclick="exportarDatos()"> Exportar a CSV</button>
+                <button onclick="exportarDatos()"> Exportar Excel</button>
                 <input type="text" class="search-box" id="searchBox" placeholder=" Buscar por nombre, marca o modelo..."
                     onkeyup="filtrarTabla()">
             </div>
         </div>
 
-        <div class="table-container" id="tableContainer" style="display: none;">
+        <div class="table-container" id="tableContainer" style="display: block;">
             <table id="inventarioTable">
                 <thead>
                     <tr>
@@ -85,6 +96,7 @@
                         <th>Tipo</th>
                         <th>Marca</th>
                         <th>Modelo</th>
+                        <th>Descripción</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -160,6 +172,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="descripcion">Descripción (opcional):</label>
+                        <textarea id="descripcion" name="descripcion" rows="3"
+                            placeholder="Ej: Equipo asignado a recepción, incluye teclado y mouse"></textarea>
+                    </div>
+
+                    <div class="form-group">
                         <label for="estado">Estado:</label>
                         <select id="estado" name="estado" required>
                             <option value="disponible">Disponible</option>
@@ -178,6 +196,8 @@
     <script>
         let inventario = [];
         let equipoActualId = null;
+        let filtroActivo = 'todos'; // Estado del filtro actual
+
         window.onload = function () {
             cargarInventario();
         };
@@ -221,17 +241,38 @@
             }
         }
 
-        function toggleTabla() {
-            const controls = document.getElementById('controls');
-            const tableContainer = document.getElementById('tableContainer');
+        function filtrarPorEstado(estado) {
+            filtroActivo = estado;
 
-            if (tableContainer.style.display === 'none') {
-                controls.style.display = 'block';
-                tableContainer.style.display = 'block';
-            } else {
-                controls.style.display = 'none';
-                tableContainer.style.display = 'none';
+            // Actualizar estilos de las tarjetas
+            document.getElementById('cardTodos').style.backgroundColor = '';
+            document.getElementById('cardDisponible').style.backgroundColor = '';
+            document.getElementById('cardOcupada').style.backgroundColor = '';
+
+            // Resaltar la tarjeta seleccionada
+            if (estado === 'todos') {
+                document.getElementById('cardTodos').style.backgroundColor = '#e0f2fe';
+                document.getElementById('filtroIndicador').style.display = 'none';
+            } else if (estado === 'disponible') {
+                document.getElementById('cardDisponible').style.backgroundColor = '#d1fae5';
+                document.getElementById('filtroTexto').textContent = '🟢 Mostrando: Solo equipos disponibles';
+                document.getElementById('filtroIndicador').style.display = 'block';
+            } else if (estado === 'ocupada') {
+                document.getElementById('cardOcupada').style.backgroundColor = '#fed7aa';
+                document.getElementById('filtroTexto').textContent = '🟡 Mostrando: Solo equipos ocupadas';
+                document.getElementById('filtroIndicador').style.display = 'block';
             }
+
+            // Filtrar la tabla
+            const rows = document.querySelectorAll('#inventarioBody tr');
+            rows.forEach(row => {
+                const estadoEquipo = row.getAttribute('data-estado');
+                if (estado === 'todos' || estadoEquipo === estado) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         }
 
         function mostrarDetalleEquipo(equipoId) {
@@ -256,6 +297,7 @@
             document.getElementById('detalle-tipo').textContent = equipo.tipo;
             document.getElementById('detalle-marca').textContent = equipo.marca;
             document.getElementById('detalle-modelo').textContent = equipo.modelo;
+            document.getElementById('detalle-descripcion').textContent = equipo.descripcion || 'Sin descripción';
 
             // Estado con color
             const estadoBadge = document.getElementById('detalle-estado');
@@ -414,6 +456,7 @@
             inventario.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.setAttribute('data-id', item.id); // Agregar atributo para identificar la fila
+                tr.setAttribute('data-estado', item.estado); // Agregar atributo de estado para filtrado
 
                 // Determinar el color del estado
                 let estadoClass = '';
@@ -435,6 +478,7 @@
                     <td>${item.tipo}</td>
                     <td>${item.marca}</td>
                     <td>${item.modelo}</td>
+                    <td>${item.descripcion || 'Sin descripción'}</td>
                     <td ${estadoClass}>${estadoTexto}</td>
                 `;
                 tbody.appendChild(tr);
@@ -497,10 +541,10 @@
                 return;
             }
 
-            let csv = 'ID,Nombre,Tipo,Marca,Modelo,Estado\n';
+            let csv = 'ID,Nombre,Tipo,Marca,Modelo,Descripción,Estado\n';
 
             inventario.forEach(item => {
-                csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.estado || 'N/A'}"\n`;
+                csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.descripcion || 'Sin descripción'}","${item.estado || 'N/A'}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv' });

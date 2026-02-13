@@ -1,8 +1,7 @@
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-#Define que va a devolver datos en formato JSON
-#se conecta a la base de datos
+
 
 $host = "localhost";
 $usuario = "root";
@@ -27,7 +26,7 @@ $conexion->set_charset("utf8mb4");
 
 try {
     #hace la consulta a la base de datos
-    $sql = "SELECT id, nombre, tipo, marca, modelo, estado FROM equipos_pc ORDER BY id ASC";
+    $sql = "SELECT id, nombre, tipo, marca, modelo, descripcion, estado FROM equipos_pc ORDER BY id ASC";
     $resultado = $conexion->query($sql);
     
     if (!$resultado) {
@@ -41,7 +40,7 @@ try {
     
     
     $total_equipos = count($equipos);
-    // Obtener estadísticas
+    // Obtiene estadísticas 
     $stats = [];
     
     $result = $conexion->query("SELECT COUNT(*) as total FROM equipos_pc");
