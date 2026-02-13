@@ -1,6 +1,6 @@
 <?php
 
-$nueva_ip = "192.168.1.101";
+$nueva_ip = "192.168.1.222";
 
 
 $conexion = new mysqli("localhost", "root", "", "equipos_mycard");

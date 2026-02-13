@@ -5,15 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario de PCs y Periféricos - MyCard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="InventarioPCs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            <h1> Inventario de PCs y Periféricos</h1>
-            <p style="color: #666; font-size: 1.1em;">Sistema de gestión de equipos MyCard</p>
+            <h1>MyCard</h1>
+            <p style="color: #ffffff; font-size: 1.1em;">Gestión de equipos de computo</p>
         </div>
 
         <!-- Vista de Detalle Individual -->
@@ -69,8 +70,12 @@
 
         <div class="controls" id="controls" style="display: none;">
             <div class="button-group">
-                <button onclick="abrirModal()">+ Agregar Equipo</button>
-                <button onclick="exportarDatos()"> Exportar a CSV</button>
+                <button onclick="abrirModal()"><i id="icono_computo" class="fa-solid fa-laptop-code"></i>
+                    Agregar Equipo
+                </button>
+                <button class="btn-exportar" onclick="exportarDatos()"><i id="icono_excel" class="fa-solid fa-file-excel"></i>
+                    Exportar a Excel
+                </button>
                 <input type="text" class="search-box" id="searchBox" placeholder=" Buscar por nombre, marca o modelo..."
                     onkeyup="filtrarTabla()">
             </div>
@@ -80,12 +85,12 @@
             <table id="inventarioTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Estado</th>
+                        <th class="datos_tabla">ID</th>
+                        <th class="datos_tabla">Nombre</th>
+                        <th class="datos_tabla">Tipo</th>
+                        <th class="datos_tabla">Marca</th>
+                        <th class="datos_tabla">Modelo</th>
+                        <th class="datos_tabla">Estado</th>
                     </tr>
                 </thead>
                 <tbody id="inventarioBody">
