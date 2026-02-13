@@ -163,21 +163,17 @@
 
 
         function resaltarEquipo(equipoId) {
-            // Buscar la fila del equipo
             const fila = document.querySelector(`tr[data-id="${equipoId}"]`);
 
             if (fila) {
-                // Aplicar estilo de resaltado
                 fila.style.backgroundColor = '#fef3c7';
                 fila.style.border = '2px solid #f59e0b';
                 fila.style.transition = 'all 0.3s ease';
 
-                // Hacer scroll hacia el equipo
                 setTimeout(() => {
                     fila.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 300);
 
-                // Mostrar mensaje informativo
                 const nombreEquipo = inventario.find(item => item.id == equipoId)?.nombre || 'Equipo';
                 const mensaje = document.createElement('div');
                 mensaje.style.cssText = `
