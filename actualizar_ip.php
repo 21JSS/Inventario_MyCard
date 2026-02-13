@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<< HEAD
 $nueva_ip = "192.168.1.222";
+=======
+$nueva_ip = "192.168.1.221";
+>>>>>>> effd617c7fdc0daef6fc6d5cfc0d30d01daa9732
 
 
 $conexion = new mysqli("localhost", "root", "", "equipos_mycard");
@@ -11,6 +15,7 @@ if ($conexion->connect_error) {
 
 echo "Actualizando URLs con IP: $nueva_ip\n\n";
 
+#Actualiza la IP de la base de datos
 $sql = "UPDATE equipos_pc SET redireccion = CONCAT('http://$nueva_ip/Inventario_MyCard/InventarioPCs.html?id=', id)";
 
 if ($conexion->query($sql)) {
@@ -19,8 +24,8 @@ if ($conexion->query($sql)) {
     echo "Error: " . $conexion->error . "\n";
     exit(1);
 }
-
-echo "Nuevas URLs:\n";
+#Muestra las nuevas URLs
+echo "Nuevas URLs:\n"; 
 echo "------------\n";
 
 $resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_pc");
