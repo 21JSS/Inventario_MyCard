@@ -177,8 +177,7 @@
     </div>
     <script>
         let inventario = [];
-        let equipoActualId = null; // ID del equipo actual en vista de detalle
-
+        let equipoActualId = null;
         window.onload = function () {
             cargarInventario();
         };
@@ -264,7 +263,7 @@
             estadoBadge.style.backgroundColor = obtenerColorEstado(equipo.estado);
             estadoBadge.style.color = 'white';
 
-            // Guardar ID actual
+            // Guardar ID actual 
             equipoActualId = equipoId;
 
             // Configurar botón según estado
@@ -312,13 +311,10 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // Actualizar inventario local
                     await cargarInventario();
 
-                    // Actualizar vista de detalle
                     mostrarDetalleEquipo(equipoActualId);
 
-                    // Mensaje de confirmación
                     const mensaje = result.nuevo_estado === 'disponible'
                         ? '✅ Equipo marcado como DISPONIBLE'
                         : '✅ Equipo marcado como OCUPADA';
@@ -333,18 +329,14 @@
         }
 
         function regresarInventario() {
-            // Ocultar vista de detalle
             document.getElementById('detalleEquipo').style.display = 'none';
 
-            // Mostrar vista normal
             document.querySelector('.stats-container').style.display = 'grid';
 
-            // Limpiar parámetro de URL
             window.history.pushState({}, '', 'InventarioPCs.html');
         }
 
         function abrirModal() {
-            // Primero mostrar modal de autenticación
             document.getElementById('modalAuth').style.display = 'flex';
         }
 
@@ -397,7 +389,7 @@
                 if (result.success) {
                     alert('Equipo agregado exitosamente');
                     cerrarModal();
-                    cargarInventario(); // Recargar datos
+                    cargarInventario();
                 } else {
                     alert('Error: ' + result.error);
                 }
