@@ -35,9 +35,7 @@ def generar_qrs():
         cursor.execute("SELECT id FROM inventario_computo")
         resultados = cursor.fetchall()
 
-
         ip = "192.168.1.222"
-
 
         for fila in resultados:
             pc_qr = fila['id']
