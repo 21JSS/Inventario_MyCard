@@ -61,7 +61,7 @@ for fila in resultados:
     except IOError:
             font = ImageFont.load_default()
     
-    text = f"pc{pc_qr}"
+    text = f"ID {pc_qr}"
    
     bbox = draw.textbbox((0, 0), text, font=font)
     text_width = bbox[2] - bbox[0]
@@ -69,7 +69,7 @@ for fila in resultados:
     text_y = 10
     draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
 
-    nombre = f"qr_pc_{pc_qr}.png"
+    nombre = f"ID_{pc_qr}.png"
     background.save(nombre)
 
     print(f"Código QR generado y guardado como: {nombre}")

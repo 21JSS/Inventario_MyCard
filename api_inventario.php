@@ -1,7 +1,8 @@
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-
+#Define que va a devolver datos en formato JSON
+#se conecta a la base de datos
 
 $host = "localhost";
 $usuario = "root";
@@ -11,7 +12,7 @@ $base_de_datos = "equipos_mycard";
 
 $conexion = new mysqli($host, $usuario, $contraseña, $base_de_datos);
 
-
+#si hay error al conectar a la base de datos
 if ($conexion->connect_error) {
     echo json_encode([
         'success' => false,
@@ -25,7 +26,7 @@ if ($conexion->connect_error) {
 $conexion->set_charset("utf8mb4");
 
 try {
-  
+    #hace la consulta a la base de datos
     $sql = "SELECT id, nombre, tipo, marca, modelo, estado FROM equipos_pc ORDER BY id ASC";
     $resultado = $conexion->query($sql);
     
@@ -40,24 +41,17 @@ try {
     
     
     $total_equipos = count($equipos);
+    // Obtener estadísticas
+    $stats = [];
     
-    $sql_stats = "SELECT 
-                    COUNT(*) as total,
-                    SUM(CASE WHEN estado = 'disponible' THEN 1 ELSE 0 END) as disponibles,
-                    SUM(CASE WHEN estado = 'en_uso' THEN 1 ELSE 0 END) as en_uso
-                  FROM equipos_pc";
+    $result = $conexion->query("SELECT COUNT(*) as total FROM equipos_pc");
+    $stats['total'] = $result->fetch_assoc()['total'];
     
-    $resultado_stats = $conexion->query($sql_stats);
+    $result = $conexion->query("SELECT COUNT(*) as disponibles FROM equipos_pc WHERE estado = 'disponible'");
+    $stats['disponibles'] = $result->fetch_assoc()['disponibles'];
     
-    if ($resultado_stats) {
-        $stats = $resultado_stats->fetch_assoc();
-    } else {
-        $stats = [
-            'total' => $total_equipos,
-            'disponibles' => 0,
-            'en_uso' => 0
-        ];
-    }
+    $result = $conexion->query("SELECT COUNT(*) as ocupadas FROM equipos_pc WHERE estado = 'ocupada'");
+    $stats['ocupadas'] = $result->fetch_assoc()['ocupadas'];
     
     $response = [
         'success' => true,
@@ -65,7 +59,7 @@ try {
         'stats' => [
             'total_equipos' => (int)$stats['total'],
             'total_disponibles' => (int)$stats['disponibles'],
-            'total_en_uso' => (int)$stats['en_uso']
+            'total_ocupadas' => (int)$stats['ocupadas']
         ]
     ];
     
