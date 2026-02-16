@@ -10,7 +10,7 @@ body {
     min-height: 100vh;
     margin: 0;
     padding:20px;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 .container {
@@ -385,7 +385,7 @@ tbody tr:hover {
 
 .btn-submit {
     flex: 1;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, #1a8dda 0%, #187acb 100%);
     color: white;
     border: none;
     padding: 12px;
@@ -394,11 +394,16 @@ tbody tr:hover {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(44, 82, 130, 0.3);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px)
 }
 
 .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 4px 12px rgba(16, 134, 185, 0.4);
 }
 
 .btn-cancel {
