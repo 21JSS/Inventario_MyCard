@@ -11,7 +11,6 @@ $base_de_datos = "equipos_mycard";
 
 $conexion = new mysqli($host, $usuario, $contraseña, $base_de_datos);
 
-#si hay error al conectar a la base de datos
 if ($conexion->connect_error) {
     echo json_encode([
         'success' => false,

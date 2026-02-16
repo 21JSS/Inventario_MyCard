@@ -16,13 +16,12 @@ $modelo = $_POST['modelo'] ?? '';
 $descripcion = $_POST['descripcion'] ?? '';
 $estado = $_POST['estado'] ?? 'disponible';
 
-#Validar  los campos completos
+
 if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo)) {
     echo json_encode(['success' => false, 'error' => 'Todos los campos son obligatorios']);
     exit;
 }
 
-#Insertar equipo 
 $sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("ssssss", $nombre, $tipo, $marca, $modelo, $descripcion, $estado);
@@ -30,7 +29,7 @@ $stmt->bind_param("ssssss", $nombre, $tipo, $marca, $modelo, $descripcion, $esta
 if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id;
     
-    $ip = "192.168.1.221"; // Cambiar si tu IP es diferente
+    $ip = "192.168.1.115"; 
     $url = "http://$ip/Inventario_MyCard/InventarioPCs.html?id=$nuevo_id";
     
     #Actualizar la URL 
@@ -40,7 +39,7 @@ if ($stmt->execute()) {
     $stmt_update->execute();
     
     // Generar código QR automáticamente
-    $python_path = "python"; // o "python3" si es necesario
+    $python_path = "python";
     $script_path = "generar_qr_unico.py";
     $command = "$python_path $script_path $nuevo_id 2>&1";
     $output = shell_exec($command);

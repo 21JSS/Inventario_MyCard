@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-#Conectar a la base de datos
+
 $conexion = new mysqli("localhost", "root", "", "equipos_mycard");
 
 if ($conexion->connect_error) {
@@ -10,7 +10,6 @@ if ($conexion->connect_error) {
     exit;
 }
 
-#Obtener ID del equipo
 $equipo_id = $_POST['id'] ?? '';
 
 if (empty($equipo_id)) {
@@ -21,7 +20,7 @@ if (empty($equipo_id)) {
 #Obtener estado actual del equipo
 $sql = "SELECT estado FROM equipos_pc WHERE id = ?";
 $stmt = $conexion->prepare($sql);
-$stmt->bind_param("i", $equipo_id);
+$stmt->bind_param("i", $equipo_id); 
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -33,7 +32,6 @@ if ($result->num_rows === 0) {
 $equipo = $result->fetch_assoc();
 $estado_actual = $equipo['estado'];
 
-# (cambiar al opuesto)
 $nuevo_estado = ($estado_actual === 'disponible') ? 'ocupada' : 'disponible';
 
 #Actualizar estado en la base de datos
