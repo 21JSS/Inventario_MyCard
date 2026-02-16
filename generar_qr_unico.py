@@ -12,11 +12,11 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="equipos_mycard"
+    database="inventario_mycard"
 )
 cursor = db.cursor(dictionary=True)
 
-cursor.execute("SELECT id, redireccion FROM equipos_pc WHERE id = %s", (equipo_id,))
+cursor.execute("SELECT id, redireccion FROM equipos_mycard WHERE id = %s", (equipo_id,))
 resultado = cursor.fetchone()
 
 if not resultado:
@@ -105,6 +105,14 @@ try:
     
     subprocess.run(["powershell", "-Command", ps_script], check=True)
     print("¡Etiqueta impresa con éxito!")
+    
+    # Borrar el archivo después de imprimir
+    try:
+        os.remove(nombre)
+        print(f"Archivo temporal {nombre} eliminado.")
+    except Exception as e_del:
+        print(f"No se pudo eliminar el archivo: {e_del}")
+
 except Exception as e:
     print(f"Error al imprimir: {e}")
 

@@ -2,12 +2,8 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-$conexion = new mysqli("localhost", "root", "", "equipos_mycard");
+require_once 'db.php';
 
-if ($conexion->connect_error) {
-    echo json_encode(['success' => false, 'error' => 'Error de conexión a la base de datos']);
-    exit;
-}
 
 $nombre = $_POST['nombre'] ?? '';
 $tipo = $_POST['tipo'] ?? '';
@@ -22,22 +18,18 @@ if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo)) {
     exit;
 }
 
-$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO equipos_mycard (nombre, tipo, marca, modelo, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("ssssss", $nombre, $tipo, $marca, $modelo, $descripcion, $estado);
 
 if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id;
     
-<<<<<<< HEAD
     $ip = "192.168.1.115"; 
-=======
-    $ip = "192.168.1.114"; // Cambiar si tu IP es diferente
->>>>>>> 1bb7985d380a816970e8123dab410269209ca5cf
     $url = "http://$ip/Inventario_MyCard/InventarioPCs.html?id=$nuevo_id";
     
     #Actualizar la URL 
-    $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?";
+    $sql_update = "UPDATE equipos_mycard SET redireccion = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("si", $url, $nuevo_id); 
     $stmt_update->execute();

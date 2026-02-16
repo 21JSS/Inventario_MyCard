@@ -8,12 +8,12 @@ db=mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="equipos_mycard"
+    database="inventario_mycard"
 )
 cursor = db.cursor(dictionary=True)
 
 
-cursor.execute("SELECT id, redireccion FROM equipos_pc")
+cursor.execute("SELECT id, redireccion FROM equipos_mycard")
 resultados = cursor.fetchall()
 
 
@@ -71,6 +71,15 @@ for fila in resultados:
 
     nombre = f"ID_{pc_qr}.png"
     background.save(nombre)
+    print(f"Código QR generado: {nombre}")
 
-    print(f"Código QR generado y guardado como: {nombre}")
+    # Si quieres que se borren inmediatamente después de generarse (solo si no vas a imprimirlos después desde aquí)
+    import os
+    try:
+        # os.remove(nombre) # Descomenta esta línea si quieres que se borren solos
+        # print(f"Archivo {nombre} eliminado para mantener limpieza.")
+        pass 
+    except:
+        pass
 
+db.close()

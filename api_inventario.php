@@ -3,29 +3,12 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
 
-$host = "localhost";
-$usuario = "root";
-$contraseña = "";
-$base_de_datos = "equipos_mycard";
+require_once 'db.php';
 
-
-$conexion = new mysqli($host, $usuario, $contraseña, $base_de_datos);
-
-if ($conexion->connect_error) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'No se pudo conectar con la base de datos. Asegúrate de que el servidor esté corriendo.',
-        'error_details' => $conexion->connect_error
-    ], JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-
-$conexion->set_charset("utf8mb4");
 
 try {
     #hace la consulta a la base de datos
-    $sql = "SELECT id, nombre, tipo, marca, modelo, descripcion, estado FROM equipos_pc ORDER BY id ASC";
+    $sql = "SELECT id, nombre, tipo, marca, modelo, descripcion, estado FROM equipos_mycard ORDER BY id ASC";
     $resultado = $conexion->query($sql);
     
     if (!$resultado) {
@@ -42,13 +25,13 @@ try {
     // Obtiene estadísticas 
     $stats = [];
     
-    $result = $conexion->query("SELECT COUNT(*) as total FROM equipos_pc");
+    $result = $conexion->query("SELECT COUNT(*) as total FROM equipos_mycard");
     $stats['total'] = $result->fetch_assoc()['total'];
     
-    $result = $conexion->query("SELECT COUNT(*) as disponibles FROM equipos_pc WHERE estado = 'disponible'");
+    $result = $conexion->query("SELECT COUNT(*) as disponibles FROM equipos_mycard WHERE estado = 'disponible'");
     $stats['disponibles'] = $result->fetch_assoc()['disponibles'];
     
-    $result = $conexion->query("SELECT COUNT(*) as ocupadas FROM equipos_pc WHERE estado = 'ocupada'");
+    $result = $conexion->query("SELECT COUNT(*) as ocupadas FROM equipos_mycard WHERE estado = 'ocupada'");
     $stats['ocupadas'] = $result->fetch_assoc()['ocupadas'];
     
     $response = [
