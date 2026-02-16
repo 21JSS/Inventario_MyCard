@@ -29,7 +29,11 @@ $stmt->bind_param("ssssss", $nombre, $tipo, $marca, $modelo, $descripcion, $esta
 if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id;
     
+<<<<<<< HEAD
     $ip = "192.168.1.115"; 
+=======
+    $ip = "192.168.1.114"; // Cambiar si tu IP es diferente
+>>>>>>> 1bb7985d380a816970e8123dab410269209ca5cf
     $url = "http://$ip/Inventario_MyCard/InventarioPCs.html?id=$nuevo_id";
     
     #Actualizar la URL 
