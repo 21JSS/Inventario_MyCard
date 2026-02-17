@@ -5,10 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes">
     <title>Inventario de PCs y Periféricos - MyCard</title>
+<<<<<<< HEAD
     <link
         href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="InventarioPCs.css">
+=======
+    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="InventarioPCs.css?v=10">
+>>>>>>> 568190cb8398cb1e540725f45b60c0d4b05274e5
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         html {
@@ -29,7 +34,7 @@
     <div class="container">
         <div class="header">
             <h1>MyCard</h1>
-            <p style="color: #ffffff; font-size: 1.1em;">Gestión de equipos de computo</p>
+            <p class="parrafo-principal" style="color: #ffffff; font-size: 1.1em;">Gestión de equipos de computo</p>
         </div>
 
         <!-- Vista de Detalle Individual -->
@@ -133,7 +138,7 @@
             <div class="modal-content modal-auth">
                 <span class="close" onclick="cerrarModalAuth()">&times;</span>
                 <h2>Acceso de Administrador</h2>
-                <p style="color: #6b7280; margin-bottom: 20px;">Ingresa tus credenciales para continuar</p>
+                <p class="parrafo-auth" style="color: #3a3c41; margin-bottom: 20px;">Ingresa tus credenciales para continuar</p>
 
                 <form id="formAuth" onsubmit="verificarCredenciales(event)">
                     <div class="form-group">
@@ -267,21 +272,13 @@
         function filtrarPorEstado(estado) {
             filtroActivo = estado;
 
-            // Actualizar estilos de las tarjetas
-            document.getElementById('cardTodos').style.backgroundColor = '';
-            document.getElementById('cardDisponible').style.backgroundColor = '';
-            document.getElementById('cardOcupada').style.backgroundColor = '';
-
-            // Resaltar la tarjeta seleccionada
+            // Actualizar indicador de filtro
             if (estado === 'todos') {
-                document.getElementById('cardTodos').style.backgroundColor = '#e0f2fe';
                 document.getElementById('filtroIndicador').style.display = 'none';
             } else if (estado === 'disponible') {
-                document.getElementById('cardDisponible').style.backgroundColor = '#d1fae5';
                 document.getElementById('filtroTexto').textContent = '🟢 Mostrando: Solo equipos disponibles';
                 document.getElementById('filtroIndicador').style.display = 'block';
             } else if (estado === 'ocupada') {
-                document.getElementById('cardOcupada').style.backgroundColor = '#fed7aa';
                 document.getElementById('filtroTexto').textContent = '🟡 Mostrando: Solo equipos ocupadas';
                 document.getElementById('filtroIndicador').style.display = 'block';
             }
