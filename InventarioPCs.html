@@ -5,8 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes">
     <title>Inventario de PCs y Periféricos - MyCard</title>
+<<<<<<< HEAD
     <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="InventarioPCs.css?v=2">
+=======
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="InventarioPCs.css">
+>>>>>>> 8222a9009eb8dd7f241824b65460a05ae4cfb87b
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         
@@ -97,7 +104,8 @@
                 <button onclick="abrirModal()"><i id="icono_computo" class="fa-solid fa-laptop-code"></i>
                     Agregar Equipo
                 </button>
-                <button class="btn-exportar" onclick="exportarDatos()"><i id="icono_excel" class="fa-solid fa-file-excel"></i>
+                <button class="btn-exportar" onclick="exportarDatos()"><i id="icono_excel"
+                        class="fa-solid fa-file-excel"></i>
                     Exportar a Excel
                 </button>
                 <input type="text" class="search-box" id="searchBox" placeholder=" Buscar por nombre, marca o modelo..." 
@@ -109,12 +117,15 @@
             <table id="inventarioTable">
                 <thead>
                     <tr>
-                        <th class="datos_tabla">ID</th>
-                        <th class="datos_tabla">Nombre</th>
-                        <th class="datos_tabla">Tipo</th>
-                        <th class="datos_tabla">Marca</th>
-                        <th class="datos_tabla">Modelo</th>
-                        <th class="datos_tabla">Estado</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+
+
                     </tr>
                 </thead>
                 <tbody id="inventarioBody">
@@ -213,7 +224,7 @@
     <script>
         let inventario = [];
         let equipoActualId = null;
-        let filtroActivo = 'todos'; // Estado del filtro actual
+        let filtroActivo = 'todos';
 
         window.onload = function () {
             cargarInventario();

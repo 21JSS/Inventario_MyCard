@@ -1,15 +1,13 @@
 <?php
 //  verificar las URLs en la base de datos
-$conexion = new mysqli("localhost", "root", "", "equipos_mycard");
+$is_cli = true;
+require_once 'db.php';
 
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
-}
 
 echo "URLs actuales en la base de datos:\n";
 echo "==================================\n\n";
 
-$resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_pc ORDER BY id");
+$resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_mycard ORDER BY id");
 
 while ($fila = $resultado->fetch_assoc()) {
     echo "ID: " . $fila['id'] . "\n";
