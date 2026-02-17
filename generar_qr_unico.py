@@ -52,17 +52,17 @@ background.paste(img_qr, (x_offset, margin_top))
 
 
 draw = ImageDraw.Draw(background)
-try:
+try: 
     font = ImageFont.truetype("arial.ttf", 20)
 except IOError:
     font = ImageFont.load_default()
 
-text = f"ID {pc_qr}"
+text = f"MC {pc_qr}"
 bbox = draw.textbbox((0, 0), text, font=font)
 text_x = (canvas_width - (bbox[2] - bbox[0])) / 2
 draw.text((text_x, 5), text, fill=(0, 0, 0), font=font)
 
-nombre = f"ID_{pc_qr}.png"
+nombre = f"MC_{pc_qr}.png"
 background.save(nombre, dpi=(300, 300))
 print(f"Código QR generado: {nombre}")
 

@@ -40,13 +40,7 @@ for fila in resultados:
 
   
     img_qr = qr.make_image(image_factory=StyledPilImage, module_drawer=RoundedModuleDrawer())._img
-  
-    img_logo = Image.open("img/logo_MyCard.jpeg").convert("RGBA")
-    
-    logo_size = min(img_qr.size[0], img_qr.size[1]) // 4
-    img_logo = img_logo.resize((logo_size, logo_size), Image.Resampling.LANCZOS)
-    pos = ((img_qr.size[0] - logo_size) // 2, (img_qr.size[1] - logo_size) // 2)
-    img_qr.paste(img_logo, pos, img_logo)
+
 
     qr_width,qr_height = img_qr.size
     margin_top = 40
@@ -61,7 +55,7 @@ for fila in resultados:
     except IOError:
             font = ImageFont.load_default()
     
-    text = f"ID {pc_qr}"
+    text = f"MC{pc_qr}"
    
     bbox = draw.textbbox((0, 0), text, font=font)
     text_width = bbox[2] - bbox[0]
@@ -69,7 +63,7 @@ for fila in resultados:
     text_y = 10
     draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
 
-    nombre = f"ID_{pc_qr}.png"
+    nombre = f"MC_{pc_qr}.png"
     background.save(nombre)
     print(f"Código QR generado: {nombre}")
 

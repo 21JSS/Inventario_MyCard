@@ -27,19 +27,19 @@ if ($stmt->execute()) {
     
     $ip = "192.168.1.115"; 
     $url = "http://$ip/Inventario_MyCard/InventarioPCs.html?id=$nuevo_id";
-    
+
     #Actualizar la URL 
     $sql_update = "UPDATE equipos_mycard SET redireccion = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
-    $stmt_update->bind_param("si", $url, $nuevo_id); 
+    $stmt_update->bind_param("si", $url, $nuevo_id);
     $stmt_update->execute();
-    
+
     // Generar código QR automáticamente
     $python_path = "python";
     $script_path = "generar_qr_unico.py";
     $command = "$python_path $script_path $nuevo_id 2>&1";
     $output = shell_exec($command);
-    
+
     echo json_encode([
         'success' => true,
         'message' => 'Equipo agregado exitosamente',

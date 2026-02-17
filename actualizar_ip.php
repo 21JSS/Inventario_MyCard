@@ -1,6 +1,6 @@
 <?php
 
-$nueva_ip = "192.168.1.115"; 
+$nueva_ip = "192.168.1.115";
 
 $is_cli = true;
 require_once 'db.php';
@@ -18,7 +18,7 @@ if ($conexion->query($sql)) {
     exit(1);
 }
 #Muestra las nuevas URLs
-echo "Nuevas URLs:\n"; 
+echo "Nuevas URLs:\n";
 echo "------------\n";
 
 $resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_mycard");
