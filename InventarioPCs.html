@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes">
     <title>Inventario de PCs y Periféricos - MyCard</title>
     <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="InventarioPCs.css?v=10">
+    <link rel="stylesheet" href="InventarioPCs.css?v=11">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         
@@ -101,8 +101,11 @@
                         class="fa-solid fa-file-excel"></i>
                     Exportar a Excel
                 </button>
-                <input type="text" class="search-box" id="searchBox" placeholder=" Buscar por nombre, marca o modelo..." 
-                    onkeyup="filtrarTabla()"><i class="fa-solid fa-magnifying-glass"></i>
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" class="search-box" id="searchBox" placeholder="Buscar por nombre, marca o modelo..." 
+                        onkeyup="filtrarTabla()">
+                </div>
             </div>
         </div>
 
