@@ -1,11 +1,11 @@
 <?php
 
-$nueva_ip = "192.168.1.115";
+$nueva_ip = "192.168.1.115"; 
 
 $is_cli = true;
 require_once 'db.php';
 
-
+ 
 echo "Actualizando URLs con IP: $nueva_ip\n\n";
 
 #Actualiza la IP de la base de datos
