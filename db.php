@@ -3,7 +3,7 @@
 $host = "localhost";
 $usuario = "root";
 $password = "";
-$base_de_datos = "inventario_mycard";
+$base_de_datos = "equipos_mycard";
 
 // Crear la conexión
 $conexion = new mysqli($host, $usuario, $password, $base_de_datos);

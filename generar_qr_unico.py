@@ -12,11 +12,11 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
-    database="inventario_mycard"
+    database="equipos_mycard"
 )
 cursor = db.cursor(dictionary=True)
 
-cursor.execute("SELECT id, redireccion FROM equipos_mycard WHERE id = %s", (equipo_id,))
+cursor.execute("SELECT id, redireccion FROM equipos_pc WHERE id = %s", (equipo_id,))
 resultado = cursor.fetchone()
 
 if not resultado:

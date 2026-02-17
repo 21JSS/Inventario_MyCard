@@ -7,7 +7,7 @@ require_once 'db.php';
 echo "URLs actuales en la base de datos:\n";
 echo "==================================\n\n";
 
-$resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_mycard ORDER BY id");
+$resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_pc ORDER BY id");
 
 while ($fila = $resultado->fetch_assoc()) {
     echo "ID: " . $fila['id'] . "\n";

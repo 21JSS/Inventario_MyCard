@@ -18,23 +18,18 @@ if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo)) {
     exit;
 }
 
-$sql = "INSERT INTO equipos_mycard (nombre, tipo, marca, modelo, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("ssssss", $nombre, $tipo, $marca, $modelo, $descripcion, $estado);
 
 if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id;
-<<<<<<< HEAD
 
     $ip = "192.168.1.114"; // Cambiar si tu IP es diferente
-=======
-    
-    $ip = "192.168.1.115"; 
->>>>>>> 8222a9009eb8dd7f241824b65460a05ae4cfb87b
     $url = "http://$ip/Inventario_MyCard/InventarioPCs.html?id=$nuevo_id";
 
     #Actualizar la URL 
-    $sql_update = "UPDATE equipos_mycard SET redireccion = ? WHERE id = ?";
+    $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("si", $url, $nuevo_id);
     $stmt_update->execute();
