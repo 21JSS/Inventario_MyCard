@@ -34,11 +34,12 @@ if ($stmt->execute()) {
     $stmt_update->bind_param("si", $url, $nuevo_id);
     $stmt_update->execute();
 
-    // Generar código QR automáticamente
+    // Generar código QR automáticamente en segundo plano para evitar esperas
     $python_path = "python";
     $script_path = "generar_qr_unico.py";
-    $command = "$python_path $script_path $nuevo_id 2>&1";
-    $output = shell_exec($command);
+    // Pasamos el ID y la URL para que el script de Python sea más rápido
+    $command = "start /B $python_path $script_path $nuevo_id \"$url\"";
+    pclose(popen($command, "r"));
 
     echo json_encode([
         'success' => true,

@@ -22,25 +22,24 @@ try {
 
 
     $total_equipos = count($equipos);
-    // Obtiene estadísticas 
-    $stats = [];
+    $total_disponibles = 0;
+    $total_ocupadas = 0;
 
-    $result = $conexion->query("SELECT COUNT(*) as total FROM equipos_pc");
-    $stats['total'] = $result->fetch_assoc()['total'];
-
-    $result = $conexion->query("SELECT COUNT(*) as disponibles FROM equipos_pc WHERE estado = 'disponible'");
-    $stats['disponibles'] = $result->fetch_assoc()['disponibles'];
-
-    $result = $conexion->query("SELECT COUNT(*) as ocupadas FROM equipos_pc WHERE estado = 'ocupada'");
-    $stats['ocupadas'] = $result->fetch_assoc()['ocupadas'];
+    foreach ($equipos as $e) {
+        if ($e['estado'] === 'disponible') {
+            $total_disponibles++;
+        } elseif ($e['estado'] === 'ocupada') {
+            $total_ocupadas++;
+        }
+    }
 
     $response = [
         'success' => true,
         'data' => $equipos,
         'stats' => [
-            'total_equipos' => (int) $stats['total'],
-            'total_disponibles' => (int) $stats['disponibles'],
-            'total_ocupadas' => (int) $stats['ocupadas']
+            'total_equipos' => $total_equipos,
+            'total_disponibles' => $total_disponibles,
+            'total_ocupadas' => $total_ocupadas
         ]
     ];
 

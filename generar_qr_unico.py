@@ -1,4 +1,3 @@
-import mysql.connector
 import qrcode 
 from PIL import Image, ImageDraw, ImageFont 
 import sys
@@ -10,30 +9,48 @@ if len(sys.argv) < 2:
     sys.exit(1)
 
 equipo_id = int(sys.argv[1])
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="inventario_mycard"
-)
-cursor = db.cursor(dictionary=True)
+pc_qr = equipo_id
+pc_redireccion = None
 
-cursor.execute("SELECT id, redireccion FROM equipos_pc WHERE id = %s", (equipo_id,))
-resultado = cursor.fetchone()
+# Si se proporciona la URL como segundo argumento, evitamos conectar a la BD
+if len(sys.argv) >= 3:
+    pc_redireccion = sys.argv[2]
+    print(f"Usando URL proporcionada: {pc_redireccion}")
+else:
+    # Solo importamos mysql-connector si realmente lo necesitamos
+    try:
+        import mysql.connector
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="inventario_mycard"
+        )
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT id, redireccion FROM equipos_pc WHERE id = %s", (equipo_id,))
+        resultado = cursor.fetchone()
+        
+        if not resultado:
+            print(f"Error: No se encontró el equipo con ID {equipo_id}")
+            db.close()
+            sys.exit(1)
+            
+        pc_redireccion = resultado['redireccion']
+        db.close()
+    except Exception as e:
+        print(f"Error al conectar a la BD: {e}")
+        sys.exit(1)
 
-if not resultado:
-    print(f"Error: No se encontró el equipo con ID {equipo_id}")
+if not pc_redireccion:
+    print("Error: No se pudo obtener la URL de redirección")
     sys.exit(1)
 
-pc_qr = resultado['id']
-pc_redireccion = resultado['redireccion']
-
-
+# --- CONFIGURACIÓN DEL QR ---
 qr = qrcode.QRCode(
     version=1,
     error_correction=qrcode.constants.ERROR_CORRECT_M,
     box_size=6, 
-    border=4,  
+    border=1,  # Reducido al mínimo para ganar espacio a la izquierda
 )
 
 qr.add_data(pc_redireccion)
@@ -41,17 +58,17 @@ qr.make(fit=True)
 
 img_qr = qr.make_image(fill_color="black", back_color="white").convert("RGBA")
 
-
 qr_width, qr_height = img_qr.size
 canvas_width = 244 # Ancho para cinta de 62mm
-margin_top = 25 
-new_height = 350 # Alto aproximado para que quepa bien
+margin_top = 40    # Ajuste para que no quede muy pegado arriba
+new_height = 240   # Altura más compacta para ahorrar cinta
 
+# Crear lienzo blanco
 background = Image.new('RGBA', (canvas_width, new_height), (255, 255, 255, 255))
 
-x_offset = (canvas_width - qr_width) // 2
+# CAMBIO CLAVE: Pegamos el QR al inicio (x=0)
+x_offset = 0 
 background.paste(img_qr, (x_offset, margin_top))
-
 
 draw = ImageDraw.Draw(background)
 try:
@@ -59,16 +76,14 @@ try:
 except IOError:
     font = ImageFont.load_default()
 
-text = f"MC {pc_qr}"
-bbox = draw.textbbox((0, 0), text, font=font)
-text_x = (canvas_width - (bbox[2] - bbox[0])) / 2
-draw.text((text_x, 5), text, fill=(0, 0, 0), font=font)
+# Texto también pegado a la izquierda
+text = f"MyC {pc_qr:04d}"
+draw.text((5, 10), text, fill=(0, 0, 0), font=font)
 
-nombre = f"MC_{pc_qr}.png"
+nombre = f"MyC_{pc_qr:04d}.png"
 background.save(nombre, dpi=(300, 300))
-print(f"Código QR generado: {nombre}")
 
-# Script de impresión para Brother QL-800
+# --- SCRIPT DE IMPRESIÓN CORREGIDO ---
 try:
     print(f"Enviando a Brother QL-800...")
     
@@ -84,21 +99,23 @@ try:
     $doc = New-Object System.Drawing.Printing.PrintDocument
     $doc.PrinterSettings.PrinterName = $printer
     
+    # Definimos el tamaño del papel basado en la imagen generada
     $w = 244 
-    $h = [int](($image.Height / 300) * 100) + 2
+    $h = [int](($image.Height / 300) * 100)
     
     $doc.DefaultPageSettings.PaperSize = New-Object System.Drawing.Printing.PaperSize("Custom", $w, $h)
     $doc.DefaultPageSettings.Margins = New-Object System.Drawing.Printing.Margins(0,0,0,0)
-    
-    # Activar corte automático
-    $doc.PrinterSettings.Duplex = [System.Drawing.Printing.Duplex]::Simplex
+    $doc.OriginAtMargins = $false
 
     $doc.add_PrintPage({{
-        $printableWidth = $_.PageSettings.PrintableArea.Width
-        $imgWidthInDoc = ($image.Width / 300) * 100
-        $x = [int](($printableWidth - $imgWidthInDoc) / 2)
+        # CAMBIO CLAVE: Forzamos la posición X a 0 para eliminar el hueco izquierdo
+        $x = 0
+        $y = 0
         
-        $rect = New-Object System.Drawing.Rectangle($x, 0, [int]$imgWidthInDoc, [int]$h)
+        $imgWidthInDoc = ($image.Width / 300) * 100
+        $imgHeightInDoc = ($image.Height / 300) * 100
+        
+        $rect = New-Object System.Drawing.Rectangle($x, $y, [int]$imgWidthInDoc, [int]$imgHeightInDoc)
         $_.Graphics.DrawImage($image, $rect)
         $_.HasMorePages = $false
     }})
@@ -107,14 +124,9 @@ try:
     """
     
     subprocess.run(["powershell", "-Command", ps_script], check=True)
-    print("¡Etiqueta impresa con éxito!")
+    print("¡Impresión enviada!")
     
-    try:
-        os.remove(nombre)
-    except:
-        pass
+    os.remove(nombre)
 
 except Exception as e:
     print(f"Error al imprimir: {e}")
-
-db.close()
