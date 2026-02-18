@@ -25,8 +25,8 @@ $stmt->bind_param("ssssss", $nombre, $tipo, $marca, $modelo, $descripcion, $esta
 if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id;
     
-    $ip = "192.168.56.1"; 
-    $url = "http://$ip/Inventario_MyCard/InventarioPCs.html?id=$nuevo_id";
+    $ip = "192.168.1.115"; 
+    $url = "http://$ip/Inventario_MyCard/index.html?id=$nuevo_id";
 
     #Actualizar la URL 
     $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?";
