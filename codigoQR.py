@@ -13,7 +13,7 @@ db=mysql.connector.connect(
 cursor = db.cursor(dictionary=True)
 
 
-cursor.execute("SELECT id, redireccion FROM equipos_mycard")
+cursor.execute("SELECT id, redireccion FROM equipos_pc")
 resultados = cursor.fetchall()
 
 

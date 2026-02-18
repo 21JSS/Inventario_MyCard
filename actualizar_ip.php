@@ -1,6 +1,20 @@
 <?php
 
-$nueva_ip = "192.168.1.115";
+// Detectar IP automáticamente
+$output = shell_exec('ipconfig');
+preg_match_all('/IPv4[^\d]+([\d\.]+)/', $output, $matches);
+// Filtrar IPs que no sean 127.0.0.1
+$nueva_ip = "127.0.0.1";
+foreach ($matches[1] as $ip) {
+    $ip = trim($ip);
+    if ($ip !== "127.0.0.1" && strpos($ip, "192.168.56.") === false) {
+        $nueva_ip = $ip;
+        // Si encontramos la IP de la red local común (192.168.1.x), la preferimos y paramos
+        if (strpos($ip, "192.168.1.") !== false) {
+            break;
+        }
+    }
+}
 
 $is_cli = true;
 require_once 'db.php';
@@ -9,7 +23,7 @@ require_once 'db.php';
 echo "Actualizando URLs con IP: $nueva_ip\n\n";
 
 #Actualiza la IP de la base de datos
-$sql = "UPDATE equipos_mycard SET redireccion = CONCAT('http://$nueva_ip/Inventario_MyCard/InventarioPCs.html?id=', id)";
+$sql = "UPDATE equipos_pc SET redireccion = CONCAT('http://$nueva_ip/Inventario_MyCard/InventarioPCs.html?id=', id)";
 
 if ($conexion->query($sql)) {
     echo "URLs actualizadas correctamente\n\n";
@@ -21,7 +35,7 @@ if ($conexion->query($sql)) {
 echo "Nuevas URLs:\n";
 echo "------------\n";
 
-$resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_mycard");
+$resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_pc");
 
 while ($fila = $resultado->fetch_assoc()) {
     echo "ID " . $fila['id'] . ": " . $fila['nombre'] . "\n";

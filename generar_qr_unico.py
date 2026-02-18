@@ -2,6 +2,8 @@ import mysql.connector
 import qrcode 
 from PIL import Image, ImageDraw, ImageFont 
 import sys
+import os
+import subprocess
 
 if len(sys.argv) < 2:
     print("Error: Debes proporcionar un ID de equipo")
@@ -16,7 +18,7 @@ db = mysql.connector.connect(
 )
 cursor = db.cursor(dictionary=True)
 
-cursor.execute("SELECT id, redireccion FROM equipos_mycard WHERE id = %s", (equipo_id,))
+cursor.execute("SELECT id, redireccion FROM equipos_pc WHERE id = %s", (equipo_id,))
 resultado = cursor.fetchone()
 
 if not resultado:
@@ -41,9 +43,9 @@ img_qr = qr.make_image(fill_color="black", back_color="white").convert("RGBA")
 
 
 qr_width, qr_height = img_qr.size
-canvas_width = 244 
+canvas_width = 244 # Ancho para cinta de 62mm
 margin_top = 25 
-new_height = 350 
+new_height = 350 # Alto aproximado para que quepa bien
 
 background = Image.new('RGBA', (canvas_width, new_height), (255, 255, 255, 255))
 
@@ -52,7 +54,7 @@ background.paste(img_qr, (x_offset, margin_top))
 
 
 draw = ImageDraw.Draw(background)
-try: 
+try:
     font = ImageFont.truetype("arial.ttf", 20)
 except IOError:
     font = ImageFont.load_default()
@@ -68,8 +70,6 @@ print(f"Código QR generado: {nombre}")
 
 # Script de impresión para Brother QL-800
 try:
-    import subprocess
-    import os
     print(f"Enviando a Brother QL-800...")
     
     full_path = os.path.abspath(nombre)
@@ -89,6 +89,9 @@ try:
     
     $doc.DefaultPageSettings.PaperSize = New-Object System.Drawing.Printing.PaperSize("Custom", $w, $h)
     $doc.DefaultPageSettings.Margins = New-Object System.Drawing.Printing.Margins(0,0,0,0)
+    
+    # Activar corte automático
+    $doc.PrinterSettings.Duplex = [System.Drawing.Printing.Duplex]::Simplex
 
     $doc.add_PrintPage({{
         $printableWidth = $_.PageSettings.PrintableArea.Width
@@ -106,12 +109,10 @@ try:
     subprocess.run(["powershell", "-Command", ps_script], check=True)
     print("¡Etiqueta impresa con éxito!")
     
-    # Borrar el archivo después de imprimir
     try:
         os.remove(nombre)
-        print(f"Archivo temporal {nombre} eliminado.")
-    except Exception as e_del:
-        print(f"No se pudo eliminar el archivo: {e_del}")
+    except:
+        pass
 
 except Exception as e:
     print(f"Error al imprimir: {e}")
