@@ -12,12 +12,12 @@ equipo_id = int(sys.argv[1])
 pc_qr = equipo_id
 pc_redireccion = None
 
-# Si se proporciona la URL como segundo argumento, evitamos conectar a la BD
+
 if len(sys.argv) >= 3:
     pc_redireccion = sys.argv[2]
     print(f"Usando URL proporcionada: {pc_redireccion}")
 else:
-    # Solo importamos mysql-connector si realmente lo necesitamos
+    # Solo importamos mysql-connector 
     try:
         import mysql.connector
         db = mysql.connector.connect(
@@ -66,7 +66,7 @@ new_height = 240   # Altura más compacta para ahorrar cinta
 # Crear lienzo blanco
 background = Image.new('RGBA', (canvas_width, new_height), (255, 255, 255, 255))
 
-# CAMBIO CLAVE: Pegamos el QR al inicio (x=0)
+
 x_offset = 0 
 background.paste(img_qr, (x_offset, margin_top))
 
@@ -76,14 +76,18 @@ try:
 except IOError:
     font = ImageFont.load_default()
 
-# Texto también pegado a la izquierda
-text = f"MyC {pc_qr:04d}"
-draw.text((5, 10), text, fill=(0, 0, 0), font=font)
+text = f"MyC- {pc_qr:04d}"
 
-nombre = f"MyC_{pc_qr:04d}.png"
+# Centrar el texto 
+bbox = draw.textbbox((0, 0), text, font=font)
+text_width = bbox[2] - bbox[0]
+x_centered = (canvas_width - text_width) // 2
+draw.text((x_centered, 10), text, fill=(0, 0, 0), font=font)
+
+nombre = f"MyC-_{pc_qr:04d}.png"
 background.save(nombre, dpi=(300, 300))
 
-# --- SCRIPT DE IMPRESIÓN CORREGIDO ---
+
 try:
     print(f"Enviando a Brother QL-800...")
     
