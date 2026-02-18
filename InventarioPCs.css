@@ -309,7 +309,7 @@ tbody tr:hover {
 
 .detalle-info {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 20px;
   font-family: "Bricolage Grotesque";
 }
@@ -317,6 +317,7 @@ tbody tr:hover {
 .info-item {
   display: flex;
   justify-content: space-between;
+  gap: 15px;
   padding: 15px;
   background: #f9fafb;
   border-radius: 8px;
@@ -353,7 +354,7 @@ tbody tr:hover {
 
 .btn-cambiar-estado.disponible:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 4px 12px var(--shadow-buttons);
 }
 
 .btn-cambiar-estado.ocupada {
