@@ -45,15 +45,9 @@ domReady(function () {
   html5QrCode.start(
     { facingMode: "environment" },
     {
-      fps: 60,
-      useBarCodeDetectorIfSupported: true, // API nativa del navegador (más rápida)
-      videoConstraints: {
-        facingMode: "environment",
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-      },
+      fps: 10,
+      qrbox: 250,
     },
-    onScanSuccess,
-    onScanFailure,
+    onScan,
   );
 });
