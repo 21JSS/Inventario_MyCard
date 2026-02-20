@@ -8,7 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="InventarioPCs.css?v=11">
+    <link rel="stylesheet" href="css/InventarioPCs.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         html {
@@ -39,29 +39,52 @@
             <div class="detalle-card">
                 <h2 id="detalle-nombre"></h2>
                 <div class="detalle-info">
-                    <div class="info-item">
-                        <span class="label">ID:</span>
-                        <span id="detalle-id"></span>
+                    <!-- 1. Estado y Asignación (Lo más importante arriba) -->
+                    <div class="detalle-row" style="margin-bottom: 5px;">
+                        <span class="detalle-label">Estado:</span>
+                        <span class="detalle-badge" id="detalle-estado"></span>
                     </div>
-                    <div class="info-item">
-                        <span class="label">Tipo:</span>
-                        <span id="detalle-tipo"></span>
+
+                    <div class="info-item" id="info-nota"
+                        style="background: #fffbeb; border: 1px solid #fde68a; display: none; margin-bottom: 20px;">
+                        <span class="label" style="color: #92400e;">Asignado a:</span>
+                        <span id="detalle-nota" style="color: #f59e0b; font-weight: bold;"></span>
                     </div>
+
+                    
                     <div class="info-item">
-                        <span class="label">Marca:</span>
-                        <span id="detalle-marca"></span>
+                        <span class="label">Departamento:</span>
+                        <span id="detalle-departamento" style="font-weight: 600;"></span>
                     </div>
+
                     <div class="info-item">
-                        <span class="label">Modelo:</span>
-                        <span id="detalle-modelo"></span>
+                        <span class="label">Encargado:</span>
+                        <span id="detalle-encargado" style="font-weight: 600;"></span>
                     </div>
+
                     <div class="info-item">
                         <span class="label">Descripción:</span>
                         <span id="detalle-descripcion"></span>
                     </div>
-                    <div class="detalle-row">
-                        <span class="detalle-label">Estado:</span>
-                        <span class="detalle-badge" id="detalle-estado"></span>
+
+                    <div class="info-item">
+                        <span class="label">Modelo:</span>
+                        <span id="detalle-modelo"></span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="label">Marca:</span>
+                        <span id="detalle-marca"></span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="label">Tipo:</span>
+                        <span id="detalle-tipo"></span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="label">ID del Equipo:</span>
+                        <span id="detalle-id"></span>
                     </div>
                 </div>
 
@@ -120,6 +143,8 @@
                         <th>Tipo</th>
                         <th>Marca</th>
                         <th>Modelo</th>
+                        <th>Encargado</th>
+                        <th>Departamento</th>
                         <th>Descripción</th>
                         <th>Estado</th>
 
@@ -198,31 +223,94 @@
                         <input type="text" id="modelo" name="modelo" required>
                     </div>
 
+                      <div class="form-group">
+                       <label for="departamento">Departamento:</label>
+                       <select id="area" name="Departamento" required>                 
+                            <option value="">Seleccionar...</option>
+                            <option value="Oficina">Oficina</option>
+                            <option value="Almacen">Almacen</option>
+                            <option value="Perso">Perso</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group"> 
+                        <label for="encargado">Encargado:</label>
+                        <input type="text" id="encargado" name="encargado" required>
+                    </div>
+
+
                     <div class="form-group">
-                        <label for="descripcion">Descripción (opcional):</label>
-                        <textarea id="descripcion" name="descripcion" rows="3"
-                            placeholder="Ej: Equipo asignado a recepción, incluye teclado y mouse"></textarea>
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" rows="3" required
+                            placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="estado">Estado:</label>
-                        <select id="estado" name="estado" required>
+                        <select id="estado" name="estado" required onchange="toggleMotivoUso(this.value)">
                             <option value="disponible">Disponible</option>
                             <option value="ocupada">Ocupada</option>
                         </select>
                     </div>
 
-                    <div class="form-buttons">
-                        <button type="submit" class="btn-submit">Guardar</button>
-                        <button type="button" class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
-                    </div>
-                </form>
+                    <div class="form-group" id="grupoMotivoUso" style="display: none;">
+                        <label for="nota_uso">Motivo de Uso</label>
+                        <input type="text" id="nota_uso" name="nota" placeholder="¿Quién lo usará y en qué area?">
+                     <div  class="form-group">
+                            <select id="asignado_a" name="asignado_a">  
+                             <option value="">Seleccionar Area...</option>      
+                                 <option value="Auditoria">Auditoria</option>
+                                 <option value="Area de corte">Area de corte</option>
+                                 <option value="Almacen">Almacen</option> 
+                                 <option value="Logistica">Logistica</option>
+                                 <option value="Plata">Plata</option> 
+                                 <option value="Boveda Plata">Boveda Plata</option> 
+                                 <option value="Cqm">Cqm</option> 
+                       </select>
+                     </div>   
+                       
+                    </div> 
+                    
+                     <div class="form-buttons">
+                     <button type="submit" class="btn-submit">Guardar</button>
+                    <button type="button" class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+                     </div>
+                     </form>
             </div>
         </div>
     </div>
     <script>
         let inventario = [];
         let equipoActualId = null;
+
+        // Función para mostrar/ocultar el motivo de uso en el formulario de agregar
+        function toggleMotivoUso(estado) {
+            const grupoMotivo = document.getElementById('grupoMotivoUso');
+            const inputNota = document.getElementById('nota_uso');
+            const selectAsignado = document.getElementById('asignado_a');
+            const inputDescripcion = document.getElementById('descripcion');
+            const grupoDescripcion = inputDescripcion.parentElement;
+
+            if (estado === 'ocupada') {
+                grupoMotivo.style.display = 'block';
+                inputNota.setAttribute('required', 'required');
+                selectAsignado.setAttribute('required', 'required');
+
+                // Ocultamos la descripción general para no duplicar
+                grupoDescripcion.style.display = 'none';
+                inputDescripcion.removeAttribute('required');
+                inputDescripcion.value = ''; // Limpiamos para que no interfiera
+            } else {
+                grupoMotivo.style.display = 'none';
+                inputNota.removeAttribute('required');
+                selectAsignado.removeAttribute('required');
+                inputNota.value = '';
+
+                // Mostramos la descripción general
+                grupoDescripcion.style.display = 'block';
+                inputDescripcion.setAttribute('required', 'required');
+            }
+        }
         let filtroActivo = 'todos';
 
         window.onload = function () {
@@ -238,7 +326,7 @@
         async function cargarInventario() {
             try {
 
-                const response = await fetch('api_inventario.php');
+                const response = await fetch('php/api_inventario.php');
                 const result = await response.json();
 
                 if (result.success) {
@@ -316,13 +404,24 @@
             document.getElementById('detalle-tipo').textContent = equipo.tipo;
             document.getElementById('detalle-marca').textContent = equipo.marca;
             document.getElementById('detalle-modelo').textContent = equipo.modelo;
-            document.getElementById('detalle-descripcion').textContent = equipo.descripcion || 'Sin descripción';
+            document.getElementById('detalle-departamento').textContent = (equipo.departamento || 'No asignado').toUpperCase();
+            document.getElementById('detalle-encargado').textContent = (equipo.encargado || 'No asignado').toUpperCase();
+            document.getElementById('detalle-descripcion').textContent = equipo.descripcion;
 
             // Estado con color
             const estadoBadge = document.getElementById('detalle-estado');
             estadoBadge.textContent = obtenerTextoEstado(equipo.estado);
             estadoBadge.style.backgroundColor = obtenerColorEstado(equipo.estado);
             estadoBadge.style.color = 'white';
+
+            // Mostrar nota si existe
+            const infoNota = document.getElementById('info-nota');
+            if (equipo.estado === 'ocupada' && equipo.nota_estado) {
+                document.getElementById('detalle-nota').textContent = equipo.nota_estado;
+                infoNota.style.display = 'block';
+            } else {
+                infoNota.style.display = 'none';
+            }
 
             // Guardar ID actual 
             equipoActualId = equipoId;
@@ -361,10 +460,24 @@
             }
 
             try {
+                const equipo = inventario.find(item => item.id == equipoActualId);
+                let nota = null;
+
+                // Si está disponible y vamos a ocuparla, pedir motivo
+                if (equipo.estado === 'disponible') {
+                    nota = prompt("¿Para quién o para qué se usará este equipo?", "");
+                    if (nota === null) return; // Si cancela el prompt, no hacer nada
+                    if (nota.trim() === "") {
+                        alert("Debes ingresar un motivo o nombre para asignar el equipo.");
+                        return;
+                    }
+                }
+
                 const formData = new FormData();
                 formData.append('id', equipoActualId);
+                if (nota) formData.append('nota', nota);
 
-                const response = await fetch('cambiar_estado.php', {
+                const response = await fetch('php/cambiar_estado.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -397,7 +510,7 @@
             document.getElementById('controls').style.display = 'block';
             document.getElementById('tableContainer').style.display = 'block';
 
-            window.history.pushState({}, '', 'InventarioPCs.html');
+            window.history.pushState({}, '', 'index.html');
 
             // Scroll al inicio de la página
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -432,6 +545,7 @@
                 // Credenciales correctas
                 cerrarModalAuth();
                 document.getElementById('modalAgregar').style.display = 'flex';
+                toggleMotivoUso('disponible'); // Inicializar estado del formulario
             } else {
                 // Credenciales incorrectas
                 document.getElementById('error-message').style.display = 'block';
@@ -445,8 +559,13 @@
 
             const formData = new FormData(event.target);
 
+            // Si el estado es ocupada, usamos el motivo como descripción para que no llegue vacío al servidor
+            if (formData.get('estado') === 'ocupada') {
+                formData.set('descripcion', formData.get('nota'));
+            }
+
             try {
-                const response = await fetch('agregar_equipo.php', {
+                const response = await fetch('php/agregar_equipo.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -503,7 +622,9 @@
                     <td>${item.tipo}</td>
                     <td>${item.marca}</td>
                     <td>${item.modelo}</td>
-                    <td>${item.descripcion || 'Sin descripción'}</td>
+                    <td>${item.encargado || 'N/A'}</td>
+                    <td>${item.departamento || 'N/A'}</td>
+                    <td>${item.descripcion}</td>
                     <td ${estadoClass}>${estadoTexto}</td>
                 `;
                 tbody.appendChild(tr);
