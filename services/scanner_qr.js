@@ -22,7 +22,8 @@ domReady(function () {
   let htmlscanner = new Html5QrcodeScanner(
     "my-qr-reader",
     {
-      fps: 30, //
+      fps: 60,
+      qrbox: { with: 200, height: 200 },
       rememberLastUsedCamera: true,
       useBarCodeDetectorIfSupported: true, //  API nativa del navegador
       supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
