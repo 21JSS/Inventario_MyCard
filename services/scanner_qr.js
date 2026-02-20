@@ -19,27 +19,30 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Detener el escáner después de un éxito para evitar múltiples redirecciones
-    if (typeof htmlscanner !== 'undefined') {
-      htmlscanner.clear();
-    }
+    // Redirigir al detalle del equipo
+    setTimeout(() => {
+      window.location.href = "../html/index.html?id=" + decodeText;
+    }, 200);
   }
 
-  function onScanFailure(error) {
-    // No mostramos errores constantes de escaneo fallido para no saturar la consola
-    // console.warn(`Error de escaneo: ${error}`);
-  }
+  function onScanFailure(error) { }
 
   const html5QrCode = new Html5Qrcode("my-qr-reader");
+
   html5QrCode.start(
     { facingMode: "environment" },
     {
       fps: 60,
-      useBarCodeDetectorIfSupported: true, // API nativa del navegador (más rápida)
+      useBarCodeDetectorIfSupported: true, // Nativo en Chrome/Android (muy rápido)
+      experimentalFeatures: {
+        useBarCodeDetectorIfSupported: true, // Activa BarcodeDetector en versiones antiguas
+      },
       videoConstraints: {
         facingMode: "environment",
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
+        // 640x480 procesa más rápido que 1280x720 en dispositivos lentos
+        // porque hay menos píxeles que analizar por frame
+        width: { min: 640, ideal: 1280, max: 1920 },
+        height: { min: 480, ideal: 720, max: 1080 },
       },
     },
     onScanSuccess,
