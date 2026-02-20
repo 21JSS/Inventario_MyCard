@@ -15,14 +15,13 @@ domReady(function () {
     alert("You Qr is : " + decodeText, decodeResult);
   }
 
-  let htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
-    fps: 180,
-    qrbox: 250,
-    videoConstraints: {
-      facingMode: "environment",
-    },
-    showTorchButtonIfSupported: false,
-  });
+  function onScanFailure(error) {}
 
-  htmlscanner.render(onScanSuccess);
+  let htmlscanner = new Html5Qrcode("my-qr-reader");
+  htmlscanner.stat(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    onScanSuccess,
+    onScanFailure,
+  );
 });
