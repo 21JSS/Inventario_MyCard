@@ -203,7 +203,7 @@ function regresarInventario() {
 }
 
 const interfazQR = () => {
-  window.location.href = "html_qr.html";
+  window.location.href = "/html/html_qr.html";
 };
 
 function abrirModal() {
