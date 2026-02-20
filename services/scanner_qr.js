@@ -11,7 +11,6 @@ function domReady(fn) {
 
 domReady(function () {
   function onScanSuccess(decodeText, decodedResult) {
-    // Intentar dibujar el cuadrito si hay boundingBox disponible
     try {
       const boundingBox = decodedResult.result.boundingBox;
       if (boundingBox) {
@@ -31,11 +30,8 @@ domReady(function () {
           boundingBox.height,
         );
       }
-    } catch (e) {
-      // Si no hay boundingBox disponible, se ignora y redirige igual
-    }
+    } catch (e) {}
 
-    // Redirigir al detalle del equipo después de 300ms
     setTimeout(() => {
       window.location.href = "../html/index.html?id=" + decodeText;
     }, 300);
