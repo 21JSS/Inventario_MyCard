@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "bootstrap-icons": "^1.13.1"
+    "bootstrap-icons": "^1.13.1",
+    "bulma": "^1.0.4",
+    "jsqr": "^1.4.0"
   }
 }

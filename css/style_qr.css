@@ -1,0 +1,92 @@
+
+:root{
+--mycard-color:#00c6e6;
+--gradiente-oscuro:#191e2b;
+--shadow-buttons: #2769dc66;
+--color-text-mycard:#086ceeb4;
+--color-body:#ffffff;
+--boton-excel:#30d148;
+--transparencia:0.3;
+--boton-qr: #296ae2;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    box-sizing: border-box;
+    text-align: center;
+    background: rgb(0, 0, 0);
+    font-family: "Bricolage Grotesque";
+}
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 5px;
+}
+
+.container h1 {
+    color: #ffffff;
+}
+
+p{
+    color: white;
+    font-family: "Bricolage Grotesque";
+}
+.section {
+    background-color: #ffffff;
+    padding: 50px 30px;
+    border: 1.5px solid var(--mycard-color);
+    border-radius: 0.25em;
+    box-shadow: 0 20px 25px var(--shadow-buttons);
+}
+
+#my-qr-reader {
+    padding: 20px !important;
+    border: 2.9px solid var(--shadow-buttons) !important;
+    border-radius: 15px;
+}
+
+#my-qr-reader img[alt="Info icon"] {
+    display: none;
+}
+
+#my-qr-reader img[alt="Camera based scan"] {
+    width: 100px !important;
+    height: 100px !important;
+}
+
+button {
+    padding: 10px 20px;
+    border: 1px solid var(--shadow-buttons);
+    outline: none;
+    border-radius: 0.55em;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    background-color: var(--boton-qr);
+    transition: 0.3s background-color;
+}
+
+button:hover {
+    background-color: var(--mycard-color);
+}
+
+#html5-qrcode-anchor-scan-type-change {
+    text-decoration: none !important;
+    color: var(--boton-qr);
+}
+
+video {
+    width: 100% !important;
+    border: 1px solid var(--shadow-buttons) !important;
+    border-radius: 0.25em;
+}
+
+
+
+

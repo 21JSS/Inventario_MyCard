@@ -97,6 +97,11 @@
                 </div>
             </div>
         </div>
+        <div class="leer-qr" id="interfaz-qr">
+            <div class="boton-qr">
+                <button onclick="interfazQR()" id="pushgointerfaz" class="btn-qr">Leer QR</button>   <!---Completar la funcion (Josue)--->
+            </div>
+        </div>
 
         <div class="table-container" id="tableContainer" style="display: block;">
             <table id="inventarioTable">
@@ -109,14 +114,13 @@
                         <th>Modelo</th>
                         <th>Descripción</th>
                         <th>Estado</th>
-
-
                     </tr>
                 </thead>
                 <tbody id="inventarioBody">
                 </tbody>
             </table>
         </div>
+
 
         <!-- Modal de Autenticación -->
         <div id="modalAuth" class="modal" style="display: none;">

@@ -11,6 +11,7 @@
   --color-text-mycard:#086ceeb4;
   --color-body:#ffffff;
   --boton-excel:#30d148;
+  --boton-qr: #296ae2;
   --transparencia:0.3;
 }
 
@@ -510,6 +511,25 @@ tbody tr:hover {
 .btn-submit:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(16, 134, 185, 0.4);
+}
+
+.boton-qr{
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 2%;
+}
+
+.btn-qr{
+display: flex;
+margin: 2%;
+background: var(--boton-qr);
+box-shadow: 0 0 5px 3px var(--shadow-buttons);
+}
+
+.btn-qr:hover{
+transform: translateY(-5px);
+box-shadow: 0 0 10px 6px var(--shadow-buttons);
 }
 
 .btn-cancel {
