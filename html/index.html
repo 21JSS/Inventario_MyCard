@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes">
     <title>Inventario de PCs y Periféricos - MyCard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../css/InventarioPCs.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -26,29 +28,52 @@
             <div class="detalle-card">
                 <h2 id="detalle-nombre"></h2>
                 <div class="detalle-info">
-                    <div class="info-item">
-                        <span class="label">ID:</span>
-                        <span id="detalle-id"></span>
+                    <!-- 1. Estado y Asignación (Lo más importante arriba) -->
+                    <div class="detalle-row" style="margin-bottom: 5px;">
+                        <span class="detalle-label">Estado:</span>
+                        <span class="detalle-badge" id="detalle-estado"></span>
                     </div>
-                    <div class="info-item">
-                        <span class="label">Tipo:</span>
-                        <span id="detalle-tipo"></span>
+
+                    <div class="info-item" id="info-nota"
+                        style="background: #fffbeb; border: 1px solid #fde68a; display: none; margin-bottom: 20px;">
+                        <span class="label" style="color: #92400e;">Asignado a:</span>
+                        <span id="detalle-nota" style="color: #f59e0b; font-weight: bold;"></span>
                     </div>
+
+
                     <div class="info-item">
-                        <span class="label">Marca:</span>
-                        <span id="detalle-marca"></span>
+                        <span class="label">Departamento:</span>
+                        <span id="detalle-departamento" style="font-weight: 600;"></span>
                     </div>
+
+                    <div class="info-item">
+                        <span class="label">Encargado:</span>
+                        <span id="detalle-encargado" style="font-weight: 600;"></span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="label">Descripción:</span>
+                        <span id="detalle-descripcion"></span>
+                    </div>
+
                     <div class="info-item">
                         <span class="label">Modelo:</span>
                         <span id="detalle-modelo"></span>
                     </div>
+
                     <div class="info-item">
-                        <span class="label">Descripción:     </span>
-                        <span id="detalle-descripcion"></span>
+                        <span class="label">Marca:</span>
+                        <span id="detalle-marca"></span>
                     </div>
-                    <div class="detalle-row">
-                        <span class="detalle-label">Estado:</span>
-                        <span class="detalle-badge" id="detalle-estado"></span>
+
+                    <div class="info-item">
+                        <span class="label">Tipo:</span>
+                        <span id="detalle-tipo"></span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="label">ID del Equipo:</span>
+                        <span id="detalle-id"></span>
                     </div>
                 </div>
 
@@ -90,18 +115,17 @@
                         class="fa-solid fa-file-excel"></i>
                     Exportar a Excel
                 </button>
+                <button class="btn-qr" onclick="interfazQR()" id="pushgointerfaz">
+                    <i class="fa-solid fa-qrcode"></i> Leer QR
+                </button>
                 <div class="search-wrapper">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" class="search-box" id="searchBox" placeholder="Buscar por nombre, marca o modelo..." 
-                        onkeyup="filtrarTabla()">
+                    <input type="text" class="search-box" id="searchBox"
+                        placeholder="Buscar por nombre, marca o modelo..." onkeyup="filtrarTabla()">
                 </div>
             </div>
         </div>
-        <div class="leer-qr" id="interfaz-qr">
-            <div class="boton-qr">
-                <button onclick="interfazQR()" id="pushgointerfaz" class="btn-qr">Leer QR</button>   <!---Completar la funcion (Josue)--->
-            </div>
-        </div>
+
 
         <div class="table-container" id="tableContainer" style="display: block;">
             <table id="inventarioTable">
@@ -112,8 +136,12 @@
                         <th>Tipo</th>
                         <th>Marca</th>
                         <th>Modelo</th>
+                        <th>Encargado</th>
+                        <th>Departamento</th>
                         <th>Descripción</th>
                         <th>Estado</th>
+
+
                     </tr>
                 </thead>
                 <tbody id="inventarioBody">
@@ -121,13 +149,13 @@
             </table>
         </div>
 
-
         <!-- Modal de Autenticación -->
         <div id="modalAuth" class="modal" style="display: none;">
             <div class="modal-content modal-auth">
                 <span class="close" onclick="cerrarModalAuth()">&times;</span>
                 <h2>Acceso de Administrador</h2>
-                <p class="parrafo-auth" style="color: #3a3c41; margin-bottom: 20px;">Ingresa tus credenciales para continuar</p>
+                <p class="parrafo-auth" style="color: #3a3c41; margin-bottom: 20px;">Ingresa tus credenciales para
+                    continuar</p>
 
                 <form id="formAuth" onsubmit="verificarCredenciales(event)">
                     <div class="form-group">
@@ -137,8 +165,7 @@
 
                     <div class="form-group">
                         <label for="password">Contraseña:</label>
-                        <i class="bi bi-eye-slash-fill" id="togglePassword"></i>
-                        <input type="password" id="password" name="password">
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
                     </div>
 
                     <div id="error-message" style="color: #ef4444; margin-bottom: 15px; display: none;">
@@ -190,17 +217,51 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="descripcion">Descripción (opcional):</label>
-                        <textarea id="descripcion" name="descripcion" rows="3"
-                            placeholder="Ej: Equipo asignado a recepción, incluye teclado y mouse"></textarea>
+                        <label for="departamento">Departamento:</label>
+                        <select id="area" name="Departamento" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="Oficina">Oficina</option>
+                            <option value="Almacen">Almacen</option>
+                            <option value="Perso">Perso</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="encargado">Encargado:</label>
+                        <input type="text" id="encargado" name="encargado" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" rows="3" required
+                            placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="estado">Estado:</label>
-                        <select id="estado" name="estado" required>
+                        <select id="estado" name="estado" required onchange="toggleMotivoUso(this.value)">
                             <option value="disponible">Disponible</option>
                             <option value="ocupada">Ocupada</option>
                         </select>
+                    </div>
+
+                    <div class="form-group" id="grupoMotivoUso" style="display: none;">
+                        <label for="nota_uso">Motivo de Uso</label>
+                        <input type="text" id="nota_uso" name="nota" placeholder="¿Quién lo usará y en qué area?">
+                        <div class="form-group">
+                            <select id="asignado_a" name="asignado_a">
+                                <option value="">Seleccionar Area...</option>
+                                <option value="Auditoria">Auditoria</option>
+                                <option value="Area de corte">Area de corte</option>
+                                <option value="Almacen">Almacen</option>
+                                <option value="Logistica">Logistica</option>
+                                <option value="Plata">Plata</option>
+                                <option value="Boveda Plata">Boveda Plata</option>
+                                <option value="Cqm">Cqm</option>
+                            </select>
+                        </div>
+
                     </div>
 
                     <div class="form-buttons">
@@ -211,7 +272,11 @@
             </div>
         </div>
     </div>
-    
+
 </body>
+
+
 <script src="../scripts/script.js"></script>
+</body>
+
 </html>

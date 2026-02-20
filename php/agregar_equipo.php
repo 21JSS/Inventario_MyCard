@@ -29,10 +29,10 @@ if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id;
     
     $ip = "192.168.1.115"; 
-    $url = "http://$ip/Inventario_MyCard/index.html?id=$nuevo_id";
+    $url = "http://$ip/Inventario_MyCard/html/index.html?id=$nuevo_id";
 
     #Actualizar la URL 
-    $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?";
+    $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?"; 
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("si", $url, $nuevo_id);
     $stmt_update->execute(); 

@@ -2,36 +2,63 @@ let inventario = [];
 let equipoActualId = null;
 let filtroActivo = "todos";
 
+// 1. Inicialización
 window.onload = function () {
   cargarInventario();
 };
 
+// 2. Manejo de Interfaz y Eventos Globales
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#password");
 
-togglePassword.addEventListener("click", function () {
-  const type =
-    password.getAttribute("type") === "password" ? "text" : "password";
-  password.setAttribute("type", type);
+if (togglePassword && password) {
+  togglePassword.addEventListener("click", function () {
+    const type =
+      password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
 
-  this.classList.toggle("bi-eye-slash-fill"); // Ojo tachado
-  this.classList.toggle("bi-eye-fill"); // Ojo abierto
-});
-
-const form = document.querySelector("form");
-form.addEventListener("submit", function (e) {
-  e.preventDefault;
-});
-
-// Función para obtener parámetros de la URL
-function obtenerParametroURL(nombre) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(nombre);
+    this.classList.toggle("bi-eye-slash-fill"); // Ojo tachado
+    this.classList.toggle("bi-eye-fill"); // Ojo abierto
+  });
 }
 
+// Función para mostrar/ocultar el motivo de uso en el formulario de agregar
+function toggleMotivoUso(estado) {
+  const grupoMotivo = document.getElementById("grupoMotivoUso");
+  const inputNota = document.getElementById("nota_uso");
+  const selectAsignado = document.getElementById("asignado_a");
+  const inputDescripcion = document.getElementById("descripcion");
+  const grupoDescripcion = inputDescripcion ? inputDescripcion.parentElement : null;
+
+  if (!grupoMotivo) return;
+
+  if (estado === "ocupada") {
+    grupoMotivo.style.display = "block";
+    inputNota.setAttribute("required", "required");
+    if (selectAsignado) selectAsignado.setAttribute("required", "required");
+
+    if (grupoDescripcion) {
+      grupoDescripcion.style.display = "none";
+      inputDescripcion.removeAttribute("required");
+      inputDescripcion.value = "";
+    }
+  } else {
+    grupoMotivo.style.display = "none";
+    inputNota.removeAttribute("required");
+    if (selectAsignado) selectAsignado.removeAttribute("required");
+    inputNota.value = "";
+
+    if (grupoDescripcion) {
+      grupoDescripcion.style.display = "block";
+      inputDescripcion.setAttribute("required", "required");
+    }
+  }
+}
+
+// 3. Carga de Datos
 async function cargarInventario() {
   try {
-    const response = await fetch("api_inventario.php");
+    const response = await fetch("../php/api_inventario.php");
     const result = await response.json();
 
     if (result.success) {
@@ -58,28 +85,30 @@ async function cargarInventario() {
   } catch (error) {
     console.error("Error de conexión:", error);
     alert(
-      "No se pudo conectar con la base de datos. Asegúrate de que el servidor esté corriendo.",
+      "No se pudo conectar con la base de datos. Asegúrate de que el servidor esté corriendo."
     );
   }
 }
 
+// 4. Filtrado y Visualización
 function filtrarPorEstado(estado) {
   filtroActivo = estado;
 
-  // Actualizar indicador de filtro
+  const filtroIndicador = document.getElementById("filtroIndicador");
+  const filtroTexto = document.getElementById("filtroTexto");
+
   if (estado === "todos") {
-    document.getElementById("filtroIndicador").style.display = "none";
-  } else if (estado === "disponible") {
-    document.getElementById("filtroTexto").textContent =
-      "🟢 Mostrando: Solo equipos disponibles";
-    document.getElementById("filtroIndicador").style.display = "block";
-  } else if (estado === "ocupada") {
-    document.getElementById("filtroTexto").textContent =
-      "🟡 Mostrando: Solo equipos ocupadas";
-    document.getElementById("filtroIndicador").style.display = "block";
+    if (filtroIndicador) filtroIndicador.style.display = "none";
+  } else {
+    if (filtroIndicador) filtroIndicador.style.display = "block";
+    if (filtroTexto) {
+      filtroTexto.textContent =
+        estado === "disponible"
+          ? "🟢 Mostrando: Solo equipos disponibles"
+          : "🟡 Mostrando: Solo equipos ocupados";
+    }
   }
 
-  // Filtrar la tabla
   const rows = document.querySelectorAll("#inventarioBody tr");
   rows.forEach((row) => {
     const estadoEquipo = row.getAttribute("data-estado");
@@ -100,12 +129,16 @@ function mostrarDetalleEquipo(equipoId) {
   }
 
   // Ocultar vista normal
-  document.querySelector(".stats-container").style.display = "none";
-  document.getElementById("controls").style.display = "none";
-  document.getElementById("tableContainer").style.display = "none";
+  const stats = document.querySelector(".stats-container");
+  if (stats) stats.style.display = "none";
+  const controls = document.getElementById("controls");
+  if (controls) controls.style.display = "none";
+  const tableContainer = document.getElementById("tableContainer");
+  if (tableContainer) tableContainer.style.display = "none";
 
   // Mostrar vista de detalle
-  document.getElementById("detalleEquipo").style.display = "block";
+  const detalleView = document.getElementById("detalleEquipo");
+  if (detalleView) detalleView.style.display = "block";
 
   // Llenar datos
   document.getElementById("detalle-nombre").textContent = equipo.nombre;
@@ -113,45 +146,51 @@ function mostrarDetalleEquipo(equipoId) {
   document.getElementById("detalle-tipo").textContent = equipo.tipo;
   document.getElementById("detalle-marca").textContent = equipo.marca;
   document.getElementById("detalle-modelo").textContent = equipo.modelo;
-  document.getElementById("detalle-descripcion").textContent =
-    equipo.descripcion || "Sin descripción";
+
+  const detDepto = document.getElementById("detalle-departamento");
+  if (detDepto) detDepto.textContent = (equipo.departamento || "No asignado").toUpperCase();
+
+  const detEnc = document.getElementById("detalle-encargado");
+  if (detEnc) detEnc.textContent = (equipo.encargado || "No asignado").toUpperCase();
+
+  document.getElementById("detalle-descripcion").textContent = equipo.descripcion || "Sin descripción";
 
   // Estado con color
   const estadoBadge = document.getElementById("detalle-estado");
-  estadoBadge.textContent = obtenerTextoEstado(equipo.estado);
-  estadoBadge.style.backgroundColor = obtenerColorEstado(equipo.estado);
-  estadoBadge.style.color = "white";
+  if (estadoBadge) {
+    estadoBadge.textContent = obtenerTextoEstado(equipo.estado);
+    estadoBadge.style.backgroundColor = obtenerColorEstado(equipo.estado);
+    estadoBadge.style.color = "white";
+  }
 
-  // Guardar ID actual
+  // Mostrar nota si existe
+  const infoNota = document.getElementById("info-nota");
+  const detalleNota = document.getElementById("detalle-nota");
+  if (infoNota && detalleNota) {
+    if (equipo.estado === "ocupada" && equipo.nota_estado) {
+      detalleNota.textContent = equipo.nota_estado;
+      infoNota.style.display = "block";
+    } else {
+      infoNota.style.display = "none";
+    }
+  }
+
   equipoActualId = equipoId;
 
   // Configurar botón según estado
   const btnCambiar = document.getElementById("btnCambiarEstado");
-  if (equipo.estado === "disponible") {
-    btnCambiar.textContent = "Marcar como Ocupada";
-    btnCambiar.className = "btn-cambiar-estado disponible";
-  } else {
-    btnCambiar.textContent = "Marcar como Disponible";
-    btnCambiar.className = "btn-cambiar-estado ocupada";
+  if (btnCambiar) {
+    if (equipo.estado === "disponible") {
+      btnCambiar.textContent = "Marcar como Ocupada";
+      btnCambiar.className = "btn-cambiar-estado disponible";
+    } else {
+      btnCambiar.textContent = "Marcar como Disponible";
+      btnCambiar.className = "btn-cambiar-estado ocupada";
+    }
   }
 }
 
-function obtenerTextoEstado(estado) {
-  const estados = {
-    disponible: "Disponible",
-    ocupada: "Ocupada",
-  };
-  return estados[estado] || estado;
-}
-
-function obtenerColorEstado(estado) {
-  const colores = {
-    disponible: "#10b981",
-    ocupada: "#f59e0b",
-  };
-  return colores[estado] || "#6b7280";
-}
-
+// 5. Acciones de Equipo
 async function cambiarEstadoEquipo() {
   if (!equipoActualId) {
     alert("Error: No hay equipo seleccionado");
@@ -159,10 +198,23 @@ async function cambiarEstadoEquipo() {
   }
 
   try {
+    const equipo = inventario.find((item) => item.id == equipoActualId);
+    let nota = null;
+
+    if (equipo.estado === "disponible") {
+      nota = prompt("¿Para quién o para qué se usará este equipo?", "");
+      if (nota === null) return;
+      if (nota.trim() === "") {
+        alert("Debes ingresar un motivo o nombre para asignar el equipo.");
+        return;
+      }
+    }
+
     const formData = new FormData();
     formData.append("id", equipoActualId);
+    if (nota) formData.append("nota", nota);
 
-    const response = await fetch("cambiar_estado.php", {
+    const response = await fetch("../php/cambiar_estado.php", {
       method: "POST",
       body: formData,
     });
@@ -171,9 +223,7 @@ async function cambiarEstadoEquipo() {
 
     if (result.success) {
       await cargarInventario();
-
       mostrarDetalleEquipo(equipoActualId);
-
       const mensaje =
         result.nuevo_estado === "disponible"
           ? "✅ Equipo marcado como DISPONIBLE"
@@ -188,68 +238,18 @@ async function cambiarEstadoEquipo() {
   }
 }
 
-function regresarInventario() {
-  document.getElementById("detalleEquipo").style.display = "none";
-
-  // Restaurar TODAS las secciones de la vista principal
-  document.querySelector(".stats-container").style.display = "grid";
-  document.getElementById("controls").style.display = "block";
-  document.getElementById("tableContainer").style.display = "block";
-
-  window.history.pushState({}, "", "InventarioPCs.html");
-
-  // Scroll al inicio de la página
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-const interfazQR = () => {
-  window.location.href = "html_qr.html";
-};
-
-function abrirModal() {
-  document.getElementById("modalAuth").style.display = "flex";
-}
-
-function cerrarModal() {
-  document.getElementById("modalAgregar").style.display = "none";
-  document.getElementById("formAgregar").reset();
-}
-
-// Credenciales de administrador (configurables)
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "MyCard2026";
-
-function cerrarModalAuth() {
-  document.getElementById("modalAuth").style.display = "none";
-  document.getElementById("formAuth").reset();
-  document.getElementById("error-message").style.display = "none";
-}
-
-function verificarCredenciales(event) {
-  event.preventDefault();
-
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    // Credenciales correctas
-    cerrarModalAuth();
-    document.getElementById("modalAgregar").style.display = "flex";
-  } else {
-    // Credenciales incorrectas
-    document.getElementById("error-message").style.display = "block";
-    document.getElementById("password").value = "";
-    document.getElementById("password").focus();
-  }
-}
-
 async function agregarEquipo(event) {
   event.preventDefault();
 
   const formData = new FormData(event.target);
 
+  // Lógica de respaldo para descripción si está ocupada
+  if (formData.get("estado") === "ocupada" && !formData.get("descripcion")) {
+    formData.set("descripcion", formData.get("nota"));
+  }
+
   try {
-    const response = await fetch("agregar_equipo.php", {
+    const response = await fetch("../php/agregar_equipo.php", {
       method: "POST",
       body: formData,
     });
@@ -269,87 +269,91 @@ async function agregarEquipo(event) {
   }
 }
 
-// Cerrar modal al hacer clic fuera
-window.onclick = function (event) {
-  const modal = document.getElementById("modalAgregar");
-  if (event.target == modal) {
-    cerrarModal();
-  }
-};
+// 6. Funciones de Administración
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "MyCard2026";
 
+function abrirModal() {
+  const modalAuth = document.getElementById("modalAuth");
+  if (modalAuth) modalAuth.style.display = "flex";
+}
+
+function cerrarModal() {
+  const modalAgregar = document.getElementById("modalAgregar");
+  if (modalAgregar) {
+    modalAgregar.style.display = "none";
+    const form = document.getElementById("formAgregar");
+    if (form) form.reset();
+  }
+}
+
+function cerrarModalAuth() {
+  const modalAuth = document.getElementById("modalAuth");
+  if (modalAuth) {
+    modalAuth.style.display = "none";
+    const form = document.getElementById("formAuth");
+    if (form) form.reset();
+    const errorMsg = document.getElementById("error-message");
+    if (errorMsg) errorMsg.style.display = "none";
+  }
+}
+
+function verificarCredenciales(event) {
+  event.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    cerrarModalAuth();
+    const modalAgregar = document.getElementById("modalAgregar");
+    if (modalAgregar) modalAgregar.style.display = "flex";
+    toggleMotivoUso("disponible");
+  } else {
+    const errorMsg = document.getElementById("error-message");
+    if (errorMsg) errorMsg.style.display = "block";
+    const passInput = document.getElementById("password");
+    if (passInput) {
+      passInput.value = "";
+      passInput.focus();
+    }
+  }
+}
+
+// 7. Utilidades de Tabla y Exportación
 function cargarTabla() {
   const tbody = document.getElementById("inventarioBody");
+  if (!tbody) return;
   tbody.innerHTML = "";
 
   inventario.forEach((item) => {
     const tr = document.createElement("tr");
-    tr.setAttribute("data-id", item.id); // Agregar atributo para identificar la fila
-    tr.setAttribute("data-estado", item.estado); // Agregar atributo de estado para filtrado
+    tr.setAttribute("data-id", item.id);
+    tr.setAttribute("data-estado", item.estado);
 
-    // Determinar el color del estado
-    let estadoClass = "";
+    let estadoStyle = "";
     let estadoTexto = item.estado;
-    switch (item.estado) {
-      case "disponible":
-        estadoClass = 'style="color: #10b981; font-weight: 600;"';
-        estadoTexto = "Disponible";
-        break;
-      case "ocupada":
-        estadoClass = 'style="color: #f59e0b; font-weight: 600;"';
-        estadoTexto = "Ocupada";
-        break;
+    if (item.estado === "disponible") {
+      estadoStyle = 'style="color: #10b981; font-weight: 600;"';
+      estadoTexto = "Disponible";
+    } else if (item.estado === "ocupada") {
+      estadoStyle = 'style="color: #f59e0b; font-weight: 600;"';
+      estadoTexto = "Ocupada";
     }
 
     tr.innerHTML = `
-                    <td>${item.id}</td>
-                    <td><strong>${item.nombre}</strong></td>
-                    <td>${item.tipo}</td>
-                    <td>${item.marca}</td>
-                    <td>${item.modelo}</td>
-                    <td>${item.descripcion || "Sin descripción"}</td>
-                    <td ${estadoClass}>${estadoTexto}</td>
-                `;
+            <td>${item.id}</td>
+            <td><strong>${item.nombre}</strong></td>
+            <td>${item.tipo}</td>
+            <td>${item.marca}</td>
+            <td>${item.modelo}</td>
+            <td>${item.encargado || "N/A"}</td>
+            <td>${item.departamento || "N/A"}</td>
+            <td>${item.descripcion || "Sin descripción"}</td>
+            <td ${estadoStyle}>${estadoTexto}</td>
+        `;
     tbody.appendChild(tr);
   });
-}
-
-function resaltarEquipo(equipoId) {
-  const fila = document.querySelector(`tr[data-id="${equipoId}"]`);
-
-  if (fila) {
-    fila.style.backgroundColor = "#fef3c7";
-    fila.style.border = "2px solid #f59e0b";
-    fila.style.transition = "all 0.3s ease";
-
-    setTimeout(() => {
-      fila.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 300);
-
-    const nombreEquipo =
-      inventario.find((item) => item.id == equipoId)?.nombre || "Equipo";
-    const mensaje = document.createElement("div");
-    mensaje.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: #10b981;
-                    color: white;
-                    padding: 15px 25px;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                    z-index: 1000;
-                    font-weight: 600;
-                `;
-    mensaje.textContent = `✓ Equipo encontrado: ${nombreEquipo}`;
-    document.body.appendChild(mensaje);
-
-    // Remover el mensaje después de 3 segundos
-    setTimeout(() => {
-      mensaje.style.opacity = "0";
-      mensaje.style.transition = "opacity 0.5s";
-      setTimeout(() => mensaje.remove(), 500);
-    }, 3000);
-  }
 }
 
 function filtrarTabla() {
@@ -368,10 +372,10 @@ function exportarDatos() {
     return;
   }
 
-  let csv = "ID,Nombre,Tipo,Marca,Modelo,Descripción,Estado\n";
+  let csv = "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Descripción,Estado\n";
 
   inventario.forEach((item) => {
-    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.descripcion || "Sin descripción"}","${item.estado || "N/A"}"\n`;
+    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.descripcion || "Sin descripción"}","${item.estado || "N/A"}"\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv" });
@@ -381,3 +385,83 @@ function exportarDatos() {
   a.download = `inventario_pcs_${new Date().toISOString().split("T")[0]}.csv`;
   a.click();
 }
+
+// 8. Utilidades Misceláneas
+function obtenerParametroURL(nombre) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(nombre);
+}
+
+function obtenerTextoEstado(estado) {
+  const estados = { disponible: "Disponible", ocupada: "Ocupada" };
+  return estados[estado] || estado;
+}
+
+function obtenerColorEstado(estado) {
+  const colores = { disponible: "#10b981", ocupada: "#f59e0b" };
+  return colores[estado] || "#6b7280";
+}
+
+function regresarInventario() {
+  const detalleVal = document.getElementById("detalleEquipo");
+  if (detalleVal) detalleVal.style.display = "none";
+
+  const stats = document.querySelector(".stats-container");
+  if (stats) stats.style.display = "grid";
+  const controls = document.getElementById("controls");
+  if (controls) controls.style.display = "block";
+  const tableContainer = document.getElementById("tableContainer");
+  if (tableContainer) tableContainer.style.display = "block";
+
+  window.history.pushState({}, "", "index.html");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resaltarEquipo(equipoId) {
+  const fila = document.querySelector(`tr[data-id="${equipoId}"]`);
+
+  if (fila) {
+    fila.style.backgroundColor = "#fef3c7";
+    fila.style.border = "2px solid #f59e0b";
+    fila.style.transition = "all 0.3s ease";
+
+    setTimeout(() => {
+      fila.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+
+    const nombreEquipo = inventario.find((item) => item.id == equipoId)?.nombre || "Equipo";
+    const mensaje = document.createElement("div");
+    mensaje.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            font-weight: 600;
+        `;
+    mensaje.textContent = `✓ Equipo encontrado: ${nombreEquipo}`;
+    document.body.appendChild(mensaje);
+
+    setTimeout(() => {
+      mensaje.style.opacity = "0";
+      mensaje.style.transition = "opacity 0.5s";
+      setTimeout(() => mensaje.remove(), 500);
+    }, 3000);
+  }
+}
+
+const interfazQR = () => {
+  window.location.href = "html_qr.html";
+};
+
+// Cerrar modal al hacer clic fuera
+window.onclick = function (event) {
+  const modal = document.getElementById("modalAgregar");
+  if (event.target == modal) {
+    cerrarModal();
+  }
+};
