@@ -5,43 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Escanear QR - MyCard</title>
-    <link rel="stylesheet" href="../css/style_qr.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="../css/style_qr.css">
 </head>
 
 <body>
+    <div class="titulo">
+        <h1>Escanea el codigo QR</h1>
+    </div>
 
-
+    <div class="parrafo">
+        <p></p>
+    </div>
     <div id="scanner-wrapper">
-
-
         <div id="my-qr-reader"></div>
 
 
-        <canvas id="qr-overlay"></canvas>
-
-
-        <div id="scan-overlay">
-
-
-            <div id="scan-header">
-                <h1>MyCard</h1>
-                <p>Escanea el código QR del equipo</p>
-            </div>
-
-
-            <div id="scan-frame">
-                <div class="corner top-left"></div>
-                <div class="corner top-right"></div>
-                <div class="corner bottom-left"></div>
-                <div class="corner bottom-right"></div>
-                <div id="scan-line"></div>
-            </div>
-
-
-            <p id="scan-hint">Apunta la cámara al código QR</p>
-
+        <div id="scan-frame">
+            <div class="corner top-left"></div>
+            <div class="corner top-right"></div>
+            <div class="corner bottom-left"></div>
+            <div class="corner bottom-right"></div>
         </div>
     </div>
 
