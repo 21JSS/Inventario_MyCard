@@ -51,7 +51,7 @@
                         <span id="detalle-nota" style="color: #f59e0b; font-weight: bold;"></span>
                     </div>
 
-                    
+
                     <div class="info-item">
                         <span class="label">Departamento:</span>
                         <span id="detalle-departamento" style="font-weight: 600;"></span>
@@ -131,6 +131,12 @@
                     <input type="text" class="search-box" id="searchBox"
                         placeholder="Buscar por nombre, marca o modelo..." onkeyup="filtrarTabla()">
                 </div>
+            </div>
+        </div>
+        <div class="leer-qr" id="interfaz-qr">
+            <div class="boton-qr">
+                <button onclick="interfazQR()" id="pushgointerfaz" class="btn-qr">Leer QR</button>
+                <!---Completar la funcion (Josue)--->
             </div>
         </div>
 
@@ -223,9 +229,9 @@
                         <input type="text" id="modelo" name="modelo" required>
                     </div>
 
-                      <div class="form-group">
-                       <label for="departamento">Departamento:</label>
-                       <select id="area" name="Departamento" required>                 
+                    <div class="form-group">
+                        <label for="departamento">Departamento:</label>
+                        <select id="area" name="Departamento" required>
                             <option value="">Seleccionar...</option>
                             <option value="Oficina">Oficina</option>
                             <option value="Almacen">Almacen</option>
@@ -233,7 +239,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group"> 
+                    <div class="form-group">
                         <label for="encargado">Encargado:</label>
                         <input type="text" id="encargado" name="encargado" required>
                     </div>
@@ -256,26 +262,26 @@
                     <div class="form-group" id="grupoMotivoUso" style="display: none;">
                         <label for="nota_uso">Motivo de Uso</label>
                         <input type="text" id="nota_uso" name="nota" placeholder="¿Quién lo usará y en qué area?">
-                     <div  class="form-group">
-                            <select id="asignado_a" name="asignado_a">  
-                             <option value="">Seleccionar Area...</option>      
-                                 <option value="Auditoria">Auditoria</option>
-                                 <option value="Area de corte">Area de corte</option>
-                                 <option value="Almacen">Almacen</option> 
-                                 <option value="Logistica">Logistica</option>
-                                 <option value="Plata">Plata</option> 
-                                 <option value="Boveda Plata">Boveda Plata</option> 
-                                 <option value="Cqm">Cqm</option> 
-                       </select>
-                     </div>   
-                       
-                    </div> 
-                    
-                     <div class="form-buttons">
-                     <button type="submit" class="btn-submit">Guardar</button>
-                    <button type="button" class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
-                     </div>
-                     </form>
+                        <div class="form-group">
+                            <select id="asignado_a" name="asignado_a">
+                                <option value="">Seleccionar Area...</option>
+                                <option value="Auditoria">Auditoria</option>
+                                <option value="Area de corte">Area de corte</option>
+                                <option value="Almacen">Almacen</option>
+                                <option value="Logistica">Logistica</option>
+                                <option value="Plata">Plata</option>
+                                <option value="Boveda Plata">Boveda Plata</option>
+                                <option value="Cqm">Cqm</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-submit">Guardar</button>
+                        <button type="button" class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
