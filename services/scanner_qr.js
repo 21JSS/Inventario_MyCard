@@ -46,8 +46,13 @@ domReady(function () {
     { facingMode: "environment" },
     {
       fps: 10,
-      qrbox: 250,
+      useBarCodeDetectorIfSupported: true, // API nativa del navegador (más rápida)
+      videoConstraints: {
+        facingMode: "environment",
+        qrbox: 250,
+      },
     },
-    onScan,
+    onScanSuccess,
+    onScanFailure,
   );
 });
