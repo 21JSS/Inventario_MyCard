@@ -202,6 +202,10 @@ function regresarInventario() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+const interfazQR = () => {
+  window.location.href = "html_qr.html";
+};
+
 function abrirModal() {
   document.getElementById("modalAuth").style.display = "flex";
 }

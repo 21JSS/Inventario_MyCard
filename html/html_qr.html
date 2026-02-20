@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz de escaneo QR </title>
+    <link rel="stylesheet" href="/css/style_qr.css">
+    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+
+        <div class="contenedor-titulo">   
+        <div class="titulo">
+            <h1>Escanea el codigoQR</h1>
+        </div>
+        </div>
+
+        <div class="qr">
+            <div class="cuadroescaner" style="width: 300px;"></div>
+            <p>Escanea para ver todos los datos</p>
+            <div id="my-qr-reader">
+
+            </div>
+        </div>
+
+        <div class="contenedor-parrafo">   
+        <div class="parrafo">
+            <p>Al escanear te saldran todos los detalles el equipo que tienes</p>
+        </div>
+        </div>
+
+    </div>
+</body>
+<script src=https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js></script>
+<script src="/services/scanner_qr.js"></script>
+
+</html>
