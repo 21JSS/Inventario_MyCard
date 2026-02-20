@@ -11,19 +11,31 @@ function domReady(fn) {
 
 domReady(function () {
   function onScanSuccess(decodeText, decodedResult) {
-    const { x, y, width, height } = decodedResult.result.boundingBox;
+    // Intentar dibujar el cuadrito si hay boundingBox disponible
+    try {
+      const boundingBox = decodedResult.result.boundingBox;
+      if (boundingBox) {
+        const canvas = document.getElementById("qr-overlay");
+        const ctx = canvas.getContext("2d");
+        const video = document.querySelector("video");
 
-    const canvas = document.getElementById("qr-overlay");
-    const ctx = canvas.getContext("2d");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
 
-    const video = document.querySelector("video");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+        ctx.strokeStyle = "#00FF00";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(
+          boundingBox.x,
+          boundingBox.y,
+          boundingBox.width,
+          boundingBox.height,
+        );
+      }
+    } catch (e) {
+      // Si no hay boundingBox disponible, se ignora y redirige igual
+    }
 
-    ctx.strokeStyle = "#00FF00";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(x, y, width, height);
-
+    // Redirigir al detalle del equipo después de 300ms
     setTimeout(() => {
       window.location.href = "../html/index.html?id=" + decodeText;
     }, 300);
@@ -38,7 +50,7 @@ domReady(function () {
     { facingMode: "environment" },
     {
       fps: 60,
-      useBarCodeDetectorIfSupported: true,
+      useBarCodeDetectorIfSupported: true, // API nativa del navegador (más rápida)
       videoConstraints: {
         facingMode: "environment",
         width: { ideal: 1280 },
@@ -48,6 +60,4 @@ domReady(function () {
     onScanSuccess,
     onScanFailure,
   );
-
-  htmlscanner.render(onScanSuccess, onScanFailure);
 });
