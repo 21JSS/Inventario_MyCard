@@ -23,7 +23,6 @@ domReady(function () {
     "my-qr-reader",
     {
       fps: 60,
-      qrbox: { with: 200, height: 200 },
       rememberLastUsedCamera: true,
       useBarCodeDetectorIfSupported: true, //  API nativa del navegador
       supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
