@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
       useBarCodeDetectorIfSupported: true, // API nativa del navegador (más rápida)
       videoConstraints: {
         facingMode: "environment",
-        qrbox: 250,
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
       },
     },
     onScanSuccess,
