@@ -3,6 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Forzar HTTPS para que la cámara funcione en dispositivos externos
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            location.replace(`https://${location.hostname}${location.pathname}${location.search}`);
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes">
     <title>Inventario de PCs y Periféricos - MyCard</title>
     <link
@@ -52,7 +58,7 @@
                     </div>
 
                     <div class="info-item">
-                        <span class="label">Descripción:</span>
+                        <span class="label">Descripción Equipo:</span>
                         <span id="detalle-descripcion"></span>
                     </div>
 
@@ -138,7 +144,7 @@
                         <th>Modelo</th>
                         <th>Encargado</th>
                         <th>Departamento</th>
-                        <th>Descripción</th>
+                        <th>Descripción Equipo</th>
                         <th>Estado</th>
 
 
@@ -233,8 +239,8 @@
 
 
                     <div class="form-group">
-                        <label for="descripcion">Descripción:</label>
-                        <textarea id="descripcion" name="descripcion" rows="3" required
+                        <label for="descripcion_equipo">Descripción Equipo:</label>
+                        <textarea id="descripcion_equipo" name="descripcion_equipo" rows="3" required
                             placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
                     </div>
 

@@ -10,20 +10,20 @@ $tipo = $_POST['tipo'] ?? '';
 $marca = $_POST['marca'] ?? '';
 $modelo = $_POST['modelo'] ?? '';
 $Departamento = $_POST['Departamento'] ?? '';
-$descripcion = $_POST['descripcion'] ?? '';
+$descripcion_equipo = $_POST['descripcion_equipo'] ?? '';
 $encargado = $_POST['encargado'] ?? '';
 $estado = $_POST['estado'] ?? 'disponible';
 $nota = $_POST['nota'] ?? null;
 
 
-if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo) || empty($descripcion) || empty($encargado) || empty($Departamento)) {
+if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo) || empty($descripcion_equipo) || empty($encargado) || empty($Departamento)) {
     echo json_encode(['success' => false, 'error' => 'Todos los campos son obligatorios, incluyendo descripción, encargado, departamento']);
     exit;
 }
 
-$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, descripcion, estado, nota_estado) VALUES (  ?, ?, ?, ?, ?, ?, ?,?,?)";
+$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, descripcion_equipo, estado, nota_estado) VALUES (  ?, ?, ?, ?, ?, ?, ?,?,?)";
 $stmt = $conexion->prepare($sql);
-$stmt->bind_param("sssssssss", $nombre, $tipo, $marca, $modelo, $encargado,$Departamento, $descripcion, $estado, $nota); 
+$stmt->bind_param("sssssssss", $nombre, $tipo, $marca, $modelo, $encargado,$Departamento, $descripcion_equipo, $estado, $nota); 
 
 if ($stmt->execute()) {  
     $nuevo_id = $stmt->insert_id;

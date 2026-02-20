@@ -23,7 +23,7 @@ require_once 'db.php';
 echo "Actualizando URLs con IP: $nueva_ip\n\n";
 
 #Actualiza la IP de la base de datos
-$sql = "UPDATE equipos_pc SET redireccion = CONCAT('http://$nueva_ip/Inventario_MyCard/html/index.html?id=', id)";
+$sql = "UPDATE equipos_pc SET redireccion = CONCAT('https://$nueva_ip/Inventario_MyCard/html/index.html?id=', id)";
 
 if ($conexion->query($sql)) {
     echo "URLs actualizadas correctamente\n\n";

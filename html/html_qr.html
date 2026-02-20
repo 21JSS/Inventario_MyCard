@@ -1,32 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            location.replace(`https://${location.hostname}${location.pathname}${location.search}`);
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interfaz de escaneo QR </title>
+    <title>Interfaz de Escaneo QR - MyCard</title>
     <link rel="stylesheet" href="../css/style_qr.css">
-<<<<<<< HEAD
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap"
         rel="stylesheet">
-=======
-    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
->>>>>>> aed20c43c5b0027f3b750883ce1c39cf10b931d0
+    <style>
+        .btn-volver {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #1a8dda;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Bricolage Grotesque';
+            font-weight: 600;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #my-qr-reader {
+            border: 2px solid #1a8dda !important;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        #fallback-camera {
+            display: block !important;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
+    <a href="index.html" class="btn-volver">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+    </a>
 
+    <div class="container">
         <div class="contenedor-titulo">
             <div class="titulo">
-                <h1>Escanea el codigoQR</h1>
+                <h1>Escanea el código QR</h1>
             </div>
         </div>
 
         <div class="qr">
             <div id="my-qr-reader" style="width: 100%; max-width: 500px; margin: 0 auto;"></div>
-            <p>Escanea para ver todos los datos</p>
+
+            <!-- Botón de respaldo para cuando la cámara en vivo es bloqueada -->
+            <div id="fallback-camera" style="margin-top: 20px;">
+                <p style="font-size: 0.9em; color: #f87171; margin-bottom: 10px;">¿La cámara no abre? Usa el botón de
+                    abajo:</p>
+                <input type="file" id="qr-input-file" accept="image/*" capture="camera" style="display: none;">
+                <button onclick="document.getElementById('qr-input-file').click()" class="btn-volver"
+                    style="position: static; margin: 0 auto; background: #059669;">
+                    <i class="fa-solid fa-camera"></i> Tomar Foto al QR
+                </button>
+            </div>
         </div>
 
         <div class="contenedor-parrafo">
@@ -34,14 +82,10 @@
                 <p>Al escanear te saldrán los detalles del equipo automáticamente</p>
             </div>
         </div>
-
     </div>
+
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="../services/scanner_qr.js"></script>
 </body>
-<<<<<<< HEAD
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-=======
-<script src=https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js></script>
->>>>>>> aed20c43c5b0027f3b750883ce1c39cf10b931d0
-<script src="../services/scanner_qr.js"></script>
 
 </html>

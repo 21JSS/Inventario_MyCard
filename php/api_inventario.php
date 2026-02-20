@@ -8,7 +8,7 @@ require_once 'db.php';
 
 try {
     #hace la consulta a la base de datos
-    $sql = "SELECT id, nombre, tipo, marca, modelo, encargado, departamento, descripcion, estado,nota_estado FROM equipos_pc ORDER BY id ASC";
+    $sql = "SELECT id, nombre, tipo, marca, modelo, encargado, departamento, descripcion_equipo, estado, nota_estado FROM equipos_pc ORDER BY id ASC";
     $resultado = $conexion->query($sql);
 
     if (!$resultado) { 

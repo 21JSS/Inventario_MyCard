@@ -27,7 +27,7 @@ function toggleMotivoUso(estado) {
   const grupoMotivo = document.getElementById("grupoMotivoUso");
   const inputNota = document.getElementById("nota_uso");
   const selectAsignado = document.getElementById("asignado_a");
-  const inputDescripcion = document.getElementById("descripcion");
+  const inputDescripcion = document.getElementById("descripcion_equipo");
   const grupoDescripcion = inputDescripcion ? inputDescripcion.parentElement : null;
 
   if (!grupoMotivo) return;
@@ -153,7 +153,7 @@ function mostrarDetalleEquipo(equipoId) {
   const detEnc = document.getElementById("detalle-encargado");
   if (detEnc) detEnc.textContent = (equipo.encargado || "No asignado").toUpperCase();
 
-  document.getElementById("detalle-descripcion").textContent = equipo.descripcion || "Sin descripción";
+  document.getElementById("detalle-descripcion").textContent = equipo.descripcion_equipo || "Sin descripción";
 
   // Estado con color
   const estadoBadge = document.getElementById("detalle-estado");
@@ -200,6 +200,9 @@ async function cambiarEstadoEquipo() {
   try {
     const equipo = inventario.find((item) => item.id == equipoActualId);
     let nota = null;
+    let descEq = null;
+    let enc = null;
+    let depto = null;
 
     if (equipo.estado === "disponible") {
       nota = prompt("¿Para quién o para qué se usará este equipo?", "");
@@ -208,11 +211,23 @@ async function cambiarEstadoEquipo() {
         alert("Debes ingresar un motivo o nombre para asignar el equipo.");
         return;
       }
+
+      enc = prompt("Ingrese el nombre del Encargado:", equipo.encargado || "");
+      if (enc === null) return;
+
+      depto = prompt("Ingrese el Departamento:", equipo.departamento || "");
+      if (depto === null) return;
+
+      descEq = prompt("Cambia la descripción del equipo si es necesario:", equipo.descripcion_equipo || "");
+      if (descEq === null) return;
     }
 
     const formData = new FormData();
     formData.append("id", equipoActualId);
     if (nota) formData.append("nota", nota);
+    if (descEq !== null) formData.append("descripcion_equipo", descEq);
+    if (enc !== null) formData.append("encargado", enc);
+    if (depto !== null) formData.append("departamento", depto);
 
     const response = await fetch("../php/cambiar_estado.php", {
       method: "POST",
@@ -244,8 +259,8 @@ async function agregarEquipo(event) {
   const formData = new FormData(event.target);
 
   // Lógica de respaldo para descripción si está ocupada
-  if (formData.get("estado") === "ocupada" && !formData.get("descripcion")) {
-    formData.set("descripcion", formData.get("nota"));
+  if (formData.get("estado") === "ocupada" && !formData.get("descripcion_equipo")) {
+    formData.set("descripcion_equipo", formData.get("nota"));
   }
 
   try {
@@ -349,7 +364,7 @@ function cargarTabla() {
             <td>${item.modelo}</td>
             <td>${item.encargado || "N/A"}</td>
             <td>${item.departamento || "N/A"}</td>
-            <td>${item.descripcion || "Sin descripción"}</td>
+            <td>${item.descripcion_equipo || "Sin descripción"}</td>
             <td ${estadoStyle}>${estadoTexto}</td>
         `;
     tbody.appendChild(tr);
@@ -372,10 +387,10 @@ function exportarDatos() {
     return;
   }
 
-  let csv = "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Descripción,Estado\n";
+  let csv = "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Descripción Equipo,Estado\n";
 
   inventario.forEach((item) => {
-    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.descripcion || "Sin descripción"}","${item.estado || "N/A"}"\n`;
+    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.descripcion_equipo || "Sin descripción"}","${item.estado || "N/A"}"\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv" });
