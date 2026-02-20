@@ -32,20 +32,71 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-volver:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 141, 218, 0.4);
+            background: #157acb;
         }
 
         #my-qr-reader {
             border: 2px solid #1a8dda !important;
             border-radius: 12px;
             overflow: hidden;
+            background: white !important;
         }
 
         #fallback-camera {
             display: block !important;
             background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 12px;
+            padding: 25px;
+            border-radius: 16px;
+            margin-top: 25px;
+            border: 1px border var(--shadow-buttons);
+        }
+
+        .fallback-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-top: 15px;
+        }
+
+        .btn-scanner-action {
+            position: static !important;
+            margin: 0 !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: 'Bricolage Grotesque';
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-camera {
+            background: #059669;
+        }
+
+        .btn-camera:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .btn-upload {
+            background: #6366f1;
+        }
+
+        .btn-upload:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -65,15 +116,25 @@
         <div class="qr">
             <div id="my-qr-reader" style="width: 100%; max-width: 500px; margin: 0 auto;"></div>
 
-            <!-- Botón de respaldo para cuando la cámara en vivo es bloqueada -->
-            <div id="fallback-camera" style="margin-top: 20px;">
-                <p style="font-size: 0.9em; color: #f87171; margin-bottom: 10px;">¿La cámara no abre? Usa el botón de
-                    abajo:</p>
-                <input type="file" id="qr-input-file" accept="image/*" capture="camera" style="display: none;">
-                <button onclick="document.getElementById('qr-input-file').click()" class="btn-volver"
-                    style="position: static; margin: 0 auto; background: #059669;">
-                    <i class="fa-solid fa-camera"></i> Tomar Foto al QR
-                </button>
+            <!-- Botones de respaldo para cuando la cámara en vivo es bloqueada -->
+            <div id="fallback-camera">
+                <p style="font-size: 0.95em; color: #f87171; margin-bottom: 5px; font-weight: 600;">¿La cámara no abre?
+                </p>
+                <p style="font-size: 0.85em; color: #a1a1aa; margin-bottom: 20px;">Usa las opciones de abajo:</p>
+
+                <div class="fallback-buttons">
+                    <input type="file" id="qr-input-file" accept="image/*" capture="camera" style="display: none;">
+                    <button onclick="document.getElementById('qr-input-file').click()"
+                        class="btn-scanner-action btn-camera">
+                        <i class="fa-solid fa-camera"></i> Tomar Foto
+                    </button>
+
+                    <input type="file" id="qr-input-file-gallery" accept="image/*" style="display: none;">
+                    <button onclick="document.getElementById('qr-input-file-gallery').click()"
+                        class="btn-scanner-action btn-upload">
+                        <i class="fa-solid fa-image"></i> Subir de Galería
+                    </button>
+                </div>
             </div>
         </div>
 

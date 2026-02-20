@@ -39,22 +39,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   htmlscanner.render(onScanSuccess, onScanFailure);
 
-  // Lógica para el botón de respaldo (Tomar Foto)
-  const fileInput = document.getElementById('qr-input-file');
-  if (fileInput) {
-    fileInput.addEventListener('change', e => {
-      if (e.target.files.length === 0) return;
+  // Lógica para los botones de respaldo (Tomar Foto y Galería)
+  function handleFileSelect(e) {
+    if (e.target.files.length === 0) return;
 
-      const html5QrCode = new Html5Qrcode("my-qr-reader");
-      const imageFile = e.target.files[0];
+    const html5QrCode = new Html5Qrcode("my-qr-reader");
+    const imageFile = e.target.files[0];
 
-      // Escanear el archivo de imagen
-      html5QrCode.scanFile(imageFile, true)
-        .then(onScanSuccess)
-        .catch(err => {
-          alert("No se pudo leer el QR de la foto. Asegúrate de que el código esté bien enfocado.");
-          console.error("Error al escanear archivo:", err);
-        });
-    });
+    // Escanear el archivo de imagen
+    html5QrCode.scanFile(imageFile, true)
+      .then(onScanSuccess)
+      .catch(err => {
+        alert("No se pudo leer el QR. Asegúrate de que el código sea claro y esté bien enfocado.");
+        console.error("Error al escanear archivo:", err);
+      });
   }
+
+  const fileInput = document.getElementById('qr-input-file');
+  const galleryInput = document.getElementById('qr-input-file-gallery');
+
+  if (fileInput) fileInput.addEventListener('change', handleFileSelect);
+  if (galleryInput) galleryInput.addEventListener('change', handleFileSelect);
 });
