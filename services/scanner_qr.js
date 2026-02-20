@@ -11,28 +11,19 @@ function domReady(fn) {
 
 domReady(function () {
   function onScanSuccess(decodeText, decodedResult) {
-    try {
-      const boundingBox = decodedResult.result.boundingBox;
-      if (boundingBox) {
-        const canvas = document.getElementById("qr-overlay");
-        const ctx = canvas.getContext("2d");
-        const video = document.querySelector("video");
+    const frame = document.getElementById("scan-frame");
+    if (frame) frame.classList.add("detected");
 
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+    console.log(`CODIGO ESCANEADO: ${decodedText}`);
 
-        ctx.strokeStyle = "#00FF00";
-        ctx.lineWidth = 4;
-        ctx.strokeRect(
-          boundingBox.x,
-          boundingBox.y,
-          boundingBox.width,
-          boundingBox.height,
-        );
+    vibrarCelular();
+
+    function vibrarCelular() {
+      if ("vibrate" in navigator) {
+        navigator.vibrate([200, 100, 200]);
       }
-    } catch (e) {}
+    }
 
-    // Redirigir al detalle del equipo
     setTimeout(() => {
       window.location.href = "../html/index.html?id=" + decodeText;
     }, 200);
@@ -46,14 +37,12 @@ domReady(function () {
     { facingMode: "environment" },
     {
       fps: 60,
-      useBarCodeDetectorIfSupported: true, // Nativo en Chrome/Android (muy rápido)
+      useBarCodeDetectorIfSupported: true, // Nativo en Chrome/Android
       experimentalFeatures: {
-        useBarCodeDetectorIfSupported: true, // Activa BarcodeDetector en versiones antiguas
+        useBarCodeDetectorIfSupported: true, // Activa versiones antiguas
       },
       videoConstraints: {
         facingMode: "environment",
-        // 640x480 procesa más rápido que 1280x720 en dispositivos lentos
-        // porque hay menos píxeles que analizar por frame
         width: { min: 640, ideal: 1280, max: 1920 },
         height: { min: 480, ideal: 720, max: 1080 },
       },
