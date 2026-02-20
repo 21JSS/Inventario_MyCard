@@ -45,7 +45,7 @@ domReady(function () {
   html5QrCode.start(
     { facingMode: "environment" },
     {
-      fps: 10,
+      fps: 60,
       useBarCodeDetectorIfSupported: true, // API nativa del navegador (más rápida)
       videoConstraints: {
         facingMode: "environment",
