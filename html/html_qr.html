@@ -1,38 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interfaz de escaneo QR </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Escanear QR - MyCard</title>
     <link rel="stylesheet" href="../css/style_qr.css">
-    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
 
-        <div class="contenedor-titulo">   
-        <div class="titulo">
-            <h1>Escanea el codigoQR</h1>
-        </div>
-        </div>
+    
+    <div id="scanner-wrapper">
 
-        <div class="qr">
-            <div class="cuadroescaner" style="width: 300px;"></div>
-            <p>Escanea para ver todos los datos</p>
-            <div id="my-qr-reader">
+        
+        <div id="my-qr-reader"></div>
 
+        
+        <canvas id="qr-overlay"></canvas>
+
+        
+        <div id="scan-overlay">
+
+            
+            <div id="scan-header">
+                <h1>MyCard</h1>
+                <p>Escanea el código QR del equipo</p>
             </div>
-        </div>
 
-        <div class="contenedor-parrafo">   
-        <div class="parrafo">
-            <p>Al escanear te saldran todos los detalles el equipo que tienes</p>
-        </div>
-        </div>
+            
+            <div id="scan-frame">
+                <div class="corner top-left"></div>
+                <div class="corner top-right"></div>
+                <div class="corner bottom-left"></div>
+                <div class="corner bottom-right"></div>
+                <div id="scan-line"></div>
+            </div>
 
+           
+            <p id="scan-hint">Apunta la cámara al código QR</p>
+
+        </div>
     </div>
-</body>
-<script src=https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js></script>
-<script src="../services/scanner_qr.js"></script>
 
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="../services/scanner_qr.js"></script>
+</body>
 </html>
