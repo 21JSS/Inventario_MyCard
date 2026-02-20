@@ -16,7 +16,7 @@ domReady(function () {
   }
 
   let htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
-    fps: 100,
+    fps: 180,
     qrbox: 250,
     videoConstraints: {
       facingMode: "environment",
