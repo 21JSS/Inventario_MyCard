@@ -16,8 +16,13 @@ domReady(function () {
   }
 
   let htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
-    fps: 10,
-    qrbos: 250,
+    fps: 100,
+    qrbox: 250,
+    videoConstraints: {
+      facingMode: "environment",
+    },
+    showTorchButtonIfSupported: false,
   });
+
   htmlscanner.render(onScanSuccess);
 });
