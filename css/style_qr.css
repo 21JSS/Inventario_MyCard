@@ -40,7 +40,7 @@ html, body {
     top: 0; left: 0;
 }
 
-/* Ocultar elementos UI de la librería */
+
 #my-qr-reader img,
 #my-qr-reader button,
 #my-qr-reader select,
@@ -48,7 +48,7 @@ html, body {
     display: none !important;
 }
 
-/* Overlay oscuro + recorte central */
+
 #scan-frame {
     position: absolute;
     top: 50%;
@@ -63,7 +63,7 @@ html, body {
     transition: box-shadow 0.15s;
 }
 
-/* Esquinas normales: color MyCard */
+
 .corner {
     position: absolute;
     width: 36px;
@@ -103,7 +103,7 @@ html, body {
     border-color: #ffffff !important;
 }
 
-.titulo{
+ h1{
     color: rgb(255, 255, 255);
     align-items: center;
     text-align: center;

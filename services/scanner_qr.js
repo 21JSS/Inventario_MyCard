@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Redirigir al detalle del equipo
     setTimeout(() => {
       window.location.href = "../html/index.html?id=" + decodeText;
     }, 200);
@@ -33,14 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
     { facingMode: "environment" },
     {
       fps: 60,
-      useBarCodeDetectorIfSupported: true, // Nativo en Chrome/Android (muy rápido)
+      useBarCodeDetectorIfSupported: true, // Nativo en Chrome/Android
       experimentalFeatures: {
-        useBarCodeDetectorIfSupported: true, // Activa BarcodeDetector en versiones antiguas
+        useBarCodeDetectorIfSupported: true, // Activa versiones antiguas
       },
       videoConstraints: {
         facingMode: "environment",
-        // 640x480 procesa más rápido que 1280x720 en dispositivos lentos
-        // porque hay menos píxeles que analizar por frame
         width: { min: 640, ideal: 1280, max: 1920 },
         height: { min: 480, ideal: 720, max: 1080 },
       },
