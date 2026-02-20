@@ -30,31 +30,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // console.warn(`Error de escaneo: ${error}`);
   }
 
-  // Inicializar el escáner
-  let htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
-    fps: 15,
-    qrbox: { width: 250, height: 250 },
-    aspectRatio: 1.0
-  });
-
-  htmlscanner.render(onScanSuccess, onScanFailure);
-
-  // Lógica para el botón de respaldo (Tomar Foto)
-  const fileInput = document.getElementById('qr-input-file');
-  if (fileInput) {
-    fileInput.addEventListener('change', e => {
-      if (e.target.files.length === 0) return;
-
-      const html5QrCode = new Html5Qrcode("my-qr-reader");
-      const imageFile = e.target.files[0];
-
-      // Escanear el archivo de imagen
-      html5QrCode.scanFile(imageFile, true)
-        .then(onScanSuccess)
-        .catch(err => {
-          alert("No se pudo leer el QR de la foto. Asegúrate de que el código esté bien enfocado.");
-          console.error("Error al escanear archivo:", err);
-        });
-    });
-  }
+  const html5QrCode = new Html5Qrcode("my-qr-reader");
+  html5QrCode.start(
+    { facingMode: "environment" },
+    {
+      fps: 10,
+      qrbox: 250,
+    },
+    onScan,
+  );
 });
