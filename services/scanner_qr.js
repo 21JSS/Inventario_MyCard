@@ -22,16 +22,18 @@ domReady(function () {
   let htmlscanner = new Html5QrcodeScanner(
     "my-qr-reader",
     {
-      fps: 15,
+      fps: 30, //
       rememberLastUsedCamera: true,
-      // Solo modo cámara — elimina la opción de subir archivo y el menú de tipo
+      useBarCodeDetectorIfSupported: true, //  API nativa del navegador
       supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
       videoConstraints: {
-        facingMode: "environment", // Abre directamente la cámara trasera
+        facingMode: "environment",
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
       },
     },
     false,
-  ); // false = sin logs en consola
+  );
 
   htmlscanner.render(onScanSuccess, onScanFailure);
 });
