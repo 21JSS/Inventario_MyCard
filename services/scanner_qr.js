@@ -1,63 +1,38 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Función que se ejecuta cuando el escaneo es exitoso
-  function onScanSuccess(decodeText, decodeResult) {
-    console.log("Código escaneado:", decodeText);
+function domReady(fn) {
+  if (
+    document.readyState === "complete" ||
+    document.readyState === "interactive"
+  ) {
+    setTimeout(fn, 1000);
+  } else {
+    document.addEventListener("DOMContentLoaded", fn);
+  }
+}
 
-    // Si el texto escaneado es una URL (lo cual debería ser segun tu sistema), redirigimos
-    if (decodeText.includes("index.html?id=")) {
-      // Si ya es una URL completa, redirigir
-      window.location.href = decodeText;
-    } else if (!isNaN(decodeText)) {
-      // Si el QR solo tiene el ID numérico, construir la URL
-      window.location.href = "index.html?id=" + decodeText;
-    } else {
-      // En cualquier otro caso, intentar tratarlo como URL o mostrar alerta
-      if (decodeText.startsWith('http')) {
-        window.location.href = decodeText;
-      } else {
-        alert("Código detectado: " + decodeText);
-      }
-    }
-
-    // Detener el escáner después de un éxito para evitar múltiples redirecciones
-    if (typeof htmlscanner !== 'undefined') {
-      htmlscanner.clear();
-    }
+domReady(function () {
+  function onScanSuccess(decodeText) {
+    // Al escanear el QR, redirige a la página principal con el ID del equipo
+    window.location.href = "../html/index.html?id=" + decodeText;
   }
 
   function onScanFailure(error) {
-    // No mostramos errores constantes de escaneo fallido para no saturar la consola
-    // console.warn(`Error de escaneo: ${error}`);
+    // No hacer nada si no detecta QR entre frames (es normal)
   }
 
-  // Inicializar el escáner
-  let htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
-    fps: 15,
-    qrbox: { width: 250, height: 250 },
-    aspectRatio: 1.0
-  });
+  let htmlscanner = new Html5QrcodeScanner(
+    "my-qr-reader",
+    {
+      fps: 15,
+      qrbox: { width: 250, height: 250 },
+      rememberLastUsedCamera: true,
+      // Solo modo cámara — elimina la opción de subir archivo y el menú de tipo
+      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+      videoConstraints: {
+        facingMode: "environment", // Abre directamente la cámara trasera
+      },
+    },
+    false,
+  ); // false = sin logs en consola
 
   htmlscanner.render(onScanSuccess, onScanFailure);
-
-  // Lógica para los botones de respaldo (Tomar Foto y Galería)
-  function handleFileSelect(e) {
-    if (e.target.files.length === 0) return;
-
-    const html5QrCode = new Html5Qrcode("my-qr-reader");
-    const imageFile = e.target.files[0];
-
-    // Escanear el archivo de imagen
-    html5QrCode.scanFile(imageFile, true)
-      .then(onScanSuccess)
-      .catch(err => {
-        alert("No se pudo leer el QR. Asegúrate de que el código sea claro y esté bien enfocado.");
-        console.error("Error al escanear archivo:", err);
-      });
-  }
-
-  const fileInput = document.getElementById('qr-input-file');
-  const galleryInput = document.getElementById('qr-input-file-gallery');
-
-  if (fileInput) fileInput.addEventListener('change', handleFileSelect);
-  if (galleryInput) galleryInput.addEventListener('change', handleFileSelect);
 });
