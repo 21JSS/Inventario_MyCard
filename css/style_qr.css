@@ -1,92 +1,186 @@
 
-:root{
---mycard-color:#00c6e6;
---gradiente-oscuro:#191e2b;
---shadow-buttons: #2769dc66;
---color-text-mycard:#086ceeb4;
---color-body:#ffffff;
---boton-excel:#30d148;
---transparencia:0.3;
---boton-qr: #296ae2;
-}
-
-body {
-    display: flex;
-    justify-content: center;
+* {
     margin: 0;
     padding: 0;
-    height: 100vh;
     box-sizing: border-box;
-    text-align: center;
-    background: rgb(0, 0, 0);
-    font-family: "Bricolage Grotesque";
 }
-.container {
+
+:root {
+    --mycard-color: #00c6e6;
+    --corner-color: #00c6e6;
+    --overlay-dark: rgba(0, 0, 0, 0.58);
+}
+
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+    font-family: "Bricolage Grotesque", sans-serif;
+}
+
+
+#scanner-wrapper {
+    position: relative;
     width: 100%;
-    max-width: 500px;
-    margin: 5px;
+    height: 100%;
 }
 
-.container h1 {
-    color: #ffffff;
-}
-
-p{
-    color: white;
-    font-family: "Bricolage Grotesque";
-}
-.section {
-    background-color: #ffffff;
-    padding: 50px 30px;
-    border: 1.5px solid var(--mycard-color);
-    border-radius: 0.25em;
-    box-shadow: 0 20px 25px var(--shadow-buttons);
-}
 
 #my-qr-reader {
-    padding: 20px !important;
-    border: 2.9px solid var(--shadow-buttons) !important;
-    border-radius: 15px;
-}
-
-#my-qr-reader img[alt="Info icon"] {
-    display: none;
-}
-
-#my-qr-reader img[alt="Camera based scan"] {
-    width: 100px !important;
-    height: 100px !important;
-}
-
-button {
-    padding: 10px 20px;
-    border: 1px solid var(--shadow-buttons);
-    outline: none;
-    border-radius: 0.55em;
-    color: white;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 15px;
-    margin-bottom: 10px;
-    background-color: var(--boton-qr);
-    transition: 0.3s background-color;
-}
-
-button:hover {
-    background-color: var(--mycard-color);
-}
-
-#html5-qrcode-anchor-scan-type-change {
-    text-decoration: none !important;
-    color: var(--boton-qr);
-}
-
-video {
     width: 100% !important;
-    border: 1px solid var(--shadow-buttons) !important;
-    border-radius: 0.25em;
+    height: 100% !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* El video ocupa toda la pantalla */
+#my-qr-reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Ocultar elementos innecesarios de la librería */
+#my-qr-reader img,
+#my-qr-reader button,
+#my-qr-reader select,
+#my-qr-reader span,
+#my-qr-reader #html5-qrcode-anchor-scan-type-change {
+    display: none !important;
 }
 
 
+#qr-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
 
 
+#scan-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    z-index: 20;
+    pointer-events: none;
+}
+
+
+#scan-header {
+    text-align: center;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    position: absolute;
+    top: 48px;
+}
+
+#scan-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--mycard-color);
+    letter-spacing: 2px;
+}
+
+#scan-header p {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    margin-top: 4px;
+}
+
+
+#scan-frame {
+    position: relative;
+    width: min(280px, 72vw);
+    height: min(280px, 72vw);
+    border-radius: 16px;
+    box-shadow: 0 0 0 9999px var(--overlay-dark);
+}
+
+
+.corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+}
+
+.corner.top-left {
+    top: -3px;
+    left: -3px;
+    border-top: 4px solid var(--corner-color);
+    border-left: 4px solid var(--corner-color);
+    border-radius: 10px 0 0 0;
+}
+
+.corner.top-right {
+    top: -3px;
+    right: -3px;
+    border-top: 4px solid var(--corner-color);
+    border-right: 4px solid var(--corner-color);
+    border-radius: 0 10px 0 0;
+}
+
+.corner.bottom-left {
+    bottom: -3px;
+    left: -3px;
+    border-bottom: 4px solid var(--corner-color);
+    border-left: 4px solid var(--corner-color);
+    border-radius: 0 0 0 10px;
+}
+
+.corner.bottom-right {
+    bottom: -3px;
+    right: -3px;
+    border-bottom: 4px solid var(--corner-color);
+    border-right: 4px solid var(--corner-color);
+    border-radius: 0 0 10px 0;
+}
+
+
+#scan-line {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--mycard-color) 30%,
+        #ffffff 50%,
+        var(--mycard-color) 70%,
+        transparent 100%
+    );
+    box-shadow: 0 0 8px var(--mycard-color);
+    animation: scanMove 2.2s ease-in-out infinite;
+    border-radius: 2px;
+}
+
+@keyframes scanMove {
+    0%   { top: 10px;  opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: calc(100% - 12px); opacity: 0; }
+}
+
+
+#scan-hint {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.92rem;
+    text-align: center;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+    position: absolute;
+    bottom: 60px;
+    letter-spacing: 0.3px;
+}
