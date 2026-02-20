@@ -23,7 +23,6 @@ domReady(function () {
     "my-qr-reader",
     {
       fps: 15,
-      qrbox: { width: 150, height: 150 },
       rememberLastUsedCamera: true,
       // Solo modo cámara — elimina la opción de subir archivo y el menú de tipo
       supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
