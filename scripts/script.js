@@ -203,19 +203,19 @@ async function cambiarEstadoEquipo() {
   const equipo = inventario.find((item) => item.id == equipoActualId);
 
   if (equipo.estado === "disponible") {
-    // Abrir modal para llenar datos de ocupación
+    // Abrir modo para llenar datos de ocupación
     const modal = document.getElementById("modalCambiarEstado");
     if (modal) {
-      // Pre-llenar campos con datos actuales
+
       document.getElementById("ce_nota").value = "";
       document.getElementById("ce_encargado").value = equipo.encargado || "";
       document.getElementById("ce_descripcion").value = equipo.descripcion_equipo || "";
 
-      // Pre-seleccionar departamento si tiene valor
+
       const selDepto = document.getElementById("ce_departamento");
       if (selDepto) selDepto.value = equipo.departamento || "";
 
-      // Pre-seleccionar area si tiene valor
+
       const selArea = document.getElementById("ce_area");
       if (selArea) selArea.value = equipo.area || "";
 
@@ -250,7 +250,7 @@ async function cambiarEstadoEquipo() {
   }
 }
 
-// Función para confirmar el cambio de estado desde el modal
+// Función para confirmar el cambio de estado desde el modo
 async function confirmarCambioEstado(event) {
   event.preventDefault();
 
