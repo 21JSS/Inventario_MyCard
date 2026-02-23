@@ -48,6 +48,17 @@ body {
   touch-action: pan-y;
 }
 
+.acceso-admin-text {
+  text-align: center;
+  padding: 12px;
+  color: #464040ce;
+}
+
+.parrafo-auth {
+  color: #000000;
+  margin-bottom: 20px;
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -108,6 +119,12 @@ p {
   transition:
     transform 0.3s ease-in,
     box-shadow .4s ease-in-out;
+}
+
+#icon-admin {
+  padding-right: 7px;
+  color: #000000;
+  font-size: 1em;
 }
 
 .stat-card:hover {
@@ -456,8 +473,9 @@ tbody tr:hover {
 }
 
 .modal-content h2 {
+  text-align: center;
   margin-bottom: 25px;
-  color: #1f2937;
+  color: #4e545e;
   font-family: "Bricolage Grotesque";
 }
 
