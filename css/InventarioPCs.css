@@ -304,7 +304,6 @@ th {
   text-align: center;
   font-weight: 600;
   font-size: 0.9em;
-  white-space: nowrap;
 }
 
 th:first-child {
@@ -336,15 +335,50 @@ tbody tr:hover {
   background-color: #f0f4ff;
 }
 
-/* Responsive: en pantallas pequeñas permite scroll horizontal */
+/* Responsive: tablets y pantallas medianas */
 @media (max-width: 1024px) {
   .table-container {
     padding: 15px;
   }
 
   table {
-    min-width: 800px;
+    min-width: 750px;
   }
+
+  th,
+  td {
+    padding: 10px 6px;
+    font-size: 0.8em;
+  }
+}
+
+/* Responsive: teléfonos móviles */
+@media (max-width: 600px) {
+  .table-container {
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  table {
+    min-width: 700px;
+  }
+
+  th,
+  td {
+    padding: 8px 5px;
+    font-size: 0.75em;
+  }
+
+  th:nth-child(9) {
+    width: 18%;
+  }
+
+  /* Más espacio para Descripción en móvil */
+  th:nth-child(1) {
+    width: 4%;
+  }
+
+  /* Menos espacio para ID en móvil */
 }
 
 /* Vista de Detalle Individual */

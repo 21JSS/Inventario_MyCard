@@ -3,21 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function onScanSuccess(decodeText, decodeResult) {
     console.log("Código escaneado:", decodeText);
 
-    // Si el texto escaneado es una URL (lo cual debería ser segun tu sistema), redirigimos
-    if (decodeText.includes("index.html?id=")) {
-      // Si ya es una URL completa, redirigir
-      window.location.href = decodeText;
-    } else if (!isNaN(decodeText)) {
-      // Si el QR solo tiene el ID numérico, construir la URL
-      window.location.href = "index.html?id=" + decodeText;
-    } else {
-      // En cualquier otro caso, intentar tratarlo como URL o mostrar alerta
-      if (decodeText.startsWith('http')) {
-        window.location.href = decodeText;
-      } else {
-        alert("Código detectado: " + decodeText);
-      }
-    }
+    const frame = document.getElementById("scan-frame");
+    if (frame) frame.classList.add("detected");
 
     setTimeout(() => {
       window.location.href = "../html/index.html?id=" + decodeText;
@@ -32,9 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
     { facingMode: "environment" },
     {
       fps: 60,
-      useBarCodeDetectorIfSupported: true, // Nativo en Chrome/Android
+      useBarCodeDetectorIfSupported: true,
       experimentalFeatures: {
-        useBarCodeDetectorIfSupported: true, // Activa versiones antiguas
+        useBarCodeDetectorIfSupported: true,
       },
       videoConstraints: {
         facingMode: "environment",

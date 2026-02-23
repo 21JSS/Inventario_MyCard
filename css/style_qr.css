@@ -103,10 +103,11 @@ html, body {
     border-color: #ffffff !important;
 }
 
- h1{
-    color: rgb(255, 255, 255);
-    align-items: center;
+
+.titulo-qr h1 {
+    color: white;
     text-align: center;
     font-family: "Bricolage Grotesque";
-    margin-top: 32px;
+    padding: 1.6rem;
+    text-shadow: white 1px 6px 15px;
 }
