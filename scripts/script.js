@@ -142,7 +142,7 @@ function mostrarDetalleEquipo(equipoId) {
 
   // Llenar datos
   document.getElementById("detalle-nombre").textContent = equipo.nombre;
-  document.getElementById("detalle-id").textContent = equipo.id;
+  document.getElementById("detalle-id").textContent = formatearId(equipo.id);
   document.getElementById("detalle-tipo").textContent = equipo.tipo;
   document.getElementById("detalle-marca").textContent = equipo.marca;
   document.getElementById("detalle-modelo").textContent = equipo.modelo;
@@ -360,7 +360,7 @@ function cargarTabla() {
     }
 
     tr.innerHTML = `
-            <td>${item.id}</td>
+            <td>${formatearId(item.id)}</td>
             <td><strong>${item.nombre}</strong></td>
             <td>${item.tipo}</td>
             <td>${item.marca}</td>
@@ -406,6 +406,10 @@ function exportarDatos() {
 }
 
 // 8. Utilidades Misceláneas
+function formatearId(id) {
+  return String(id).padStart(4, "0");
+}
+
 function obtenerParametroURL(nombre) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(nombre);

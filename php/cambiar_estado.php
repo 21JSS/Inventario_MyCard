@@ -37,12 +37,12 @@ $nuevo_estado = ($estado_actual === 'disponible') ? 'ocupada' : 'disponible';
 // Si el nuevo estado es disponible, borramos la nota, el encargado y el departamento
 if ($nuevo_estado === 'disponible') {
     $nota = null;
-    $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, encargado = '', departamento_y_area = '' WHERE id = ?";
+    $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, encargado = '', departamento = '', area = '' WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("ssi", $nuevo_estado, $nota, $equipo_id);
 } else {
     // Si pasa a ocupada, actualizamos el estado, la nota, descripcion, encargado y departamento
-    $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, descripcion_equipo = ?, encargado = ?, departamento_y_area = ? WHERE id = ?";
+    $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, descripcion_equipo = ?, encargado = ?, departamento = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("sssssi", $nuevo_estado, $nota, $descripcion_equipo, $encargado, $departamento, $equipo_id);
 }

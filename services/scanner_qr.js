@@ -5,9 +5,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const frame = document.getElementById("scan-frame");
     if (frame) frame.classList.add("detected");
+    let equipoId = decodeText;
+    try {
+      const url = new URL(decodeText);
+      const idParam = url.searchParams.get("id");
+      if (idParam) {
+        equipoId = idParam;
+      }
+    } catch (e) {
+
+      equipoId = decodeText;
+    }
+
+    console.log("ID extraído:", equipoId);
 
     setTimeout(() => {
-      window.location.href = "../html/index.html?id=" + decodeText;
+      window.location.href = "../html/index.html?id=" + equipoId;
     }, 200);
   }
 

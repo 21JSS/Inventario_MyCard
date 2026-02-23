@@ -104,10 +104,19 @@ html, body {
 }
 
 
+.titulo-qr {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+    pointer-events: none;
+}
+
 .titulo-qr h1 {
     color: white;
     text-align: center;
     font-family: "Bricolage Grotesque";
     padding: 1.6rem;
-    text-shadow: white 1px 6px 15px;
+    text-shadow: 0 0 4px rgba(236, 204, 204, 0.8), 1px 3px 10px var(--color-text-mycard);
 }

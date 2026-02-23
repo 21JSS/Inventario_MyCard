@@ -62,7 +62,7 @@ body {
 h1 {
   font-family: "Bricolage Grotesque";
   text-align: center;
-  text-shadow: 3px 5px 3px var(--color-text-mycard);
+  text-shadow: 2px -5px 8px var(--color-text-mycard);
   font-size: 3.5em;
   font-weight: 700;
   margin-bottom: 10px;
@@ -74,7 +74,7 @@ h1 {
 }
 
 .parrafo-principal {
-  text-shadow: 5px 5px 3px var(--color-text-mycard);
+  text-shadow: 2px -5px 8px var(--color-text-mycard);
 }
 
 p {
@@ -122,8 +122,17 @@ p {
   margin-bottom: 10px;
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-thumb { background: #407edc; }
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #407edc;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 15px
+}
 
 
 .datos_tabla {
