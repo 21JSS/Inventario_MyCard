@@ -4,24 +4,21 @@ let filtroActivo = "todos";
 
 window.onload = function () {
   cargarInventario();
+
+  // Toggle mostrar/ocultar contraseña
+  const toggleBtn = document.querySelector("#togglePassword");
+  const passwordInput = document.querySelector("#password");
+
+  if (toggleBtn && passwordInput) {
+    toggleBtn.addEventListener("click", function () {
+      const type =
+        passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      this.classList.toggle("bi-eye-slash-fill");
+      this.classList.toggle("bi-eye-fill");
+    });
+  }
 };
-
-const togglePassword = document.querySelector("#togglePassword");
-const password = document.querySelector("#password");
-
-togglePassword.addEventListener("click", function () {
-  const type =
-    password.getAttribute("type") === "password" ? "text" : "password";
-  password.setAttribute("type", type);
-
-  this.classList.toggle("bi-eye-slash-fill"); // Ojo tachado
-  this.classList.toggle("bi-eye-fill"); // Ojo abierto
-});
-
-const form = document.querySelector("form");
-form.addEventListener("submit", function (e) {
-  e.preventDefault;
-});
 
 // Función para obtener parámetros de la URL
 function obtenerParametroURL(nombre) {
