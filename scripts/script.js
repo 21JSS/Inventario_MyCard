@@ -26,7 +26,7 @@ if (togglePassword && password) {
 function toggleMotivoUso(estado) {
   const grupoMotivo = document.getElementById("grupoMotivoUso");
   const inputNota = document.getElementById("nota_uso");
-  const selectAsignado = document.getElementById("asignado_a");
+  const selectAsignado = document.getElementById("area");
   const inputDescripcion = document.getElementById("descripcion_equipo");
   const grupoDescripcion = inputDescripcion ? inputDescripcion.parentElement : null;
 
@@ -149,6 +149,9 @@ function mostrarDetalleEquipo(equipoId) {
 
   const detDepto = document.getElementById("detalle-departamento");
   if (detDepto) detDepto.textContent = (equipo.departamento || "No asignado").toUpperCase();
+
+  const detArea = document.getElementById("detalle-area");
+  if (detArea) detArea.textContent = (equipo.area || "No asignado").toUpperCase();
 
   const detEnc = document.getElementById("detalle-encargado");
   if (detEnc) detEnc.textContent = (equipo.encargado || "No asignado").toUpperCase();
@@ -364,6 +367,7 @@ function cargarTabla() {
             <td>${item.modelo}</td>
             <td>${item.encargado || "N/A"}</td>
             <td>${item.departamento || "N/A"}</td>
+            <td>${item.area || "N/A"}</td>
             <td>${item.descripcion_equipo || "Sin descripción"}</td>
             <td ${estadoStyle}>${estadoTexto}</td>
         `;
@@ -387,10 +391,10 @@ function exportarDatos() {
     return;
   }
 
-  let csv = "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Descripción Equipo,Estado\n";
+  let csv = "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Area,Descripción Equipo,Estado\n";
 
   inventario.forEach((item) => {
-    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.descripcion_equipo || "Sin descripción"}","${item.estado || "N/A"}"\n`;
+    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.area || "N/A"}","${item.descripcion_equipo || "Sin descripción"}","${item.estado || "N/A"}"\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv" });

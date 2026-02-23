@@ -232,11 +232,14 @@ button:hover {
   font-family: "Bricolage Grotesque";
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 900px;
 }
 
 thead {
@@ -244,30 +247,81 @@ thead {
   color: white;
 }
 
+/* Anchos de columna proporcionales */
+th:nth-child(1) {
+  width: 5%;
+}
+
+/* ID */
+th:nth-child(2) {
+  width: 12%;
+}
+
+/* Nombre */
+th:nth-child(3) {
+  width: 10%;
+}
+
+/* Tipo */
+th:nth-child(4) {
+  width: 9%;
+}
+
+/* Marca */
+th:nth-child(5) {
+  width: 10%;
+}
+
+/* Modelo */
+th:nth-child(6) {
+  width: 10%;
+}
+
+/* Encargado */
+th:nth-child(7) {
+  width: 12%;
+}
+
+/* Departamento */
+th:nth-child(8) {
+  width: 8%;
+}
+
+/* Area */
+th:nth-child(9) {
+  width: 15%;
+}
+
+/* Descripción Equipo */
+th:nth-child(10) {
+  width: 9%;
+}
+
+/* Estado */
+
 th {
-  justify-items: center;
-  align-items: center;
-  padding: 15px;
-  text-align: left;
-  font-weight: 600;
-  font-size: 0.95em;
+  padding: 14px 10px;
   text-align: center;
+  font-weight: 600;
+  font-size: 0.9em;
+  white-space: nowrap;
 }
 
 th:first-child {
   border-top-left-radius: 10px;
-  text-align: center;
 }
 
 th:last-child {
   border-top-right-radius: 10px;
-  text-align: center;
 }
 
 td {
-  padding: 15px;
-  border-bottom: 1px solid #000000;
+  padding: 12px 10px;
+  border-bottom: 1px solid #e5e7eb;
   text-align: center;
+  font-size: 0.9em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 #inventarioTable {
@@ -279,7 +333,18 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background-color: #f8f9ff;
+  background-color: #f0f4ff;
+}
+
+/* Responsive: en pantallas pequeñas permite scroll horizontal */
+@media (max-width: 1024px) {
+  .table-container {
+    padding: 15px;
+  }
+
+  table {
+    min-width: 800px;
+  }
 }
 
 /* Vista de Detalle Individual */
