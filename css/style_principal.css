@@ -93,12 +93,14 @@ p  {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   margin-bottom: 30px;
+  font-family: "Bricolage Grotesque";
 }
 
 .stat-card {
   background: rgb(255 255 255 / 0.14);
   border-radius: 15px;
   padding: 35px;
+  font-family: "Bricolage Grotesque";
   margin-bottom: 20px;
   color: white;
   transition:

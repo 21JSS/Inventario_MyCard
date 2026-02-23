@@ -14,16 +14,6 @@ domReady(function () {
     const frame = document.getElementById("scan-frame");
     if (frame) frame.classList.add("detected");
 
-    console.log(`CODIGO ESCANEADO: ${decodedText}`);
-
-    vibrarCelular();
-
-    function vibrarCelular() {
-      if ("vibrate" in navigator) {
-        navigator.vibrate([200, 100, 200]);
-      }
-    }
-
     setTimeout(() => {
       window.location.href = "../html/index.html?id=" + decodeText;
     }, 200);
