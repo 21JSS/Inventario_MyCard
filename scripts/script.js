@@ -2,12 +2,12 @@ let inventario = [];
 let equipoActualId = null;
 let filtroActivo = "todos";
 
-// 1. Inicialización
+// Inicialización
 window.onload = function () {
   cargarInventario();
 };
 
-// 2. Manejo de Interfaz y Eventos Globales
+// Manejo de Interfaz y Eventos Globales
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#password");
 
@@ -55,7 +55,7 @@ function toggleMotivoUso(estado) {
   }
 }
 
-// 3. Carga de Datos
+// Carga de Datos
 async function cargarInventario() {
   try {
     const response = await fetch("../php/api_inventario.php");
@@ -90,7 +90,7 @@ async function cargarInventario() {
   }
 }
 
-// 4. Filtrado y Visualización
+//  Filtrado y Visualización
 function filtrarPorEstado(estado) {
   filtroActivo = estado;
 
@@ -193,7 +193,7 @@ function mostrarDetalleEquipo(equipoId) {
   }
 }
 
-// 5. Acciones de Equipo
+// Acciones de Equipo
 async function cambiarEstadoEquipo() {
   if (!equipoActualId) {
     alert("Error: No hay equipo seleccionado");
