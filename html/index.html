@@ -248,6 +248,7 @@
                             <option value="Plata">Plata</option>
                             <option value="Boveda Plata">Boveda Plata</option>
                             <option value="Cqm">Cqm</option>
+                            <option value="RH">RH</option>
                         </select>
                     </div>
 
@@ -283,6 +284,62 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal para Cambiar Estado -->
+    <div id="modalCambiarEstado" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalEstado()">&times;</span>
+            <h2>Cambiar Estado del Equipo</h2>
+
+            <form id="formCambiarEstado" onsubmit="confirmarCambioEstado(event)">
+                <div class="form-group">
+                    <label for="ce_nota">¿Para quién o para qué se usará?</label>
+                    <input type="text" id="ce_nota" name="nota" required
+                        placeholder="Nombre de la persona o motivo de uso">
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_encargado">Encargado:</label>
+                    <input type="text" id="ce_encargado" name="encargado" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_departamento">Departamento:</label>
+                    <select id="ce_departamento" name="departamento" required>
+                        <option value="">Seleccionar departamento...</option>
+                        <option value="Oficina">Oficina</option>
+                        <option value="Almacen">Almacen</option>
+                        <option value="Perso">Perso</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_area">Area:</label>
+                    <select id="ce_area" name="area" required>
+                        <option value="">Seleccionar Area...</option>
+                        <option value="Auditoria">Auditoria</option>
+                        <option value="Area de corte">Area de corte</option>
+                        <option value="Almacen">Almacen</option>
+                        <option value="Logistica">Logistica</option>
+                        <option value="Plata">Plata</option>
+                        <option value="Boveda Plata">Boveda Plata</option>
+                        <option value="Cqm">Cqm</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_descripcion">Descripción del Equipo:</label>
+                    <textarea id="ce_descripcion" name="descripcion_equipo" rows="3"
+                        placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">Confirmar</button>
+                    <button type="button" class="btn-cancel" onclick="cerrarModalEstado()">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 

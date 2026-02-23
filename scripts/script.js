@@ -200,37 +200,74 @@ async function cambiarEstadoEquipo() {
     return;
   }
 
-  try {
-    const equipo = inventario.find((item) => item.id == equipoActualId);
-    let nota = null;
-    let descEq = null;
-    let enc = null;
-    let depto = null;
+  const equipo = inventario.find((item) => item.id == equipoActualId);
 
-    if (equipo.estado === "disponible") {
-      nota = prompt("¿Para quién o para qué se usará este equipo?", "");
-      if (nota === null) return;
-      if (nota.trim() === "") {
-        alert("Debes ingresar un motivo o nombre para asignar el equipo.");
-        return;
-      }
+  if (equipo.estado === "disponible") {
+    // Abrir modal para llenar datos de ocupación
+    const modal = document.getElementById("modalCambiarEstado");
+    if (modal) {
+      // Pre-llenar campos con datos actuales
+      document.getElementById("ce_nota").value = "";
+      document.getElementById("ce_encargado").value = equipo.encargado || "";
+      document.getElementById("ce_descripcion").value = equipo.descripcion_equipo || "";
 
-      enc = prompt("Ingrese el nombre del Encargado:", equipo.encargado || "");
-      if (enc === null) return;
+      // Pre-seleccionar departamento si tiene valor
+      const selDepto = document.getElementById("ce_departamento");
+      if (selDepto) selDepto.value = equipo.departamento || "";
 
-      depto = prompt("Ingrese el Departamento:", equipo.departamento || "");
-      if (depto === null) return;
+      // Pre-seleccionar area si tiene valor
+      const selArea = document.getElementById("ce_area");
+      if (selArea) selArea.value = equipo.area || "";
 
-      descEq = prompt("Cambia la descripción del equipo si es necesario:", equipo.descripcion_equipo || "");
-      if (descEq === null) return;
+      modal.style.display = "flex";
     }
+  } else {
+    // Si pasa a disponible, confirmar directamente
+    if (!confirm("¿Marcar este equipo como DISPONIBLE?")) return;
 
+    try {
+      const formData = new FormData();
+      formData.append("id", equipoActualId);
+
+      const response = await fetch("../php/cambiar_estado.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        await cargarInventario();
+        mostrarDetalleEquipo(equipoActualId);
+        alert("✅ Equipo marcado como DISPONIBLE");
+      } else {
+        alert("Error: " + result.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error al cambiar el estado");
+    }
+  }
+}
+
+// Función para confirmar el cambio de estado desde el modal
+async function confirmarCambioEstado(event) {
+  event.preventDefault();
+
+  const nota = document.getElementById("ce_nota").value;
+  const enc = document.getElementById("ce_encargado").value;
+  const depto = document.getElementById("ce_departamento").value;
+  const area = document.getElementById("ce_area").value;
+  const descEq = document.getElementById("ce_descripcion").value;
+
+  try {
     const formData = new FormData();
     formData.append("id", equipoActualId);
-    if (nota) formData.append("nota", nota);
-    if (descEq !== null) formData.append("descripcion_equipo", descEq);
-    if (enc !== null) formData.append("encargado", enc);
-    if (depto !== null) formData.append("departamento", depto);
+    formData.append("nota", nota);
+    formData.append("encargado", enc);
+    formData.append("departamento", depto);
+    formData.append("area", area);
+    formData.append("descripcion_equipo", descEq);
 
     const response = await fetch("../php/cambiar_estado.php", {
       method: "POST",
@@ -240,19 +277,25 @@ async function cambiarEstadoEquipo() {
     const result = await response.json();
 
     if (result.success) {
+      cerrarModalEstado();
       await cargarInventario();
       mostrarDetalleEquipo(equipoActualId);
-      const mensaje =
-        result.nuevo_estado === "disponible"
-          ? "✅ Equipo marcado como DISPONIBLE"
-          : "✅ Equipo marcado como OCUPADA";
-      alert(mensaje);
+      alert("✅ Equipo marcado como OCUPADA");
     } else {
       alert("Error: " + result.error);
     }
   } catch (error) {
     console.error("Error:", error);
     alert("Error al cambiar el estado");
+  }
+}
+
+function cerrarModalEstado() {
+  const modal = document.getElementById("modalCambiarEstado");
+  if (modal) {
+    modal.style.display = "none";
+    const form = document.getElementById("formCambiarEstado");
+    if (form) form.reset();
   }
 }
 

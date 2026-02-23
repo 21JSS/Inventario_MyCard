@@ -11,6 +11,7 @@ $nota = $_POST['nota'] ?? null;
 $descripcion_equipo = $_POST['descripcion_equipo'] ?? null;
 $encargado = $_POST['encargado'] ?? null;
 $departamento= $_POST['departamento'] ?? null;
+$area = $_POST['area'] ?? null;
 
 if (empty($equipo_id)) {
     echo json_encode(['success' => false, 'error' => 'ID de equipo requerido']);
@@ -41,10 +42,10 @@ if ($nuevo_estado === 'disponible') {
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("ssi", $nuevo_estado, $nota, $equipo_id);
 } else {
-    // Si pasa a ocupada, actualizamos el estado, la nota, descripcion, encargado y departamento
-    $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, descripcion_equipo = ?, encargado = ?, departamento = ? WHERE id = ?";
+    // Si pasa a ocupada, actualizamos el estado, la nota, descripcion, encargado, departamento y area
+    $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, descripcion_equipo = ?, encargado = ?, departamento = ?, area = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
-    $stmt_update->bind_param("sssssi", $nuevo_estado, $nota, $descripcion_equipo, $encargado, $departamento, $equipo_id);
+    $stmt_update->bind_param("ssssssi", $nuevo_estado, $nota, $descripcion_equipo, $encargado, $departamento, $area, $equipo_id);
 }
 
 if ($stmt_update->execute()) {
