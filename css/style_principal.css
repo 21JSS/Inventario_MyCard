@@ -120,6 +120,10 @@ p  {
   margin-bottom: 10px;
 }
 
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: #407edc; }
+
+
 .datos_tabla {
   text-align: center;
 }
