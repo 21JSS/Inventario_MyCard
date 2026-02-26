@@ -22,6 +22,40 @@ if (togglePassword && password) {
   });
 }
 
+// Función para mostrar/ocultar el campo de IP en el modal Agregar Equipo
+function toggleCampoIP() {
+  const chk = document.getElementById("chk_asignar_ip");
+  const grupoIP = document.getElementById("grupoIP");
+  const inputIP = document.getElementById("ip_asignada");
+
+  if (chk.checked) {
+    grupoIP.style.display = "block";
+    inputIP.setAttribute("required", "required");
+    inputIP.focus();
+  } else {
+    grupoIP.style.display = "none";
+    inputIP.removeAttribute("required");
+    inputIP.value = "";
+  }
+}
+
+// Función para mostrar/ocultar el campo de IP en el modal Cambiar Estado
+function toggleCampoIPEstado() {
+  const chk = document.getElementById("ce_chk_ip");
+  const grupoIP = document.getElementById("ce_grupoIP");
+  const inputIP = document.getElementById("ce_ip_asignada");
+
+  if (chk.checked) {
+    grupoIP.style.display = "block";
+    inputIP.setAttribute("required", "required");
+    inputIP.focus();
+  } else {
+    grupoIP.style.display = "none";
+    inputIP.removeAttribute("required");
+    inputIP.value = "";
+  }
+}
+
 // Función para mostrar/ocultar el motivo de uso en el formulario de agregar
 function toggleMotivoUso(estado) {
   const grupoMotivo = document.getElementById("grupoMotivoUso");
@@ -255,7 +289,7 @@ async function cambiarEstadoEquipo() {
   }
 }
 
-// Función para confirmar el cambio de estado desde el modo
+// Función para confirmar el cambio de estado desde el modal
 async function confirmarCambioEstado(event) {
   event.preventDefault();
 
@@ -264,6 +298,8 @@ async function confirmarCambioEstado(event) {
   const depto = document.getElementById("ce_departamento").value;
   const area = document.getElementById("ce_area").value;
   const descEq = document.getElementById("ce_descripcion").value;
+  const chkIP = document.getElementById("ce_chk_ip");
+  const ipAsignada = chkIP && chkIP.checked ? document.getElementById("ce_ip_asignada").value : "";
 
   try {
     const formData = new FormData();
@@ -273,6 +309,7 @@ async function confirmarCambioEstado(event) {
     formData.append("departamento", depto);
     formData.append("area", area);
     formData.append("descripcion_equipo", descEq);
+    formData.append("ip_asignada", ipAsignada);
 
     const response = await fetch("../php/cambiar_estado.php", {
       method: "POST",
@@ -301,6 +338,13 @@ function cerrarModalEstado() {
     modal.style.display = "none";
     const form = document.getElementById("formCambiarEstado");
     if (form) form.reset();
+    // Resetear checkbox e IP
+    const chk = document.getElementById("ce_chk_ip");
+    if (chk) chk.checked = false;
+    const grupoIP = document.getElementById("ce_grupoIP");
+    if (grupoIP) grupoIP.style.display = "none";
+    const inputIP = document.getElementById("ce_ip_asignada");
+    if (inputIP) inputIP.removeAttribute("required");
   }
 }
 
@@ -350,6 +394,13 @@ function cerrarModal() {
     modalAgregar.style.display = "none";
     const form = document.getElementById("formAgregar");
     if (form) form.reset();
+    // Resetear checkbox e IP
+    const chk = document.getElementById("chk_asignar_ip");
+    if (chk) chk.checked = false;
+    const grupoIP = document.getElementById("grupoIP");
+    if (grupoIP) grupoIP.style.display = "none";
+    const inputIP = document.getElementById("ip_asignada");
+    if (inputIP) inputIP.removeAttribute("required");
   }
 }
 

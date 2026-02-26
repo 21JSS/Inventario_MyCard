@@ -620,3 +620,40 @@ tbody tr:hover {
   }
 
 }
+
+h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+  text-align: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Sobreescribe el display:block del form-group label */
+.form-group .checkbox-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: #2563eb;
+  margin: 0;
+}

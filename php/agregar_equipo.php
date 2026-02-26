@@ -23,9 +23,11 @@ if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo) || empty($
     exit;
 }
 
-$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, ip_asignada, estado, nota_estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$ip_final = (!empty($ip_asignada)) ? $ip_asignada : null;
+
+$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, ip_asignada, estado, nota_estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
-$stmt->bind_param("sssssssssss", $nombre, $tipo, $marca, $modelo, $encargado, $Departamento, $area, $descripcion_equipo, $ip_asignada, $estado, $nota); 
+$stmt->bind_param("sssssssssss", $nombre, $tipo, $marca, $modelo, $encargado, $Departamento, $area, $descripcion_equipo, $ip_final, $estado, $nota);
 
 if ($stmt->execute()) {  
     $nuevo_id = $stmt->insert_id; 

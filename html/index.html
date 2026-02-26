@@ -252,6 +252,9 @@
                             <option value="Boveda Plata">Boveda Plata</option>
                             <option value="Cqm">Cqm</option>
                             <option value="RH">RH</option>
+                            <option value="Sistemas">Sistemas</option>
+                            <option value="Ventas">Ventas</option>
+                            <option value="Compras">Compras</option>
                         </select>
                     </div>
 
@@ -266,17 +269,6 @@
                             placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
                     </div>
 
-                    <!-- Sección de Configuración de Red -->
-                    <hr style="border: 1px solid #e5e7eb; margin: 15px 0;">
-                    <h3 i class="../img/conexion-de-red.png"></i>
-                        Configuración de Red</h3>
-
-                    <div class="form-group">
-                        <label for="ip_asignada">IP Asignada:</label>
-                        <input type="text" id="ip_asignada" name="ip_asignada" placeholder="Ej: 192.168.1.50"
-                            pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$">
-                    </div>
-
                     <div class="form-group">
                         <label for="estado">Estado:</label>
                         <select id="estado" name="estado" required onchange="toggleMotivoUso(this.value)">
@@ -284,6 +276,24 @@
                             <option value="ocupada">Ocupada</option>
                         </select>
                     </div>
+
+
+                    <hr style="border: 1px solid #e5e7eb; margin: 15px 0;">
+                    <h3>Configuración de Red</h3>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="chk_asignar_ip" onchange="toggleCampoIP()">
+                            ¿Asignar IP a este equipo?
+                        </label>
+                    </div>
+
+                    <div class="form-group" id="grupoIP" style="display: none;">
+                        <label for="ip_asignada">IP Asignada: <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="ip_asignada" name="ip_asignada" placeholder="Ej: 192.168.1.50"
+                            pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$">
+                    </div>
+
 
                     <div class="form-group" id="grupoMotivoUso" style="display: none;">
                         <label for="nota_uso">Motivo de Uso</label>
@@ -338,6 +348,10 @@
                         <option value="Plata">Plata</option>
                         <option value="Boveda Plata">Boveda Plata</option>
                         <option value="Cqm">Cqm</option>
+                        <option value="RH">RH</option>
+                        <option value="Sistemas">Sistemas</option>
+                        <option value="Ventas">Ventas</option>
+                        <option value="Compras">Compras</option>
                     </select>
                 </div>
 
@@ -345,6 +359,19 @@
                     <label for="ce_descripcion">Descripción del Equipo:</label>
                     <textarea id="ce_descripcion" name="descripcion_equipo" rows="3"
                         placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="ce_chk_ip" onchange="toggleCampoIPEstado()" />
+                        ¿Asignar IP a este equipo?
+                    </label>
+                </div>
+
+                <div class="form-group" id="ce_grupoIP" style="display: none;">
+                    <label for="ce_ip_asignada">IP Asignada: <span style="color: #ef4444;">*</span></label>
+                    <input type="text" id="ce_ip_asignada" name="ip_asignada" placeholder="Ej: 192.168.1.50"
+                        pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$">
                 </div>
 
                 <div class="form-buttons">
