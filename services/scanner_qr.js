@@ -1,25 +1,30 @@
-function domReady(fn) {
-  if (
-    document.readyState === "complete" ||
-    document.readyState === "interactive"
-  ) {
-    setTimeout(fn, 1000);
-  } else {
-    document.addEventListener("DOMContentLoaded", fn);
-  }
-}
+document.addEventListener("DOMContentLoaded", function () {
+  // Función que se ejecuta cuando el escaneo es exitoso
+  function onScanSuccess(decodeText, decodeResult) {
+    console.log("Código escaneado:", decodeText);
 
-domReady(function () {
-  function onScanSuccess(decodeText, decodedResult) {
     const frame = document.getElementById("scan-frame");
     if (frame) frame.classList.add("detected");
+    let equipoId = decodeText;
+    try {
+      const url = new URL(decodeText);
+      const idParam = url.searchParams.get("id");
+      if (idParam) {
+        equipoId = idParam;
+      }
+    } catch (e) {
+
+      equipoId = decodeText;
+    }
+
+    console.log("ID extraído:", equipoId);
 
     setTimeout(() => {
-      window.location.href = "../html/index.html?id=" + decodeText;
+      window.location.href = "../html/index.html?id=" + equipoId;
     }, 200);
   }
 
-  function onScanFailure(error) {}
+  function onScanFailure(error) { }
 
   const html5QrCode = new Html5Qrcode("my-qr-reader");
 
@@ -27,9 +32,9 @@ domReady(function () {
     { facingMode: "environment" },
     {
       fps: 60,
-      useBarCodeDetectorIfSupported: true, // Nativo en Chrome/Android
+      useBarCodeDetectorIfSupported: true,
       experimentalFeatures: {
-        useBarCodeDetectorIfSupported: true, // Activa versiones antiguas
+        useBarCodeDetectorIfSupported: true,
       },
       videoConstraints: {
         facingMode: "environment",

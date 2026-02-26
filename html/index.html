@@ -3,9 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Forzar HTTPS para que la cámara funcione en dispositivos externos
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            location.replace(`https://${location.hostname}${location.pathname}${location.search}`);
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes">
     <title>Inventario de PCs y Periféricos - MyCard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../css/style_principal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -26,30 +34,58 @@
             <div class="detalle-card">
                 <h2 id="detalle-nombre"></h2>
                 <div class="detalle-info">
-                    <div class="info-item">
-                        <span class="label">ID:</span>
-                        <span id="detalle-id"></span>
+                    <!-- 1. Estado y Asignación -->
+                    <div class="detalle-row" style="margin-bottom: 5px;">
+                        <span class="detalle-label">Estado:</span>
+                        <span class="detalle-badge" id="detalle-estado"></span>
                     </div>
+
                     <div class="info-item">
-                        <span class="label">Tipo:</span>
-                        <span id="detalle-tipo"></span>
+                        <span class="label">Departamento:</span>
+                        <span id="detalle-departamento" style="font-weight: 600;"></span>
                     </div>
+
                     <div class="info-item">
-                        <span class="label">Marca:</span>
-                        <span id="detalle-marca"></span>
+                        <span class="label">Area:</span>
+                        <span id="detalle-area" style="font-weight: 600;"></span>
                     </div>
+
+                    <div class="info-item">
+                        <span class="label">Encargado:</span>
+                        <span id="detalle-encargado" style="font-weight: 600;"></span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="label">Descripción Equipo:</span>
+                        <span id="detalle-descripcion"></span>
+                    </div>
+
                     <div class="info-item">
                         <span class="label">Modelo:</span>
                         <span id="detalle-modelo"></span>
                     </div>
+
                     <div class="info-item">
-                        <span class="label">Descripción:     </span>
-                        <span id="detalle-descripcion"></span>
+                        <span class="label">Marca:</span>
+                        <span id="detalle-marca"></span>
                     </div>
-                    <div class="detalle-row">
-                        <span class="detalle-label">Estado:</span>
-                        <span class="detalle-badge" id="detalle-estado"></span>
+
+                    <div class="info-item">
+                        <span class="label">Tipo:</span>
+                        <span id="detalle-tipo"></span>
                     </div>
+
+                    <div class="info-item">
+                        <span class="label">ID del Equipo:</span>
+                        <span id="detalle-id"></span>
+                    </div>
+
+
+                    <div class="info-item">
+                        <span class="label">IP Asignada:</span>
+                        <span id="detalle-ip"></span>
+                    </div>
+
                 </div>
 
                 <!-- Botón de cambio de estado -->
@@ -70,6 +106,7 @@
                 </div>
             </div>
         </div>
+        <!-- FIN Vista de Detalle Individual -->
 
         <div class="stats-container">
             <div class="stat-card" onclick="filtrarPorEstado('todos')" style="cursor: pointer;" id="cardTodos">
@@ -102,16 +139,14 @@
                         class="fa-solid fa-file-excel"></i>
                     Exportar a Excel
                 </button>
+                <button class="btn-qr" onclick="interfazQR()" id="pushgointerfaz">
+                    <i class="fa-solid fa-qrcode"></i> Leer QR
+                </button>
                 <div class="search-wrapper">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" class="search-box" id="searchBox" placeholder="Buscar por nombre, marca o modelo..." 
-                        onkeyup="filtrarTabla()">
+                    <input type="text" class="search-box" id="searchBox"
+                        placeholder="Buscar por nombre, marca o modelo..." onkeyup="filtrarTabla()">
                 </div>
-            </div>
-        </div>
-        <div class="leer-qr" id="interfaz-qr">
-            <div class="boton-qr">
-                <button onclick="interfazQR()" id="pushgointerfaz" class="btn-qr">Leer QR</button>   
             </div>
         </div>
 
@@ -124,7 +159,11 @@
                         <th>Tipo</th>
                         <th>Marca</th>
                         <th>Modelo</th>
-                        <th>Descripción</th>
+                        <th>Encargado</th>
+                        <th>Departamento</th>
+                        <th>Area</th>
+                        <th>Descripción Equipo</th>
+                        <th>IP Asignada</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -133,13 +172,13 @@
             </table>
         </div>
 
-
         <!-- Modal de Autenticación -->
         <div id="modalAuth" class="modal" style="display: none;">
             <div class="modal-content modal-auth">
                 <span class="close" onclick="cerrarModalAuth()">&times;</span>
-                <h2 class="acceso-admin-text">Acceso de Administrador</h2>
-                <p class="parrafo-auth">Ingresa tus credenciales para continuar</p>
+                <h2>Acceso de Administrador</h2>
+                <p class="parrafo-auth" style="color: #3a3c41; margin-bottom: 20px;">Ingresa tus credenciales para
+                    continuar</p>
 
                 <form id="formAuth" onsubmit="verificarCredenciales(event)">
                     <div class="form-group">
@@ -204,17 +243,73 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="descripcion">Descripción (opcional):</label>
-                        <textarea id="descripcion" name="descripcion" rows="3"
-                            placeholder="Ej: Equipo asignado a recepción, incluye teclado y mouse"></textarea>
+                        <label for="departamento">Departamento:</label>
+                        <select id="departamento" name="Departamento" required>
+                            <option value="">Seleccionar departamento...</option>
+                            <option value="Oficina">Oficina</option>
+                            <option value="Almacen">Almacen</option>
+                            <option value="Perso">Perso</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area">Area:</label>
+                        <select id="area" name="area" required>
+                            <option value="">Seleccionar Area...</option>
+                            <option value="Auditoria">Auditoria</option>
+                            <option value="Area de corte">Area de corte</option>
+                            <option value="Almacen">Almacen</option>
+                            <option value="Logistica">Logistica</option>
+                            <option value="Plata">Plata</option>
+                            <option value="Boveda Plata">Boveda Plata</option>
+                            <option value="Cqm">Cqm</option>
+                            <option value="RH">RH</option>
+                            <option value="Sistemas">Sistemas</option>
+                            <option value="Ventas">Ventas</option>
+                            <option value="Compras">Compras</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="encargado">Encargado:</label>
+                        <input type="text" id="encargado" name="encargado" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion_equipo">Descripción Equipo:</label>
+                        <textarea id="descripcion_equipo" name="descripcion_equipo" rows="3" required
+                            placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="estado">Estado:</label>
-                        <select id="estado" name="estado" required>
+                        <select id="estado" name="estado" required onchange="toggleMotivoUso(this.value)">
                             <option value="disponible">Disponible</option>
                             <option value="ocupada">Ocupada</option>
                         </select>
+                    </div>
+
+
+                    <hr style="border: 1px solid #e5e7eb; margin: 15px 0;">
+                    <h3>Configuración de Red</h3>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="chk_asignar_ip" onchange="toggleCampoIP()">
+                            ¿Asignar IP a este equipo?
+                        </label>
+                    </div>
+
+                    <div class="form-group" id="grupoIP" style="display: none;">
+                        <label for="ip_asignada">IP Asignada: <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="ip_asignada" name="ip_asignada" placeholder="Ej: 192.168.1.50"
+                            pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$">
+                    </div>
+
+
+                    <div class="form-group" id="grupoMotivoUso" style="display: none;">
+                        <label for="nota_uso">Motivo de Uso</label>
+                        <input type="text" id="nota_uso" name="nota" placeholder="¿Quién lo usará y en qué area?">
                     </div>
 
                     <div class="form-buttons">
@@ -225,7 +320,81 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Modal para Cambiar Estado -->
+    <div id="modalCambiarEstado" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalEstado()">&times;</span>
+            <h2>Cambiar Estado del Equipo</h2>
+
+            <form id="formCambiarEstado" onsubmit="confirmarCambioEstado(event)">
+                <div class="form-group">
+                    <label for="ce_nota">¿Para quién o para qué se usará?</label>
+                    <input type="text" id="ce_nota" name="nota" required
+                        placeholder="Nombre de la persona o motivo de uso">
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_encargado">Encargado:</label>
+                    <input type="text" id="ce_encargado" name="encargado" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_departamento">Departamento:</label>
+                    <select id="ce_departamento" name="departamento" required>
+                        <option value="">Seleccionar departamento...</option>
+                        <option value="Oficina">Oficina</option>
+                        <option value="Almacen">Almacen</option>
+                        <option value="Perso">Perso</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_area">Area:</label>
+                    <select id="ce_area" name="area" required>
+                        <option value="">Seleccionar Area...</option>
+                        <option value="Auditoria">Auditoria</option>
+                        <option value="Area de corte">Area de corte</option>
+                        <option value="Almacen">Almacen</option>
+                        <option value="Logistica">Logistica</option>
+                        <option value="Plata">Plata</option>
+                        <option value="Boveda Plata">Boveda Plata</option>
+                        <option value="Cqm">Cqm</option>
+                        <option value="RH">RH</option>
+                        <option value="Sistemas">Sistemas</option>
+                        <option value="Ventas">Ventas</option>
+                        <option value="Compras">Compras</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="ce_descripcion">Descripción del Equipo:</label>
+                    <textarea id="ce_descripcion" name="descripcion_equipo" rows="3"
+                        placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="ce_chk_ip" onchange="toggleCampoIPEstado()" />
+                        ¿Asignar IP a este equipo?
+                    </label>
+                </div>
+
+                <div class="form-group" id="ce_grupoIP" style="display: none;">
+                    <label for="ce_ip_asignada">IP Asignada: <span style="color: #ef4444;">*</span></label>
+                    <input type="text" id="ce_ip_asignada" name="ip_asignada" placeholder="Ej: 192.168.1.50"
+                        pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$">
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">Confirmar</button>
+                    <button type="button" class="btn-cancel" onclick="cerrarModalEstado()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../scripts/script.js"></script>
 </body>
 <script src="../services/bloquearPantalla.js"></script>
 <script src="../scripts/script.js"></script>
