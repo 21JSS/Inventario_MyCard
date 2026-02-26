@@ -1,20 +1,17 @@
 """
-agente_bloqueo_flask.py
-========================
-Agente de bloqueo remoto de pantalla — versión Flask.
+bloqueo.py
+==========
+Agente de bloqueo remoto de pantalla — Flask + CORS.
 
-Este script debe ejecutarse en la computadora que se quiere bloquear (192.168.1.79).
-Reemplaza cualquier agente Flask anterior.
+Ejecutar en la laptop que se quiere bloquear remotamente (192.168.1.79):
+    python bloqueo.py
 
-Instalación de dependencias (una sola vez):
+Dependencias (instalar una sola vez):
     pip install flask flask-cors
-
-Uso:
-    python agente_bloqueo_flask.py
 
 Endpoints:
     POST http://192.168.1.79:5050/bloquear  → Bloquea la pantalla
-    GET  http://192.168.1.79:5050/estado    → Verifica que el agente está vivo
+    GET  http://192.168.1.79:5050/estado    → Estado del agente
 """
 
 import ctypes
@@ -23,21 +20,21 @@ import subprocess
 from datetime import datetime
 
 from flask import Flask, jsonify, request
-from flask_cors import CORS   # pip install flask-cors
+from flask_cors import CORS
 
 # ── Configuración ──────────────────────────────────────────────────────────────
-HOST = "0.0.0.0"   # Escuchar en todas las interfaces de red
+HOST = "0.0.0.0"
 PORT = 5050
 # ──────────────────────────────────────────────────────────────────────────────
 
 app = Flask(__name__)
 
-# Habilitar CORS para TODAS las rutas y orígenes (necesario para el inventario web)
+# CORS abierto para toda la red local (necesario para que el navegador no bloquee la petición)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 def bloquear_pantalla():
-    """Bloquea la pantalla del sistema operativo."""
+    """Bloquea la pantalla del sistema operativo Windows."""
     sistema = platform.system()
     try:
         if sistema == "Windows":
@@ -50,25 +47,22 @@ def bloquear_pantalla():
                 "-suspend"
             ], check=True)
         else:
-            raise OSError(f"Sistema operativo no soportado: {sistema}")
-        return True, f"Pantalla bloqueada correctamente ({sistema})"
+            raise OSError(f"Sistema no soportado: {sistema}")
+        return True, f"Pantalla bloqueada ({sistema})"
     except Exception as e:
-        return False, f"Error al bloquear: {str(e)}"
+        return False, str(e)
 
 
 @app.route("/bloquear", methods=["POST", "OPTIONS"])
 def endpoint_bloquear():
-    """Recibe la orden de bloqueo y ejecuta LockWorkStation."""
-    # El preflight OPTIONS ya lo maneja flask-cors automáticamente
     if request.method == "OPTIONS":
+        # Responder al preflight CORS
         return jsonify({"ok": True}), 200
 
-    cliente_ip = request.remote_addr
     datos = request.get_json(silent=True) or {}
     origen = datos.get("source", "desconocido")
-
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print(f"[{ts}] Solicitud de bloqueo → origen: {origen} ({cliente_ip})")
+    print(f"[{ts}] Bloqueo solicitado por: {origen} ({request.remote_addr})")
 
     ok, mensaje = bloquear_pantalla()
 
@@ -76,33 +70,28 @@ def endpoint_bloquear():
         print(f"[{ts}] ✅ {mensaje}")
         return jsonify({"success": True, "message": mensaje}), 200
     else:
-        print(f"[{ts}] ❌ {mensaje}")
+        print(f"[{ts}] ❌ Error: {mensaje}")
         return jsonify({"success": False, "error": mensaje}), 500
 
 
 @app.route("/estado", methods=["GET"])
 def endpoint_estado():
-    """Permite verificar si el agente está corriendo."""
     return jsonify({
         "success": True,
         "agente": "bloqueo_pantalla",
-        "version": "2.0-flask",
+        "version": "2.0",
         "sistema": platform.system(),
         "puerto": PORT
     }), 200
 
 
 if __name__ == "__main__":
-    print("=" * 55)
-    print("  Agente de Bloqueo Remoto - MyCard Inventario")
-    print("  (versión Flask)")
-    print("=" * 55)
-    print(f"  Sistema : {platform.system()} {platform.release()}")
-    print(f"  Escuchando en: {HOST}:{PORT}")
-    print(f"  Endpoints:")
-    print(f"    POST http://<esta-ip>:{PORT}/bloquear  → Bloquea pantalla")
-    print(f"    GET  http://<esta-ip>:{PORT}/estado    → Estado del agente")
-    print("  Presiona Ctrl+C para detener.")
-    print("=" * 55)
-    # debug=False para no exponer el debugger en la red
+    print("=" * 50)
+    print("  Agente Bloqueo Remoto - MyCard")
+    print("=" * 50)
+    print(f"  Puerto : {PORT}")
+    print(f"  POST /bloquear  → Bloquea la pantalla")
+    print(f"  GET  /estado    → Estado del agente")
+    print("  Ctrl+C para detener")
+    print("=" * 50)
     app.run(host=HOST, port=PORT, debug=False)

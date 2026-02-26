@@ -35,7 +35,7 @@ function cerrarModalAuth() {
 
 /**
  * Verifica las credenciales del administrador.
- * Credenciales por defecto: admin / mycard2024
+ * Credenciales por defecto: admin / mycard2026
  */
 function verificarCredenciales(event) {
   event.preventDefault();
@@ -45,7 +45,7 @@ function verificarCredenciales(event) {
 
   // Credenciales hardcoded (para producción usar validación en PHP)
   const ADMIN_USER = "admin";
-  const ADMIN_PASS = "mycard2024";
+  const ADMIN_PASS = "mycard2026";
 
   if (username === ADMIN_USER && password === ADMIN_PASS) {
     cerrarModalAuth();
