@@ -7,6 +7,89 @@ window.onload = function () {
   cargarInventario();
 };
 
+// ===== Manejo de Modales =====
+
+/** Abre el modal de agregar equipo (previa autenticación) */
+function abrirModal() {
+  const modalAuth = document.getElementById("modalAuth");
+  if (modalAuth) {
+    modalAuth.style.display = "flex";
+    // Limpiar campos del form de autenticación
+    const formAuth = document.getElementById("formAuth");
+    if (formAuth) formAuth.reset();
+    const errMsg = document.getElementById("error-message");
+    if (errMsg) errMsg.style.display = "none";
+    // Enfocar usuario
+    setTimeout(() => {
+      const usr = document.getElementById("username");
+      if (usr) usr.focus();
+    }, 100);
+  }
+}
+
+/** Cierra el modal de autenticación */
+function cerrarModalAuth() {
+  const modal = document.getElementById("modalAuth");
+  if (modal) modal.style.display = "none";
+}
+
+/**
+ * Verifica las credenciales del administrador.
+ * Credenciales por defecto: admin / mycard2026
+ */
+function verificarCredenciales(event) {
+  event.preventDefault();
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+  const errMsg = document.getElementById("error-message");
+
+  // Credenciales hardcoded (para producción usar validación en PHP)
+  const ADMIN_USER = "admin";
+  const ADMIN_PASS = "mycard2026";
+
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    cerrarModalAuth();
+    // Abrir el modal de agregar equipo
+    const modalAgregar = document.getElementById("modalAgregar");
+    if (modalAgregar) {
+      const formAgregar = document.getElementById("formAgregar");
+      if (formAgregar) formAgregar.reset();
+      // Resetear estados de campos condicionales
+      const grupoIP = document.getElementById("grupoIP");
+      if (grupoIP) grupoIP.style.display = "none";
+      const grupoMotivoUso = document.getElementById("grupoMotivoUso");
+      if (grupoMotivoUso) grupoMotivoUso.style.display = "none";
+      const ipInput = document.getElementById("ip_asignada");
+      if (ipInput) ipInput.removeAttribute("required");
+      modalAgregar.style.display = "flex";
+    }
+  } else {
+    if (errMsg) errMsg.style.display = "block";
+    document.getElementById("password").value = "";
+    document.getElementById("password").focus();
+  }
+}
+
+/** Cierra el modal de agregar equipo */
+function cerrarModal() {
+  const modal = document.getElementById("modalAgregar");
+  if (modal) {
+    modal.style.display = "none";
+    const form = document.getElementById("formAgregar");
+    if (form) form.reset();
+    // Limpiar campos condicionales
+    const grupoIP = document.getElementById("grupoIP");
+    if (grupoIP) grupoIP.style.display = "none";
+    const grupoMotivoUso = document.getElementById("grupoMotivoUso");
+    if (grupoMotivoUso) grupoMotivoUso.style.display = "none";
+    const ipInput = document.getElementById("ip_asignada");
+    if (ipInput) {
+      ipInput.removeAttribute("required");
+      ipInput.value = "";
+    }
+  }
+}
+
 // Manejo de Interfaz y Eventos Globales
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#password");
@@ -388,45 +471,7 @@ async function agregarEquipo(event) {
   }
 }
 
-// Cerrar modal al hacer clic fuera
-window.onclick = function (event) {
-  const modal = document.getElementById("modalAgregar");
-  if (event.target == modal) {
-    cerrarModal();
-  }
 
-  // Cerrar dropdown de Más Opciones al hacer clic fuera
-  const dropdown = document.getElementById("dropdownOpciones");
-  const btnMas = document.getElementById("btnMasOpciones");
-  if (dropdown && btnMas && !btnMas.contains(event.target)) {
-    dropdown.classList.remove("abierto");
-  }
-};
-
-function toggleMasOpciones(event) {
-  event.stopPropagation();
-  const dropdown = document.getElementById("dropdownOpciones");
-  dropdown.classList.toggle("abierto");
-}
-
-function ejecutarBloqueo() {
-  // Cerrar el dropdown
-  document.getElementById("dropdownOpciones").classList.remove("abierto");
-
-  const equipo = inventario.find((item) => item.id == equipoActualId);
-  if (!equipo) {
-    alert("No hay equipo seleccionado.");
-    return;
-  }
-
-  // Pedir IP al usuario
-  const ip = prompt(
-    `Ingresa la IP del equipo "${equipo.nombre}" para bloquear su pantalla:`,
-  );
-  if (!ip || ip.trim() === "") return;
-
-  bloquearPantalla(ip.trim(), equipo.nombre);
-}
 
 function cargarTabla() {
   const tbody = document.getElementById("inventarioBody");

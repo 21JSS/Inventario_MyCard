@@ -180,16 +180,17 @@
                 <p class="parrafo-auth" style="color: #3a3c41; margin-bottom: 20px;">Ingresa tus credenciales para
                     continuar</p>
 
-                <form id="formAuth" onsubmit="verificarCredenciales(event)">
+                <form id="formAuth" onsubmit="verificarCredenciales(event)" action="#">
                     <div class="form-group">
-                        <label for="username"><i class="bi bi-person" id="icon-admin"></i>Usuario:</label>
+                        <label for="username"><i class="bi bi-person" id="icon-admin-user"></i>Usuario:</label>
                         <input type="text" id="username" name="username" required autocomplete="username">
                     </div>
 
                     <div class="form-group">
-                        <label for="password"><i class="bi bi-key" id="icon-admin"></i>Contraseña:</label>
+                        <label for="password"><i class="bi bi-key" id="icon-admin-pass"></i>Contraseña:</label>
                         <div class="password-wrapper">
-                            <input type="password" id="password" name="password">
+                            <input type="password" id="password" name="password" required
+                                autocomplete="current-password">
                             <i class="bi bi-eye-slash-fill" id="togglePassword"></i>
                         </div>
                     </div>
@@ -397,4 +398,5 @@
     <script src="../services/bloquearPantalla.js"></script>
     <script src="../scripts/script.js"></script>
 </body>
+
 </html>

@@ -81,6 +81,7 @@ h1 {
   margin-bottom: 10px;
   color: rgb(255, 255, 255);
 }
+
 .parrafo-auth {
   text-shadow: none;
 }
@@ -88,6 +89,7 @@ h1 {
 .parrafo-principal {
   text-shadow: 2px -5px 8px var(--color-text-mycard);
 }
+
 p {
   text-align: center;
   font-family: "Bricolage Grotesque";
@@ -142,9 +144,11 @@ p {
 ::-webkit-scrollbar {
   width: 11px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #407edc;
 }
+
 ::-webkit-scrollbar-thumb {
   border-radius: 15px;
 }
@@ -391,7 +395,8 @@ tbody tr:hover {
 }
 
 #password {
-  padding-right: 35px; /* Añade espacio a la derecha del texto */
+  padding-right: 35px;
+  /* Añade espacio a la derecha del texto */
 }
 
 #togglePassword:hover {
@@ -594,6 +599,7 @@ tbody tr:hover {
     top: 0;
     left: 0;
   }
+
   30% {
     top: 50%;
   }
@@ -602,6 +608,7 @@ tbody tr:hover {
   72% {
     left: 50px;
   }
+
   100% {
     top: 100px;
     left: 100%;
@@ -694,6 +701,7 @@ tbody tr:hover {
     opacity: 0;
     transform: translateY(-6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
