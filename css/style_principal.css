@@ -81,10 +81,7 @@ h1 {
   margin-bottom: 10px;
   color: rgb(255, 255, 255);
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
 .parrafo-auth {
   text-shadow: none;
 }
@@ -92,10 +89,7 @@ h1 {
 .parrafo-principal {
   text-shadow: 2px -5px 8px var(--color-text-mycard);
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
 p {
   text-align: center;
   font-family: "Bricolage Grotesque";
@@ -105,11 +99,8 @@ p {
   color: #ffffff;
 }
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
 #inventarioBody {
   background: white;
 }
@@ -155,14 +146,6 @@ p {
 ::-webkit-scrollbar {
   width: 11px;
 }
-<<<<<<< HEAD
-::-webkit-scrollbar-thumb {
-  background: #407edc;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 15px;
-}
-=======
 
 ::-webkit-scrollbar-thumb {
   background: #407edc;
@@ -172,7 +155,6 @@ p {
   border-radius: 15px
 }
 
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
 
 .datos_tabla {
   text-align: center;
@@ -416,12 +398,8 @@ tbody tr:hover {
 }
 
 #password {
-<<<<<<< HEAD
-  padding-right: 35px; /* Añade espacio a la derecha del texto */
-=======
   padding-right: 35px;
   /* Añade espacio a la derecha del texto */
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
 }
 
 #togglePassword:hover {
@@ -583,25 +561,6 @@ tbody tr:hover {
   box-shadow: 0 4px 12px rgba(16, 134, 185, 0.4);
 }
 
-<<<<<<< HEAD
-.boton-qr {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 2%;
-}
-
-.btn-qr {
-  display: flex;
-  margin: 2%;
-  background: var(--boton-qr);
-  box-shadow: 0 0 5px 3px var(--shadow-buttons);
-}
-
-.btn-qr:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 10px 6px var(--shadow-buttons);
-=======
 .btn-qr {
   display: flex !important;
   align-items: center;
@@ -618,7 +577,6 @@ tbody tr:hover {
 .btn-qr:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px var(--shadow-buttons);
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
 }
 
 .btn-cancel {
@@ -638,21 +596,14 @@ tbody tr:hover {
   background: #4b5563;
 }
 
-<<<<<<< HEAD
-@keyframes search-box {
-=======
 
 @keyframes search-box {
 
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
   0% {
     top: 0;
     left: 0;
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
   30% {
     top: 50%;
   }
@@ -660,107 +611,13 @@ tbody tr:hover {
   68%,
   72% {
     left: 50px;
-<<<<<<< HEAD
-  }
-  100% {
-    top: 100px;
-    left: 100%;
-=======
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
   }
 }
 
-<<<<<<< HEAD
-/* ===== Más Opciones Dropdown ===== */
-.mas-opciones-wrapper {
-  position: relative;
-  margin-top: 12px;
-  width: 100%;
+100% {
+  top: 100px;
+  left: 100%;
 }
-
-.btn-mas-opciones {
-  width: 100%;
-  padding: 12px;
-  background: rgba(107, 114, 128, 0.12);
-  color: #4b5563;
-  border: 2px dashed #d1d5db;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 600;
-  font-family: "Bricolage Grotesque";
-  cursor: pointer;
-  transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn-mas-opciones:hover {
-  background: rgba(107, 114, 128, 0.2);
-  border-color: #9ca3af;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-}
-
-.dropdown-opciones {
-  display: none;
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 0;
-  width: 100%;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e5e7eb;
-  overflow: hidden;
-  z-index: 100;
-  animation: fadeInUp 0.2s ease;
-}
-
-.dropdown-opciones.abierto {
-  display: block;
-}
-
-.dropdown-item-bloquear {
-  width: 100%;
-  padding: 14px 20px;
-  background: white;
-  color: #dc2626;
-  border: none;
-  border-radius: 0;
-  font-size: 15px;
-  font-weight: 600;
-  font-family: "Bricolage Grotesque";
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: background 0.2s ease;
-}
-
-.dropdown-item-bloquear:hover {
-  background: #fef2f2;
-  transform: none;
-  box-shadow: none;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-=======
-  100% {
-    top: 100px;
-    left: 100%;
-  }
 
 }
 
@@ -800,4 +657,3 @@ h3 {
   accent-color: #2563eb;
   margin: 0;
 }
->>>>>>> 3068849115cdc85ee7a998c7ac762cc5e03b5fa8
