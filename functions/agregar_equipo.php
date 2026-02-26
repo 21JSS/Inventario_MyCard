@@ -11,16 +11,16 @@ $marca = $_POST['marca'] ?? '';
 $modelo = $_POST['modelo'] ?? '';
 $descripcion = $_POST['descripcion'] ?? '';
 $estado = $_POST['estado'] ?? 'disponible';
-
+$ip = $_POST['ip'] ??'';
 
 if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo)) {
     echo json_encode(['success' => false, 'error' => 'Todos los campos son obligatorios']);
     exit;
 }
 
-$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, descripcion, estado, ip) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
-$stmt->bind_param("ssssss", $nombre, $tipo, $marca, $modelo, $descripcion, $estado);
+$stmt->bind_param("sssssss", $nombre, $tipo, $marca, $modelo, $descripcion, $estado, $ip);
 
 if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id;

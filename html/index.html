@@ -56,6 +56,18 @@
                 <button id="btnCambiarEstado" onclick="cambiarEstadoEquipo()" class="btn-cambiar-estado">
                     Marcar como Ocupada
                 </button>
+
+                <!-- Más opciones dropdown -->
+                <div class="mas-opciones-wrapper">
+                    <button class="btn-mas-opciones" id="btnMasOpciones" onclick="toggleMasOpciones(event)">
+                        <i class="fa-solid fa-ellipsis-vertical"></i> Más opciones
+                    </button>
+                    <div class="dropdown-opciones" id="dropdownOpciones">
+                        <button class="dropdown-item-bloquear" id="btnBloquearPantalla" onclick="ejecutarBloqueo()">
+                            <i class="fa-solid fa-lock"></i> Bloquear Pantalla
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -215,5 +227,6 @@
     </div>
     
 </body>
+<script src="../services/bloquearPantalla.js"></script>
 <script src="../scripts/script.js"></script>
 </html>

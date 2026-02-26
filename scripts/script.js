@@ -272,7 +272,39 @@ window.onclick = function (event) {
   if (event.target == modal) {
     cerrarModal();
   }
+
+  // Cerrar dropdown de Más Opciones al hacer clic fuera
+  const dropdown = document.getElementById("dropdownOpciones");
+  const btnMas = document.getElementById("btnMasOpciones");
+  if (dropdown && btnMas && !btnMas.contains(event.target)) {
+    dropdown.classList.remove("abierto");
+  }
 };
+
+function toggleMasOpciones(event) {
+  event.stopPropagation();
+  const dropdown = document.getElementById("dropdownOpciones");
+  dropdown.classList.toggle("abierto");
+}
+
+function ejecutarBloqueo() {
+  // Cerrar el dropdown
+  document.getElementById("dropdownOpciones").classList.remove("abierto");
+
+  const equipo = inventario.find((item) => item.id == equipoActualId);
+  if (!equipo) {
+    alert("No hay equipo seleccionado.");
+    return;
+  }
+
+  // Pedir IP al usuario
+  const ip = prompt(
+    `Ingresa la IP del equipo "${equipo.nombre}" para bloquear su pantalla:`,
+  );
+  if (!ip || ip.trim() === "") return;
+
+  bloquearPantalla(ip.trim(), equipo.nombre);
+}
 
 function cargarTabla() {
   const tbody = document.getElementById("inventarioBody");
