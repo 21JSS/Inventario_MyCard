@@ -34,18 +34,11 @@
             <div class="detalle-card">
                 <h2 id="detalle-nombre"></h2>
                 <div class="detalle-info">
-                    <!-- 1. Estado y Asignación (Lo más importante arriba) -->
+                    <!-- 1. Estado y Asignación -->
                     <div class="detalle-row" style="margin-bottom: 5px;">
                         <span class="detalle-label">Estado:</span>
                         <span class="detalle-badge" id="detalle-estado"></span>
                     </div>
-
-                    <div class="info-item" id="info-nota"
-                        style="background: #fffbeb; border: 1px solid #fde68a; display: none; margin-bottom: 20px;">
-                        <span class="label" style="color: #92400e;">Asignado a:</span>
-                        <span id="detalle-nota" style="color: #f59e0b; font-weight: bold;"></span>
-                    </div>
-
 
                     <div class="info-item">
                         <span class="label">Departamento:</span>
@@ -86,6 +79,13 @@
                         <span class="label">ID del Equipo:</span>
                         <span id="detalle-id"></span>
                     </div>
+
+
+                    <div class="info-item">
+                        <span class="label">IP Asignada:</span>
+                        <span id="detalle-ip"></span>
+                    </div>
+
                 </div>
 
                 <!-- Botón de cambio de estado -->
@@ -94,6 +94,7 @@
                 </button>
             </div>
         </div>
+        <!-- FIN Vista de Detalle Individual -->
 
         <div class="stats-container">
             <div class="stat-card" onclick="filtrarPorEstado('todos')" style="cursor: pointer;" id="cardTodos">
@@ -150,9 +151,8 @@
                         <th>Departamento</th>
                         <th>Area</th>
                         <th>Descripción Equipo</th>
+                        <th>IP Asignada</th>
                         <th>Estado</th>
-
-
                     </tr>
                 </thead>
                 <tbody id="inventarioBody">
@@ -260,11 +260,21 @@
                         <input type="text" id="encargado" name="encargado" required>
                     </div>
 
-
                     <div class="form-group">
                         <label for="descripcion_equipo">Descripción Equipo:</label>
                         <textarea id="descripcion_equipo" name="descripcion_equipo" rows="3" required
                             placeholder="Detalles del equipo (especificaciones, accesorios, etc.)"></textarea>
+                    </div>
+
+                    <!-- Sección de Configuración de Red -->
+                    <hr style="border: 1px solid #e5e7eb; margin: 15px 0;">
+                    <h3 i class="../img/conexion-de-red.png"></i>
+                        Configuración de Red</h3>
+
+                    <div class="form-group">
+                        <label for="ip_asignada">IP Asignada:</label>
+                        <input type="text" id="ip_asignada" name="ip_asignada" placeholder="Ej: 192.168.1.50"
+                            pattern="^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$">
                     </div>
 
                     <div class="form-group">
@@ -278,7 +288,6 @@
                     <div class="form-group" id="grupoMotivoUso" style="display: none;">
                         <label for="nota_uso">Motivo de Uso</label>
                         <input type="text" id="nota_uso" name="nota" placeholder="¿Quién lo usará y en qué area?">
-
                     </div>
 
                     <div class="form-buttons">
@@ -346,10 +355,7 @@
         </div>
     </div>
 
-</body>
-
-
-<script src="../scripts/script.js"></script>
+    <script src="../scripts/script.js"></script>
 </body>
 
 </html>

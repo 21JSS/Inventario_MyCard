@@ -15,6 +15,7 @@ $descripcion_equipo = $_POST['descripcion_equipo'] ?? '';
 $encargado = $_POST['encargado'] ?? '';
 $estado = $_POST['estado'] ?? 'disponible';
 $nota = $_POST['nota'] ?? null;
+$ip_asignada = $_POST['ip_asignada'] ?? null;
 
 
 if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo) || empty($descripcion_equipo) || empty($encargado) || empty($Departamento) || empty($area)) {
@@ -22,12 +23,12 @@ if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo) || empty($
     exit;
 }
 
-$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, estado, nota_estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, ip_asignada, estado, nota_estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
-$stmt->bind_param("ssssssssss", $nombre, $tipo, $marca, $modelo, $encargado, $Departamento, $area, $descripcion_equipo, $estado, $nota); 
+$stmt->bind_param("sssssssssss", $nombre, $tipo, $marca, $modelo, $encargado, $Departamento, $area, $descripcion_equipo, $ip_asignada, $estado, $nota); 
 
 if ($stmt->execute()) {  
-    $nuevo_id = $stmt->insert_id;
+    $nuevo_id = $stmt->insert_id; 
     
     $ip = "192.168.1.80"; 
     $url = "http://$ip/Inventario_MyCard/html/index.html?id=$nuevo_id";

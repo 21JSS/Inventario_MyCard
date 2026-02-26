@@ -158,6 +158,11 @@ function mostrarDetalleEquipo(equipoId) {
 
   document.getElementById("detalle-descripcion").textContent = equipo.descripcion_equipo || "Sin descripción";
 
+  // Datos de Red
+  const detIp = document.getElementById("detalle-ip");
+  if (detIp) detIp.textContent = equipo.ip_asignada || "No asignada";
+
+
   // Estado con color
   const estadoBadge = document.getElementById("detalle-estado");
   if (estadoBadge) {
@@ -412,6 +417,7 @@ function cargarTabla() {
             <td>${item.departamento || "N/A"}</td>
             <td>${item.area || "N/A"}</td>
             <td>${item.descripcion_equipo || "Sin descripción"}</td>
+            <td style="color: #2563eb; font-weight: 600;">${item.ip_asignada || "Sin IP"}</td>
             <td ${estadoStyle}>${estadoTexto}</td>
         `;
     tbody.appendChild(tr);
@@ -434,10 +440,10 @@ function exportarDatos() {
     return;
   }
 
-  let csv = "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Area,Descripción Equipo,Estado\n";
+  let csv = "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Area,Descripción Equipo,IP Asignada,Máscara,Gateway,DNS Primario,DNS Secundario,Estado\n";
 
   inventario.forEach((item) => {
-    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.area || "N/A"}","${item.descripcion_equipo || "Sin descripción"}","${item.estado || "N/A"}"\n`;
+    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.area || "N/A"}","${item.descripcion_equipo || "Sin descripción"}","${item.ip_asignada || "Sin IP"}","${item.mascara || "N/A"}","${item.gateway || "N/A"}","${item.dns_primario || "N/A"}","${item.dns_secundario || "N/A"}","${item.estado || "N/A"}"\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv" });
