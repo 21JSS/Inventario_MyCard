@@ -190,13 +190,13 @@ button {
   background: linear-gradient(135deg, #1a8dda 0%, #187acb 100%);
   color: rgba(255, 255, 255, 10);
   border: none;
-  padding: 12px 30px;
+  padding: 13px 30px;
   font-family: "Bricolage Grotesque";
-  border-radius: 10px;
+  border-radius: 13px;
   font-size: 1em;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 .btn-exportar {
