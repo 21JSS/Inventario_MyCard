@@ -1,12 +1,5 @@
 <?php
 /**
- * proxy_bloqueo.php
- * -----------------
- * Proxy servidor-a-servidor para el agente de bloqueo remoto.
- *
- * El navegador NO puede llamar directamente al agente Flask (CORS / mixed content).
- * Este proxy recibe la petición del navegador y la reenvía al agente Flask en la red.
- *
  * Flujo:
  *   Navegador → proxy_bloqueo.php (XAMPP) → Flask 192.168.1.79:5050 → LockWorkStation
  */
@@ -14,14 +7,14 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-// Solo aceptar POST
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['success' => false, 'error' => 'Método no permitido']);
     exit;
 }
 
-// Leer el body JSON enviado por el navegador
+
 $input = json_decode(file_get_contents('php://input'), true) ?? [];
 $ip     = trim($input['ip'] ?? '');
 $nombre = trim($input['nombre'] ?? '');
@@ -32,19 +25,19 @@ if (empty($ip)) {
     exit;
 }
 
-// Validar formato IP básico
+
 if (!filter_var($ip, FILTER_VALIDATE_IP)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'IP no válida: ' . $ip]);
     exit;
 }
 
-// Puerto del agente Flask en la máquina remota
+
 $port    = 5050;
 $url     = "http://{$ip}:{$port}/bloquear";
 $payload = json_encode(['action' => 'lock', 'source' => 'MyCard-Inventario', 'equipo' => $nombre]);
 
-// Hacer la petición al agente usando cURL
+
 $ch = curl_init($url);
 curl_setopt_array($ch, [
     CURLOPT_POST           => true,
@@ -60,7 +53,7 @@ $httpCode    = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 $curlError   = curl_error($ch);
 curl_close($ch);
 
-// Manejar errores de conexión
+
 if ($response === false || !empty($curlError)) {
     http_response_code(503);
     echo json_encode([
@@ -70,7 +63,7 @@ if ($response === false || !empty($curlError)) {
     exit;
 }
 
-// Reenviar la respuesta del agente al navegador
+
 $data = json_decode($response, true);
 
 if ($httpCode >= 200 && $httpCode < 300 && isset($data['success']) && $data['success']) {

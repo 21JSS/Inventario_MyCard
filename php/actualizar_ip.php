@@ -1,6 +1,6 @@
 <?php
 
-// Detectar IP automáticamente
+
 $output = shell_exec('ipconfig');
 preg_match_all('/IPv4[^\d]+([\d\.]+)/', $output, $matches);
 // Filtrar IPs que no sean 127.0.0.1
@@ -22,7 +22,7 @@ require_once 'db.php';
  
 echo "Actualizando URLs con IP: $nueva_ip\n\n";
 
-#Actualiza la IP de la base de datos
+
 $sql = "UPDATE equipos_pc SET redireccion = CONCAT('https://$nueva_ip/Inventario_MyCard/html/index.html?id=', id)";
 
 if ($conexion->query($sql)) {
@@ -31,7 +31,7 @@ if ($conexion->query($sql)) {
     echo "Error: " . $conexion->error . "\n";
     exit(1);
 }
-#Muestra las nuevas URLs
+
 echo "Nuevas URLs:\n";
 echo "------------\n";
 

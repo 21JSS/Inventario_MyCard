@@ -7,7 +7,7 @@ $base_de_datos = "inventario_mycard";
 $conexion = new mysqli($host, $usuario, $password, $base_de_datos);
 
 if ($conexion->connect_error) {
-    // Si es una petición API, devolver JSON, si no, un mensaje simple
+    
     if (strpos($_SERVER['PHP_SELF'], '.php') !== false && !isset($is_cli)) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Error de conexión: ' . $conexion->connect_error]);
