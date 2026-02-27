@@ -35,7 +35,7 @@ if ($stmt->execute()) {
     $ip = "192.168.1.80"; 
     $url = "http://$ip/Inventario_MyCard/html/index.html?id=$nuevo_id";
 
-    #Actualizar la URL 
+    
     $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?"; 
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("si", $url, $nuevo_id);
