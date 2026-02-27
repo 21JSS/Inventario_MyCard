@@ -182,16 +182,21 @@ p {
 
 .button-group {
   display: flex;
+  align-items: center;
   gap: 15px;
   flex-wrap: wrap;
 }
 
 button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   background: linear-gradient(135deg, #1a8dda 0%, #187acb 100%);
-  color: rgba(255, 255, 255, 10);
+  color: #ffffff;
   border: none;
   padding: 13px 30px;
-  font-family: "Bricolage Grotesque";
+  font-family: "Bricolage Grotesque", sans-serif;
   border-radius: 13px;
   font-size: 1em;
   font-weight: 600;
@@ -562,12 +567,9 @@ tbody tr:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2%;
 }
 
 .btn-qr {
-  display: flex;
-  margin: 2%;
   background: var(--boton-qr);
   box-shadow: 0 0 5px 3px var(--shadow-buttons);
 }
