@@ -22,10 +22,10 @@ def obtener_datos_equipo(id_equipo):
             database="inventario_mycard"
         )
         cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT id, redireccion, encargado, departamento FROM equipos_pc WHERE id = %s", (id_equipo,))
+        cursor.execute("SELECT id, redireccion,ip_asignada FROM equipos_pc WHERE id = %s", (id_equipo,))
         res = cursor.fetchone()
         db.close()
-        return res
+        return res 
     except Exception as e:
         print(f"Error al conectar a la BD: {e}")
         return None
@@ -39,14 +39,14 @@ if not datos:
 
 # Priorizar URL del argumento si existe, si no usar la de la BD
 pc_redireccion = sys.argv[2] if len(sys.argv) >= 3 else datos['redireccion']
-encargado_texto = datos['encargado'] or "N/A"
-depto_texto = datos['departamento'] or "N/A"
 
 if not pc_redireccion:
     print("Error: No se pudo obtener la URL de redirección")
     sys.exit(1)
 
-ip_texto =urlparse(pc_redireccion).hostname
+ip_texto = datos.get('ip_asignada') 
+if not ip_texto:
+    ip_texto = "N/A"
 
 
 # --- CONFIGURACIÓN DEL QR ---
