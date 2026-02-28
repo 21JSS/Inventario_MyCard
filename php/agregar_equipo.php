@@ -32,7 +32,7 @@ $stmt->bind_param("sssssssssss", $nombre, $tipo, $marca, $modelo, $encargado, $D
 if ($stmt->execute()) {  
     $nuevo_id = $stmt->insert_id; 
     
-    $ip = "192.168.1.80"; 
+    $ip = "192.168.1.101"; 
     $url = "http://$ip/Inventario_MyCard/html/index.html?id=$nuevo_id";
 
     

@@ -4,7 +4,7 @@
 $output = shell_exec('ipconfig');
 preg_match_all('/IPv4[^\d]+([\d\.]+)/', $output, $matches);
 // Filtrar IPs que no sean 127.0.0.1
-$nueva_ip = "127.0.0.1";
+$nueva_ip = "127.0.0.1"; 
 foreach ($matches[1] as $ip) {
     $ip = trim($ip);
     if ($ip !== "127.0.0.1" && strpos($ip, "192.168.56.") === false) {
