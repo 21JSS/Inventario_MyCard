@@ -1,6 +1,6 @@
 # 📦 Inventario MyCard
 
-Sistema web de gestión de inventario de equipos de cómputo y periféricos para **MyCard**. Permite registrar, consultar, filtrar y cambiar el estado de los equipos, con generación automática de códigos QR e impresión directa en impresora Brother QL-800.
+Sistema web de gestión de inventario de equipos de cómputo y periféricos para **MyCard**. Permite registrar, consultar, filtrar y cambiar el estado de los equipos, con generación automática de códigos QR e impresión directa en impresora.
 
 ---
 
