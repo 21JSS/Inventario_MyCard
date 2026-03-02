@@ -857,7 +857,7 @@ tbody tr:hover {
   }
 
   .wrapper {
-    padding: 10px;
+    padding: 12px;
   }
 
   .header {
@@ -868,7 +868,7 @@ tbody tr:hover {
   }
 
   h1 {
-    font-size: 3em;
+    font-size: 3.2em;
     text-align: center;
     width: 100%;
   }
