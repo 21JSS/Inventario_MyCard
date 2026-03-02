@@ -32,10 +32,6 @@ body {
   height: auto !important;
   margin: 0;
   padding: 0;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
   overflow-y: visible !important;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -49,6 +45,7 @@ body {
 
 .wrapper {
   position: relative;
+  /* Cubre TODO el device incluyendo notch y home indicator */
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
@@ -60,7 +57,7 @@ body {
     radial-gradient(at 100% 0%, rgba(90, 20, 229, 0.538) 0px, transparent 50%),
     radial-gradient(at 50% 100%, rgba(43, 16, 197, 0.773) 0px, transparent 50%);
   overflow-x: hidden;
-  /* Padding normal + safe area de iOS */
+  /* El contenido respeta el notch/home indicator */
   padding-top: calc(20px + env(safe-area-inset-top));
   padding-bottom: calc(20px + env(safe-area-inset-bottom));
   padding-left: calc(20px + env(safe-area-inset-left));
