@@ -52,9 +52,9 @@ body {
   flex-direction: column;
   background-color: #000000;
   background-image:
-    radial-gradient(at 0% 0%, rgba(4, 228, 240, 0.329) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(90, 20, 229, 0.316) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(43, 16, 197, 0.255) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(4, 161, 240, 0.329) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(15, 114, 245, 0.316) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(32, 10, 236, 0.255) 0px, transparent 50%);
   overflow-x: hidden;
   /* El contenido respeta el notch/home indicator */
   padding-top: calc(20px + env(safe-area-inset-top));
@@ -1163,7 +1163,7 @@ tbody tr:hover {
   }
 
   .wrapper {
-    padding: 10px;
+    padding: 12px;
   }
 
   .header {
@@ -1174,7 +1174,7 @@ tbody tr:hover {
   }
 
   h1 {
-    font-size: 3em;
+    font-size: 3.2em;
     text-align: center;
     width: 100%;
   }
