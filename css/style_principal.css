@@ -45,7 +45,6 @@ body {
 
 .wrapper {
   position: relative;
-  /* Cubre TODO el device incluyendo notch y home indicator */
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
@@ -53,9 +52,9 @@ body {
   flex-direction: column;
   background-color: #000000;
   background-image:
-    radial-gradient(at 0% 0%, rgba(4, 228, 240, 0.726) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(90, 20, 229, 0.538) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(43, 16, 197, 0.773) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(4, 228, 240, 0.329) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(90, 20, 229, 0.316) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(43, 16, 197, 0.255) 0px, transparent 50%);
   overflow-x: hidden;
   /* El contenido respeta el notch/home indicator */
   padding-top: calc(20px + env(safe-area-inset-top));
@@ -92,10 +91,10 @@ h1 {
   font-family: "Bricolage Grotesque";
   text-align: center;
   text-shadow:
-    2px -5px 8px var(--color-text-mycard),
-    4px 3px 9px var(--mycard-color);
-  font-size: 3.5em;
-  font-weight: 700;
+    1px -2px 3px var(--color-text-mycard),
+    1px 1px 4px var(--mycard-color);
+  font-size: 6em;
+  font-weight: 600;
   margin-bottom: 10px;
   color: rgb(255, 255, 255);
   word-break: break-word;
@@ -108,7 +107,7 @@ h1 {
 }
 
 .parrafo-principal {
-  text-shadow: 2px -5px 8px var(--color-text-mycard);
+  text-shadow: 2px -2px 3px var(--color-text-mycard);
 }
 
 p {
@@ -426,7 +425,6 @@ tbody tr:hover {
 
 #password {
   padding-right: 35px;
-  /* Añade espacio a la derecha del texto */
 }
 
 #togglePassword:hover {
@@ -444,7 +442,7 @@ tbody tr:hover {
   font-weight: 600;
 }
 
-/* Botón de cambio de estado */
+
 .btn-cambiar-estado {
   width: 100%;
   padding: 15px;
@@ -1079,7 +1077,7 @@ tbody tr:hover {
   }
 
   h1 {
-    font-size: 2.2em;
+    font-size: 3.2em;
     text-align: center;
     width: 100%;
   }
@@ -1100,8 +1098,8 @@ tbody tr:hover {
   }
 
   .stat-card {
-    padding: 20px 16px;
-    margin-bottom: 0;
+    padding: 20px 26px;
+    margin-bottom: 2;
   }
 
   .stat-value {
