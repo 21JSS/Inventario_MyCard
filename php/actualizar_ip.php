@@ -7,8 +7,8 @@ require_once 'db.php';
 
 echo "Actualizando URLs con IP: $nueva_ip\n\n";
 
-// 1. Actualizar base de datos
-$sql = "UPDATE equipos_pc SET redireccion = CONCAT('https://$nueva_ip/Inventario_MyCard/html/index.html?id=', id)";
+// Actualizar base de datos
+$sql = "UPDATE equipos_pc SET redireccion = CONCAT('http://$nueva_ip/Inventario_MyCard/html/index.html?id=', id)";
 
 if ($conexion->query($sql)) {
     echo "URLs actualizadas en la base de datos correctamente.\n\n";
@@ -17,7 +17,7 @@ if ($conexion->query($sql)) {
     exit(1);
 }
 
-// 2. Regenerar códigos QR (esto asegura que las etiquetas físicas funcionen con la nueva IP)
+// Regenerar códigos QR (esto asegura que las etiquetas físicas funcionen con la nueva IP)
 echo "Regenerando códigos QR para todos los equipos...\n";
 $resultado = $conexion->query("SELECT id, redireccion FROM equipos_pc");
 

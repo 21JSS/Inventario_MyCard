@@ -20,7 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("ID extraído:", equipoId);
 
     setTimeout(() => {
-      window.location.href = "../html/index.html?id=" + equipoId;
+      // Forzar HTTP porque el scanner está en HTTPS (por la cámara)
+      // pero index.html funciona correctamente solo por HTTP
+      window.location.href = "http://" + location.hostname + "/Inventario_MyCard/html/index.html?id=" + equipoId;
     }, 200);
   }
 

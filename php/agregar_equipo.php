@@ -33,7 +33,7 @@ if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id; 
     require_once 'utils_ip.php';
     $ip = getServerIP(); 
-    $url = "https://$ip/Inventario_MyCard/html/index.html?id=$nuevo_id";
+    $url = "http://$ip/Inventario_MyCard/php/index.php?id=$nuevo_id";
 
     
     $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?"; 
