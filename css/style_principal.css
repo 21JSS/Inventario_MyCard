@@ -184,6 +184,7 @@ p {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 button {
@@ -567,7 +568,7 @@ tbody tr:hover {
 
 .btn-qr {
   display: flex;
-  margin: 2%;
+  align-items: center;
   background: var(--boton-qr);
   box-shadow: 0 0 5px 3px var(--shadow-buttons);
 }
