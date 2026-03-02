@@ -28,12 +28,16 @@ html {
 body {
   background: black;
   min-height: 100vh;
+  min-height: 100dvh;
   height: auto !important;
   margin: 0;
-  <<<<<<< HEAD padding: 20px;
-  =======padding: 0;
+  padding: 0;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   overflow-y: visible !important;
-  >>>>>>>3b38f582df1793983f795fc5b624aac45aa93d4d overflow-x: hidden;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
 }
@@ -46,6 +50,7 @@ body {
 .wrapper {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -55,7 +60,11 @@ body {
     radial-gradient(at 100% 0%, rgba(90, 20, 229, 0.538) 0px, transparent 50%),
     radial-gradient(at 50% 100%, rgba(43, 16, 197, 0.773) 0px, transparent 50%);
   overflow-x: hidden;
-  padding: 20px;
+  /* Padding normal + safe area de iOS */
+  padding-top: calc(20px + env(safe-area-inset-top));
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  padding-left: calc(20px + env(safe-area-inset-left));
+  padding-right: calc(20px + env(safe-area-inset-right));
 }
 
 .acceso-admin-text {
