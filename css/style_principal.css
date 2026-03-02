@@ -69,11 +69,11 @@ body {
     radial-gradient(at 100% 0%, rgba(15, 114, 245, 0.316) 0px, transparent 50%),
     radial-gradient(at 50% 100%, rgba(32, 10, 236, 0.255) 0px, transparent 50%);
   overflow-x: hidden;
-  /* El contenido respeta el notch/home indicator */
-  padding-top: calc(20px + env(safe-area-inset-top));
-  padding-bottom: calc(20px + env(safe-area-inset-bottom));
-  padding-left: calc(20px + env(safe-area-inset-left));
-  padding-right: calc(20px + env(safe-area-inset-right));
+ 
+  padding-top: calc(30px + env(safe-area-inset-top));
+  padding-bottom: calc(30px + env(safe-area-inset-bottom));
+  padding-left: calc(30px + env(safe-area-inset-left));
+  padding-right: calc(30px + env(safe-area-inset-right));
 }
 
 .acceso-admin-text {
