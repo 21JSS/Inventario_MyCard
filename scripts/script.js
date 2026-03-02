@@ -14,6 +14,8 @@ function abrirModal() {
   const modalAuth = document.getElementById("modalAuth");
   if (modalAuth) {
     modalAuth.style.display = "flex";
+    document.documentElement.classList.add("modal-open");
+    document.body.classList.add("modal-open");
     // Limpiar campos del form de autenticación
     const formAuth = document.getElementById("formAuth");
     if (formAuth) formAuth.reset();
@@ -30,7 +32,11 @@ function abrirModal() {
 /** Cierra el modal de autenticación */
 function cerrarModalAuth() {
   const modal = document.getElementById("modalAuth");
-  if (modal) modal.style.display = "none";
+  if (modal) {
+    modal.style.display = "none";
+    document.documentElement.classList.remove("modal-open");
+    document.body.classList.remove("modal-open");
+  }
 }
 
 /**
@@ -62,6 +68,8 @@ function verificarCredenciales(event) {
       const ipInput = document.getElementById("ip_asignada");
       if (ipInput) ipInput.removeAttribute("required");
       modalAgregar.style.display = "flex";
+      document.documentElement.classList.add("modal-open");
+      document.body.classList.add("modal-open");
     }
   } else {
     if (errMsg) errMsg.style.display = "block";
@@ -75,6 +83,8 @@ function cerrarModal() {
   const modal = document.getElementById("modalAgregar");
   if (modal) {
     modal.style.display = "none";
+    document.documentElement.classList.remove("modal-open");
+    document.body.classList.remove("modal-open");
     const form = document.getElementById("formAgregar");
     if (form) form.reset();
     // Limpiar campos condicionales
@@ -345,6 +355,8 @@ async function cambiarEstadoEquipo() {
       if (selArea) selArea.value = equipo.area || "";
 
       modal.style.display = "flex";
+      document.documentElement.classList.add("modal-open");
+      document.body.classList.add("modal-open");
     }
   } else {
     // Si pasa a disponible, confirmar directamente
@@ -425,6 +437,8 @@ function cerrarModalEstado() {
   const modal = document.getElementById("modalCambiarEstado");
   if (modal) {
     modal.style.display = "none";
+    document.documentElement.classList.remove("modal-open");
+    document.body.classList.remove("modal-open");
     const form = document.getElementById("formCambiarEstado");
     if (form) form.reset();
     // Resetear checkbox e IP

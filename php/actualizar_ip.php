@@ -1,49 +1,45 @@
 <?php
-
-
-$output = shell_exec('ipconfig');
-preg_match_all('/IPv4[^\d]+([\d\.]+)/', $output, $matches);
-// Filtrar IPs que no sean 127.0.0.1
-$nueva_ip = "127.0.0.1"; 
-foreach ($matches[1] as $ip) {
-    $ip = trim($ip);
-    if ($ip !== "127.0.0.1" && strpos($ip, "192.168.56.") === false) {
-        $nueva_ip = $ip;
-        // Si encontramos la IP de la red local común (192.168.1.x), la preferimos y paramos
-        if (strpos($ip, "192.168.1.") !== false) {
-            break;
-        }
-    }
-}
+require_once 'utils_ip.php';
+$nueva_ip = getServerIP();
 
 $is_cli = true;
 require_once 'db.php';
 
- 
 echo "Actualizando URLs con IP: $nueva_ip\n\n";
 
-
+// 1. Actualizar base de datos
 $sql = "UPDATE equipos_pc SET redireccion = CONCAT('https://$nueva_ip/Inventario_MyCard/html/index.html?id=', id)";
 
 if ($conexion->query($sql)) {
-    echo "URLs actualizadas correctamente\n\n";
+    echo "URLs actualizadas en la base de datos correctamente.\n\n";
 } else {
-    echo "Error: " . $conexion->error . "\n";
+    echo "Error BD: " . $conexion->error . "\n";
     exit(1);
 }
 
-echo "Nuevas URLs:\n";
-echo "------------\n";
+// 2. Regenerar códigos QR (esto asegura que las etiquetas físicas funcionen con la nueva IP)
+echo "Regenerando códigos QR para todos los equipos...\n";
+$resultado = $conexion->query("SELECT id, redireccion FROM equipos_pc");
 
-$resultado = $conexion->query("SELECT id, nombre, redireccion FROM equipos_pc");
+$python_path = "python";
+$script_path = "../python/generar_qr_unico.py";
 
 while ($fila = $resultado->fetch_assoc()) {
-    echo "ID " . $fila['id'] . ": " . $fila['nombre'] . "\n";
-    echo "URL: " . $fila['redireccion'] . "\n\n";
+    $id = $fila['id'];
+    $url = $fila['redireccion'];
+    echo "Generando QR para ID $id... ";
+    
+    // Ejecutamos el script de python para cada equipo
+    $command = "$python_path $script_path $id \"$url\"";
+    exec($command, $out, $status);
+    
+    if ($status === 0) {
+        echo "OK\n";
+    } else {
+        echo "ERROR\n";
+    }
 }
 
 $conexion->close();
-
-echo "Proceso completado.\n";
-echo "Siguiente paso: python codigoQR.py\n";
+echo "\nProceso de actualización de IP y QR completado exitosamente.\n";
 ?>

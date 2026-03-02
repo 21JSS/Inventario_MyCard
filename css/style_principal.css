@@ -18,22 +18,9 @@
 html {
   margin: 0;
   padding: 0;
-  overflow-y: scroll !important;
   overflow-x: hidden;
   height: auto !important;
   -webkit-overflow-scrolling: touch;
-}
-
-html {
-  overflow-y: scroll !important;
-  height: auto !important;
-}
-
-body {
-  overflow-y: visible !important;
-  height: auto !important;
-  touch-action: pan-y !important;
-  -webkit-overflow-scrolling: touch !important;
 }
 
 body {
@@ -42,7 +29,6 @@ body {
   height: auto !important;
   margin: 0;
   padding: 20px;
-  overflow-y: visible !important;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
@@ -463,136 +449,219 @@ tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  padding: 30px 0;
 }
 
 .modal-auth {
-  max-width: 450px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 40px !important;
-  border-radius: 24px !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 95%;
+  max-width: 380px;
+  background: #0f172a !important;
+  backdrop-filter: blur(25px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 25px 20px !important;
+  border-radius: 30px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(0, 198, 230, 0.1);
+  animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: none;
 }
 
-@keyframes modalFadeIn {
+.modal-auth::-webkit-scrollbar {
+  display: none;
+
+}
+
+@keyframes modalSlideUp {
   from {
     opacity: 0;
-    transform: scale(0.95) translateY(10px);
+    transform: translateY(30px) scale(0.95);
   }
 
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
+
+.modal-auth::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(0, 198, 230, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.modal-auth * {
+  position: relative;
+  z-index: 1;
+}
+
+.modal-icon-header {
+  width: 70px;
+  height: 70px;
+  background: rgba(0, 198, 230, 0.1);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 30px;
+  color: var(--mycard-color);
+  border: 1px solid rgba(0, 198, 230, 0.2);
+  box-shadow: 0 0 20px rgba(0, 198, 230, 0.1);
+}
+
 .modal-auth h2 {
-  font-size: 2em;
-  font-weight: 800;
-  color: #1a1c1e;
-  margin-bottom: 8px;
-  letter-spacing: -0.02em;
+  font-size: 1.6em !important;
+  font-weight: 800 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 5px !important;
+  letter-spacing: -0.02em !important;
+  text-align: center !important;
 }
 
 .modal-auth .parrafo-auth {
-  font-size: 1.05em;
-  color: #64748b;
-  margin-bottom: 32px;
-  font-weight: 400;
+  font-size: 0.9em;
+  color: #f1f5f9;
+  margin-bottom: 25px;
+  font-weight: 500;
+  text-align: center;
 }
 
 .modal-auth .form-group {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .modal-auth .form-group label {
-  font-size: 0.9em;
+  font-size: 0.88em;
   font-weight: 700;
-  color: #475569;
-  margin-bottom: 8px;
+  color: #ffffff;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  transition: color 0.3s ease;
+}
+
+.modal-auth .form-group:focus-within label {
+  color: var(--mycard-color);
 }
 
 .modal-auth .form-group label i {
   color: var(--mycard-color);
-  font-size: 1.1em;
+  font-size: 1.25em;
+  filter: drop-shadow(0 0 5px rgba(0, 198, 230, 0.4));
 }
 
 .modal-auth .form-group input {
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  padding: 14px 16px;
-  border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 1em;
-  color: #1e293b;
+  background: rgba(30, 41, 59, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  padding: 16px 20px;
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 1.05em;
+  color: #f8fafc;
+}
+
+.modal-auth .form-group input::placeholder {
+  color: #64748b;
 }
 
 .modal-auth .form-group input:focus {
-  background: #ffffff;
+  background: rgba(30, 41, 59, 0.8);
   border-color: var(--mycard-color);
-  box-shadow: 0 0 0 4px rgba(0, 198, 230, 0.1);
-  transform: translateY(-1px);
+  box-shadow: 0 0 0 5px rgba(0, 198, 230, 0.15),
+    0 0 20px rgba(0, 198, 230, 0.1);
+  transform: translateY(-2px);
 }
 
 .modal-auth .password-wrapper #togglePassword {
-  right: 16px;
-  color: #94a3b8;
+  right: 20px;
+  color: #64748b;
+  font-size: 1.2em;
+}
+
+.modal-auth .password-wrapper #togglePassword:hover {
+  color: var(--mycard-color);
 }
 
 .modal-auth .btn-submit {
   background: linear-gradient(135deg, #00c6e6 0%, #0072ff 100%);
-  padding: 14px;
-  border-radius: 12px;
-  font-size: 1.1em;
-  letter-spacing: 0.01em;
-  box-shadow: 0 10px 15px -3px rgba(0, 114, 255, 0.3);
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 1.15em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: none;
+  box-shadow: 0 8px 20px -5px rgba(0, 114, 255, 0.5);
+  margin-top: 10px;
 }
 
 .modal-auth .btn-submit:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 25px -5px rgba(0, 114, 255, 0.4);
-  filter: brightness(1.05);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 30px -5px rgba(0, 114, 255, 0.6),
+    0 0 15px rgba(0, 198, 230, 0.3);
+}
+
+.modal-auth .btn-submit:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .modal-auth .btn-cancel {
-  background: #f1f5f9;
-  color: #64748b;
-  padding: 14px;
-  border-radius: 12px;
-  font-size: 1.1em;
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 1.15em;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
 .modal-auth .btn-cancel:hover {
-  background: #e2e8f0;
-  color: #1e293b;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .modal-auth .close {
   position: absolute;
-  top: 24px;
-  right: 24px;
-  width: 32px;
-  height: 32px;
+  top: 28px;
+  right: 28px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 50%;
-  font-size: 18px;
-  transition: all 0.2s ease;
+  font-size: 20px;
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .modal-auth .close:hover {
-  background: #fee2e2;
-  color: #ef4444;
-  transform: rotate(90deg);
+  background: #f87171;
+  color: white;
+  transform: rotate(90deg) scale(1.1);
+  border-color: transparent;
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.4);
 }
 
 #error-message {
@@ -933,4 +1002,108 @@ tbody tr:hover {
   height: 16px;
   accent-color: #3b82f6;
   cursor: pointer;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 480px) {
+  .modal-auth {
+    padding: 30px 20px !important;
+    border-radius: 20px !important;
+    max-height: 98vh;
+  }
+
+  .modal-icon-header {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .modal-auth h2 {
+    font-size: 1.6em !important;
+    font-weight: 800 !important;
+    background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 5px !important;
+    letter-spacing: -0.02em !important;
+    text-align: center !important;
+  }
+
+  .modal-auth .parrafo-auth {
+    font-size: 0.95em !important;
+    margin-bottom: 25px;
+  }
+
+  .modal-auth .form-group {
+    margin-bottom: 22px;
+  }
+
+  .modal-auth .form-buttons {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+    margin-top: 25px !important;
+  }
+
+  .modal-auth .btn-submit,
+  .modal-auth .btn-cancel {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.05em;
+  }
+
+  .modal-auth .close {
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Solo ocultar scroll en modal-auth (login), modal-content puede hacer scroll */
+.modal-auth {
+  overflow: hidden !important;
+  scrollbar-width: none !important;
+}
+
+.modal-auth::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* modal-content (Agregar Equipo / Cambiar Estado) sí permite scroll */
+.modal-content {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mycard-color) transparent;
+}
+
+/* Congelar el fondo cuando hay modal abierto */
+html.modal-open,
+body.modal-open {
+  overflow: hidden !important;
+}
+
+
+
+.modal-auth .form-buttons {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 12px !important;
+  margin-top: 25px !important;
+}
+
+.modal-auth .btn-submit,
+.modal-auth .btn-cancel {
+  flex: 1 !important;
+  width: auto !important;
+  padding: 14px !important;
+  font-size: 1em !important;
+}
+
+
+.modal-auth .btn-cancel {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
 }
