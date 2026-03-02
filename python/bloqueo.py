@@ -1,14 +1,5 @@
 """
-bloqueo.py
-==========
 Agente de bloqueo remoto de pantalla — Flask + CORS.
-
-Ejecutar en la laptop que se quiere bloquear remotamente (192.168.1.79):
-    python bloqueo.py
-
-Dependencias (instalar una sola vez):
-    pip install flask flask-cors
-
 Endpoints:
     POST http://192.168.1.79:5050/bloquear  → Bloquea la pantalla
     GET  http://192.168.1.79:5050/estado    → Estado del agente
