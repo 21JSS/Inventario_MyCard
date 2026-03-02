@@ -56,7 +56,7 @@ body {
     radial-gradient(at 100% 0%, rgba(15, 114, 245, 0.316) 0px, transparent 50%),
     radial-gradient(at 50% 100%, rgba(32, 10, 236, 0.255) 0px, transparent 50%);
   overflow-x: hidden;
- 
+
   padding-top: calc(30px + env(safe-area-inset-top));
   padding-bottom: calc(30px + env(safe-area-inset-bottom));
   padding-left: calc(30px + env(safe-area-inset-left));
