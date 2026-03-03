@@ -25,6 +25,39 @@ if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo) || empty($
 
 $ip_final = (!empty($ip_asignada)) ? $ip_asignada : null;
 
+// Validar que la IP no esté repetida
+if ($ip_final !== null) {
+    $sql_check = "SELECT id FROM equipos_pc WHERE ip_asignada = ?";
+    $stmt_check = $conexion->prepare($sql_check);
+    $stmt_check->bind_param("s", $ip_final);
+    $stmt_check->execute();
+    $resultado_check = $stmt_check->get_result();
+
+    if ($resultado_check->num_rows > 0) {
+        echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' ya está asignada a otro equipo']);
+        exit;
+    }
+
+    // Validar que la IP esté dentro del rango del área seleccionada
+    $sql_rango = "SELECT ip_inicio, ip_fin FROM areas WHERE nombre = ?";
+    $stmt_rango = $conexion->prepare($sql_rango);
+    $stmt_rango->bind_param("s", $area);
+    $stmt_rango->execute();
+    $rango = $stmt_rango->get_result()->fetch_assoc();
+
+    if ($rango) {
+        $ip_num = ip2long($ip_final);
+        $rango_inicio = ip2long($rango['ip_inicio']);
+        $rango_fin = ip2long($rango['ip_fin']);
+
+        if ($ip_num < $rango_inicio || $ip_num > $rango_fin) {
+            echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' no pertenece al rango del área ' . $area . ' (' . $rango['ip_inicio'] . ' - ' . $rango['ip_fin'] . ')']);
+            exit;
+        }
+    }
+}
+
+
 $sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, ip_asignada, estado, nota_estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("sssssssssss", $nombre, $tipo, $marca, $modelo, $encargado, $Departamento, $area, $descripcion_equipo, $ip_final, $estado, $nota);

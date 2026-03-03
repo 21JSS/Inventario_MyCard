@@ -5,6 +5,8 @@ let filtroActivo = "todos";
 // Inicialización
 window.onload = function () {
   cargarInventario();
+  cargarDepartamentos();
+
 };
 
 // ===== Manejo de Modales =====
@@ -393,7 +395,8 @@ async function confirmarCambioEstado(event) {
 
   const nota = document.getElementById("ce_nota").value;
   const enc = document.getElementById("ce_encargado").value;
-  const depto = document.getElementById("ce_departamento").value;
+  const selectDepto = document.getElementById("ce_departamento");
+  const depto = selectDepto.options[selectDepto.selectedIndex].dataset.nombre || selectDepto.value;
   const area = document.getElementById("ce_area").value;
   const descEq = document.getElementById("ce_descripcion").value;
   const chkIP = document.getElementById("ce_chk_ip");
@@ -455,6 +458,10 @@ async function agregarEquipo(event) {
   event.preventDefault();
 
   const formData = new FormData(event.target);
+  // Convertir ID de departamento a nombre
+  const selectDepto = document.getElementById('departamento');
+  const deptoNombre = selectDepto.options[selectDepto.selectedIndex].dataset.nombre;
+  formData.set('Departamento', deptoNombre);
 
   // Lógica de respaldo para descripción si está ocupada
   if (
@@ -682,4 +689,99 @@ function ejecutarBloqueo() {
   }
 
   bloquearPantalla(ip.trim(), equipo.nombre);
+}
+
+// Cargar departamentos desde la BD
+function cargarDepartamentos() {
+  fetch('../php/obtener_departamentos.php')
+    .then(res => res.json())
+    .then(deptos => {
+      const selects = document.querySelectorAll('#departamento, #ce_departamento');
+      selects.forEach(select => {
+        // Guardar solo la primera opción ("Seleccionar departamento...")
+        const primeraOpcion = select.options[0];
+        select.innerHTML = '';
+        select.appendChild(primeraOpcion);
+
+        deptos.forEach(d => {
+          const option = document.createElement('option');
+          option.value = d.id;
+          option.textContent = d.nombre;
+          option.dataset.nombre = d.nombre;
+          select.appendChild(option);
+        });
+      });
+    });
+}
+
+// Cargar áreas según departamento
+function cargarAreas(selectDepto, areaSelectId) {
+  const deptoId = selectDepto.value;
+  const selectArea = document.getElementById(areaSelectId);
+
+  selectArea.innerHTML = '<option value="">Cargando áreas...</option>';
+
+  if (!deptoId) {
+    selectArea.innerHTML = '<option value="">Primero selecciona un departamento...</option>';
+    return;
+  }
+
+  fetch('../php/obtener_areas.php?departamento_id=' + deptoId)
+    .then(res => res.json())
+    .then(areas => {
+      selectArea.innerHTML = '<option value="">Seleccionar área...</option>';
+      areas.forEach(a => {
+        const option = document.createElement('option');
+        option.value = a.nombre;
+        option.textContent = a.nombre;
+        selectArea.appendChild(option);
+      });
+    });
+}
+// Obtener IP disponible para el formulario de Agregar
+// Obtener IP disponible según el área seleccionada
+function cargarIPDisponible(selectArea) {
+  const areaNombre = selectArea.value;
+  if (!areaNombre) return;
+
+  fetch('../php/obtener_ip_disponible.php?area=' + encodeURIComponent(areaNombre))
+    .then(res => res.json())
+    .then(data => {
+      const inputIP = document.getElementById('ip_asignada');
+      const checkbox = document.getElementById('chk_asignar_ip');
+
+      if (data.ip_disponible) {
+        inputIP.value = data.ip_disponible;
+        inputIP.placeholder = 'Rango: ' + data.rango;
+        checkbox.checked = true;
+        document.getElementById('grupoIP').style.display = 'block';
+      } else {
+        inputIP.value = '';
+        inputIP.placeholder = 'No hay IPs disponibles en este rango';
+      }
+    });
+}
+
+// Obtener IP disponible para el formulario de Cambiar Estado
+// Obtener IP disponible para el formulario de Cambiar Estado
+function cargarIPDisponibleEstado(selectArea) {
+  const areaNombre = selectArea.value;
+  if (!areaNombre) return;
+
+  fetch('../php/obtener_ip_disponible.php?area=' + encodeURIComponent(areaNombre))
+    .then(res => res.json())
+    .then(data => {
+      const inputIP = document.getElementById('ce_ip_asignada');
+      const checkbox = document.getElementById('ce_chk_ip');
+
+      if (data.ip_disponible) {
+        inputIP.value = data.ip_disponible;
+        inputIP.placeholder = 'Rango: ' + data.rango;
+        checkbox.checked = true;
+        document.getElementById('ce_grupoIP').style.display = 'block';
+      } else {
+        inputIP.value = '';
+        inputIP.placeholder = 'No hay IPs disponibles en este rango';
+      }
+    });
 }

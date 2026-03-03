@@ -244,30 +244,19 @@
 
                         <div class="form-group">
                             <label for="departamento">Departamento:</label>
-                            <select id="departamento" name="Departamento" required>
+                            <select id="departamento" name="Departamento" required
+                                onchange="cargarAreas(this, 'area');">
                                 <option value="">Seleccionar departamento...</option>
-                                <option value="Oficina">Oficina</option>
-                                <option value="Almacen">Almacen</option>
-                                <option value="Perso">Perso</option>
                             </select>
+
                         </div>
 
                         <div class="form-group">
                             <label for="area">Area:</label>
-                            <select id="area" name="area" required>
-                                <option value="">Seleccionar Area...</option>
-                                <option value="Auditoria">Auditoria</option>
-                                <option value="Area de corte">Area de corte</option>
-                                <option value="Almacen">Almacen</option>
-                                <option value="Logistica">Logistica</option>
-                                <option value="Plata">Plata</option>
-                                <option value="Boveda Plata">Boveda Plata</option>
-                                <option value="Cqm">Cqm</option>
-                                <option value="RH">RH</option>
-                                <option value="Sistemas">Sistemas</option>
-                                <option value="Ventas">Ventas</option>
-                                <option value="Compras">Compras</option>
+                            <select id="area" name="area" required onchange="cargarIPDisponible(this)">
+                                <option value="">Primero selecciona un departamento...</option>
                             </select>
+
                         </div>
 
                         <div class="form-group">
@@ -341,30 +330,19 @@
 
                     <div class="form-group">
                         <label for="ce_departamento">Departamento:</label>
-                        <select id="ce_departamento" name="departamento" required>
+                        <select id="ce_departamento" name="departamento" required
+                            onchange="cargarAreas(this, 'ce_area')">
                             <option value="">Seleccionar departamento...</option>
-                            <option value="Oficina">Oficina</option>
-                            <option value="Almacen">Almacen</option>
-                            <option value="Perso">Perso</option>
                         </select>
+
                     </div>
 
                     <div class="form-group">
                         <label for="ce_area">Area:</label>
-                        <select id="ce_area" name="area" required>
-                            <option value="">Seleccionar Area...</option>
-                            <option value="Auditoria">Auditoria</option>
-                            <option value="Area de corte">Area de corte</option>
-                            <option value="Almacen">Almacen</option>
-                            <option value="Logistica">Logistica</option>
-                            <option value="Plata">Plata</option>
-                            <option value="Boveda Plata">Boveda Plata</option>
-                            <option value="Cqm">Cqm</option>
-                            <option value="RH">RH</option>
-                            <option value="Sistemas">Sistemas</option>
-                            <option value="Ventas">Ventas</option>
-                            <option value="Compras">Compras</option>
+                        <select id="ce_area" name="area" required onchange="cargarIPDisponibleEstado(this)">
+                            <option value="">Primero selecciona un departamento...</option>
                         </select>
+
                     </div>
 
                     <div class="form-group">

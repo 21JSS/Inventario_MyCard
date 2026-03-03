@@ -46,6 +46,39 @@ if ($nuevo_estado === 'disponible') {
     // Si pasa a ocupada, actualizamos el estado, la nota, descripcion, encargado, departamento, area e IP
     // Si ip_asignada es cadena vacía, guardamos NULL
     $ip_final = (!empty($ip_asignada)) ? $ip_asignada : null;
+
+    // Validar que la IP no esté repetida (excluyendo este equipo)
+    if ($ip_final !== null) {
+        $sql_check = "SELECT id FROM equipos_pc WHERE ip_asignada = ? AND id != ?";
+        $stmt_check = $conexion->prepare($sql_check);
+        $stmt_check->bind_param("si", $ip_final, $equipo_id);
+        $stmt_check->execute();
+        $resultado_check = $stmt_check->get_result();
+
+        if ($resultado_check->num_rows > 0) {
+            echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' ya está asignada a otro equipo']);
+            exit;
+        }
+
+        // Validar que la IP esté dentro del rango del área seleccionada
+        $sql_rango = "SELECT ip_inicio, ip_fin FROM areas WHERE nombre = ?";
+        $stmt_rango = $conexion->prepare($sql_rango);
+        $stmt_rango->bind_param("s", $area);
+        $stmt_rango->execute();
+        $rango = $stmt_rango->get_result()->fetch_assoc();
+
+        if ($rango) {
+            $ip_num = ip2long($ip_final);
+            $rango_inicio = ip2long($rango['ip_inicio']);
+            $rango_fin = ip2long($rango['ip_fin']);
+
+            if ($ip_num < $rango_inicio || $ip_num > $rango_fin) {
+                echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' no pertenece al rango del área ' . $area . ' (' . $rango['ip_inicio'] . ' - ' . $rango['ip_fin'] . ')']);
+                exit;
+            }
+        }
+    }
+
     $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, descripcion_equipo = ?, encargado = ?, departamento = ?, area = ?, ip_asignada = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("sssssssi", $nuevo_estado, $nota, $descripcion_equipo, $encargado, $departamento, $area, $ip_final, $equipo_id);
