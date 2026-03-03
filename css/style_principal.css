@@ -32,7 +32,7 @@ body {
   height: auto !important;
   margin: 0;
   padding: 0;
-  overflow-y: visible !important;
+  overflow-y: visible;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
@@ -42,6 +42,9 @@ body {
 body.modal-open,
 html.modal-open {
   overflow: hidden !important;
+  /* position: fixed evita el scroll por momentum/inercia en iOS */
+  position: fixed;
+  width: 100%;
   touch-action: none;
 }
 
@@ -496,9 +499,18 @@ tbody tr:hover {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  overflow: hidden;       /* El overlay NO scrollea */
-  overflow-y: auto;       /* Pero sí permite scroll interno del contenido */
+  overflow-y: auto;
+  /* Evita que el scroll se propague al fondo (scroll chaining) */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 20px 0;
+  /* Ocultar scrollbar */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge legacy */
+}
+
+.modal::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
 }
 
 .modal-auth {
@@ -751,8 +763,8 @@ tbody tr:hover {
 }
 
 .modal-content {
-  background: rgba(59, 130, 246, 0.5);
-  backdrop-filter: blur(15px);
+  background: rgba(22, 80, 172, 0.193);
+  backdrop-filter: blur(25px);
   font-family: "Bricolage Grotesque";
   padding: 45px;
   border-radius: 28px;
@@ -1054,6 +1066,23 @@ tbody tr:hover {
   .wrapper {
     padding: 12px;
   }
+
+  .modal-content {
+  background: rgba(59, 130, 246, 0.5);
+  backdrop-filter: blur(15px);
+  font-family: "Bricolage Grotesque";
+  padding: 45px;
+  border-radius: 28px;
+  max-width: 600px;
+  width: 92%;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mycard-color) transparent;
+}
 
   .container {
     padding-bottom: 20px;
