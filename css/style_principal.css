@@ -239,7 +239,7 @@ button {
 .btn-exportar {
   color: rgb(0, 0, 0);
   background: #30d148;
-  box-shadow: 0 0 5px 3px var(--boton-excel);
+  box-shadow: 0 0 5px 3px #30d14886;
 }
 
 .btn-exportar:hover {
