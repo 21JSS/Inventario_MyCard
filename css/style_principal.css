@@ -154,7 +154,7 @@ p {
 
 .stat-card:hover {
   transform: translateY(-23px);
-  box-shadow: 0 8px 16px var(--shadow-buttons);
+  box-shadow: 0 8px 16px var(--boton-qr);
 }
 
 .stat-label {
@@ -219,6 +219,7 @@ button {
   background: linear-gradient(135deg, #1a8dda 0%, #187acb 100%);
   color: #ffffff;
   border: none;
+  box-shadow: 0 0 5px 3px var(--shadow-buttons);
   padding: 13px 30px;
   font-family: "Bricolage Grotesque", sans-serif;
   border-radius: 13px;
@@ -231,6 +232,7 @@ button {
 .btn-exportar {
   color: rgb(0, 0, 0);
   background: #30d148;
+  box-shadow: 0 0 5px 3px var(--boton-excel);
 }
 
 .btn-exportar:hover {
