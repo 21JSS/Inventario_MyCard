@@ -32,10 +32,20 @@ body {
   height: auto !important;
   margin: 0;
   padding: 0;
-  overflow-y: visible !important;
+  overflow-y: visible;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
+}
+
+/* Bloquea el scroll del fondo cuando hay un modal abierto */
+body.modal-open,
+html.modal-open {
+  overflow: hidden !important;
+  /* position: fixed evita el scroll por momentum/inercia en iOS */
+  position: fixed;
+  width: 100%;
+  touch-action: none;
 }
 
 ::selection {
@@ -154,7 +164,7 @@ p {
 
 .stat-card:hover {
   transform: translateY(-23px);
-  box-shadow: 0 8px 16px var(--shadow-buttons);
+  box-shadow: 0 8px 16px var(--boton-qr);
 }
 
 .stat-label {
@@ -190,8 +200,8 @@ p {
 
 .stat-value {
   font-size: 2.5em;
-  font-weight: 700;
-  font-family: "Bricolege Grotesque";
+  font-weight: 500;
+  font-family: "Alan Sans";
 }
 
 .controls {
@@ -219,6 +229,7 @@ button {
   background: linear-gradient(135deg, #1a8dda 0%, #187acb 100%);
   color: #ffffff;
   border: none;
+  box-shadow: 0 0 5px 3px var(--shadow-buttons);
   padding: 13px 30px;
   font-family: "Bricolage Grotesque", sans-serif;
   border-radius: 13px;
@@ -231,10 +242,11 @@ button {
 .btn-exportar {
   color: rgb(0, 0, 0);
   background: #30d148;
+  box-shadow: 0 0 5px 3px #30d14886;
 }
 
 .btn-exportar:hover {
-  box-shadow: 0 0 10px 6px var(--boton-excel);
+  box-shadow: 2px 0 8px 2px var(--boton-excel);
 }
 
 #icono_computo {
@@ -488,7 +500,17 @@ tbody tr:hover {
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
-  padding: 30px 0;
+  /* Evita que el scroll se propague al fondo (scroll chaining) */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 0;
+  /* Ocultar scrollbar */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge legacy */
+}
+
+.modal::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
 }
 
 .modal-auth {
@@ -741,8 +763,8 @@ tbody tr:hover {
 }
 
 .modal-content {
-  background: rgba(59, 130, 246, 0.5);
-  backdrop-filter: blur(15px);
+  background: rgba(22, 80, 172, 0.193);
+  backdrop-filter: blur(25px);
   font-family: "Bricolage Grotesque";
   padding: 45px;
   border-radius: 28px;
@@ -1044,6 +1066,23 @@ tbody tr:hover {
   .wrapper {
     padding: 12px;
   }
+
+  .modal-content {
+  background: rgba(59, 130, 246, 0.5);
+  backdrop-filter: blur(15px);
+  font-family: "Bricolage Grotesque";
+  padding: 45px;
+  border-radius: 28px;
+  max-width: 600px;
+  width: 92%;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mycard-color) transparent;
+}
 
   .container {
     padding-bottom: 20px;

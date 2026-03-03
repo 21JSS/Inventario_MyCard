@@ -2,6 +2,25 @@ let inventario = [];
 let equipoActualId = null;
 let filtroActivo = "todos";
 
+// ===== Helpers para bloquear scroll del fondo con modales =====
+
+/** Bloquea el scroll del body guardando la posición actual */
+function bloquearScrollFondo() {
+  const scrollY = window.scrollY || window.pageYOffset;
+  document.body.style.top = `-${scrollY}px`;
+  document.documentElement.classList.add("modal-open");
+  document.body.classList.add("modal-open");
+}
+
+/** Restaura el scroll del body a donde estaba antes de abrir el modal */
+function restaurarScrollFondo() {
+  const scrollY = Math.abs(parseInt(document.body.style.top || "0", 10));
+  document.documentElement.classList.remove("modal-open");
+  document.body.classList.remove("modal-open");
+  document.body.style.top = "";
+  window.scrollTo(0, scrollY);
+}
+
 // Inicialización
 window.onload = function () {
   cargarInventario();
@@ -16,8 +35,7 @@ function abrirModal() {
   const modalAuth = document.getElementById("modalAuth");
   if (modalAuth) {
     modalAuth.style.display = "flex";
-    document.documentElement.classList.add("modal-open");
-    document.body.classList.add("modal-open");
+    bloquearScrollFondo();
     // Limpiar campos del form de autenticación
     const formAuth = document.getElementById("formAuth");
     if (formAuth) formAuth.reset();
@@ -36,8 +54,7 @@ function cerrarModalAuth() {
   const modal = document.getElementById("modalAuth");
   if (modal) {
     modal.style.display = "none";
-    document.documentElement.classList.remove("modal-open");
-    document.body.classList.remove("modal-open");
+    restaurarScrollFondo();
   }
 }
 
@@ -70,8 +87,7 @@ function verificarCredenciales(event) {
       const ipInput = document.getElementById("ip_asignada");
       if (ipInput) ipInput.removeAttribute("required");
       modalAgregar.style.display = "flex";
-      document.documentElement.classList.add("modal-open");
-      document.body.classList.add("modal-open");
+      bloquearScrollFondo();
     }
   } else {
     if (errMsg) errMsg.style.display = "block";
@@ -85,8 +101,7 @@ function cerrarModal() {
   const modal = document.getElementById("modalAgregar");
   if (modal) {
     modal.style.display = "none";
-    document.documentElement.classList.remove("modal-open");
-    document.body.classList.remove("modal-open");
+    restaurarScrollFondo();
     const form = document.getElementById("formAgregar");
     if (form) form.reset();
     // Limpiar campos condicionales
@@ -357,8 +372,7 @@ async function cambiarEstadoEquipo() {
       if (selArea) selArea.value = equipo.area || "";
 
       modal.style.display = "flex";
-      document.documentElement.classList.add("modal-open");
-      document.body.classList.add("modal-open");
+      bloquearScrollFondo();
     }
   } else {
     // Si pasa a disponible, confirmar directamente
@@ -440,8 +454,7 @@ function cerrarModalEstado() {
   const modal = document.getElementById("modalCambiarEstado");
   if (modal) {
     modal.style.display = "none";
-    document.documentElement.classList.remove("modal-open");
-    document.body.classList.remove("modal-open");
+    restaurarScrollFondo();
     const form = document.getElementById("formCambiarEstado");
     if (form) form.reset();
     // Resetear checkbox e IP
@@ -491,8 +504,6 @@ async function agregarEquipo(event) {
     alert("Error al conectar con el servidor");
   }
 }
-
-
 
 function cargarTabla() {
   const tbody = document.getElementById("inventarioBody");
