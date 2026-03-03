@@ -243,7 +243,7 @@ button {
 }
 
 .btn-exportar:hover {
-  box-shadow: 0 0 10px 6px var(--boton-excel);
+  box-shadow: 2px 0 8px 2px var(--boton-excel);
 }
 
 #icono_computo {
