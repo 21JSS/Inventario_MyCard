@@ -29,14 +29,14 @@
             <p class="parrafo-principal" style="color: #f0efef; font-size: 1.1em;">Gestión de equipos de computo</p>
         </div>
 
-        <!-- Vista de Detalle Individual -->
+        
         <div id="detalleEquipo" style="display: none;">
             <button onclick="regresarInventario()" class="btn-regresar">← Regresar al Inventario</button>
 
             <div class="detalle-card">
                 <h2 id="detalle-nombre"></h2>
                 <div class="detalle-info">
-                    <!-- 1. Estado y Asignación -->
+                
                     <div class="detalle-row" style="margin-bottom: 5px;">
                         <span class="detalle-label">Estado:</span>
                         <span class="detalle-badge" id="detalle-estado"></span>
@@ -90,12 +90,12 @@
 
                 </div>
 
-                <!-- Botón de cambio de estado -->
+               
                 <button id="btnCambiarEstado" onclick="cambiarEstadoEquipo()" class="btn-cambiar-estado">
                     Marcar como Ocupada
                 </button>
 
-                <!-- Más opciones dropdown -->
+                
                 <div class="mas-opciones-wrapper">
                     <button class="btn-mas-opciones" id="btnMasOpciones" onclick="toggleMasOpciones(event)">
                         <i class="fa-solid fa-ellipsis-vertical"></i> Más opciones
@@ -108,7 +108,10 @@
                 </div>
             </div>
         </div>
-        <!-- FIN Vista de Detalle Individual -->
+        
+
+
+
 
         <div class="stats-container">
             <div class="stat-card" onclick="filtrarPorEstado('todos')" style="cursor: pointer;" id="cardTodos">
@@ -126,7 +129,7 @@
             </div>
         </div>
 
-        <!-- Indicador de filtro activo -->
+       
         <div id="filtroIndicador"
             style="text-align: center; margin: 20px 0; font-size: 1.1em; color: #666; display: none;">
             <span id="filtroTexto">Mostrando: Todos los equipos</span>
@@ -174,7 +177,7 @@
             </table>
         </div>
 
-        <!-- Modal de Autenticación -->
+        
         <div id="modalAuth" class="modal" style="display: none;">
             <div class="modal-content modal-auth">
                 <span class="close" onclick="cerrarModalAuth()">&times;</span>
@@ -209,7 +212,7 @@
             </div>
         </div>
 
-        <!-- Modal para Agregar Equipo -->
+       
         <div id="modalAgregar" class="modal" style="display: none;">
             <div class="modal-content">
                 <span class="close" onclick="cerrarModal()">&times;</span>
@@ -324,7 +327,7 @@
         </div>
     </div>
 
-    <!-- Modal para Cambiar Estado -->
+    
     <div id="modalCambiarEstado" class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close" onclick="cerrarModalEstado()">&times;</span>
