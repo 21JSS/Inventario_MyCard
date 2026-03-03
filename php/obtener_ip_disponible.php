@@ -3,6 +3,7 @@ header('Content-Type: application/json');
 require_once 'db.php';
 
 $area_nombre = $_GET['area'] ?? null;
+$validar_ip = $_GET['validar_ip'] ?? null;
 
 if (!$area_nombre) {
     echo json_encode(['error' => 'Falta el área']);
@@ -44,6 +45,36 @@ for ($ip = $ip_inicio; $ip <= $ip_fin; $ip++) {
         $ip_disponible = $ip_texto;
         break;
     }
+}
+
+$validacion = null;
+if ($validar_ip) {
+    $ip_num = ip2long($validar_ip);
+    $en_rango = ($ip_num >= $ip_inicio && $ip_num <= $ip_fin);
+    $ocupada = in_array($validar_ip, $ips_usadas);
+
+    $area_pertenece = null;
+    $rango_pertenece = null;
+    if (!$en_rango) {
+        $sql3 = "SELECT nombre, ip_inicio, ip_fin FROM areas WHERE INET_ATON(ip_inicio) <= INET_ATON(?)
+        AND INET_ATON(ip_fin) >= INET_ATON(?)";
+        $stmt3 = $conexion->prepare($sql3);
+        $stmt3 -> bind_param("ss", $validar_ip,$validar_ip);
+        $stmt3 -> execute();
+        $otraArea = $stmt3 ->get_result()->fetch_assoc();
+             if ($otraArea) {
+                $area_pertenece = $otraArea['nombre'];
+                $rango_pertenece = $otraArea['ip_inicio'] . ' - ' .
+                $otraArea['ip_fin'];
+             }
+     }
+
+     $validacion = [
+        'en_rango'  => $en_rango,
+        'ocupada' => $ocupada,
+        'area_pertenece' => $area_pertenece,
+        'rango_pertenece' => $rango_pertenece,
+     ];
 }
 
 echo json_encode([

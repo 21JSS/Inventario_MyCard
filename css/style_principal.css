@@ -920,6 +920,109 @@ tbody tr:hover {
   background: #4b5563;
 }
 
+.alerta-ip-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.65);
+  justify-content: center;
+  align-items: center;
+}
+
+.alerta-ip-overlay.visible{
+  display: flex;
+}
+
+.alerta-ip-box {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 36px 32px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  animation: modalSlipeUp 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+
+.alerta-ip-icono {
+  font-size: 3rem;
+  margin-bottom: 14px;
+}
+
+.alerta-ip-box h3 {
+  font-size: 1.25em;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 10px;
+  font-family: "Bricolage Grotesque";
+}
+
+.alerta-ip-box p {
+  color: #94a3b8;
+  font-size: 0.95em;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: "Bricolage Grotesque";
+}
+
+.alerta-ip-rango {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+}
+
+.alerta-ip-rango-label {
+  display: block;
+  color: #64748b;
+  font-size: 0.8em;
+  margin-bottom: 4px;
+  font-family: "Bricolage Grotesque";
+}
+
+#alertaIP-rango {
+  color: var(--mycard-color);
+  font-weight: 700;
+  font-size: 0.95em;
+}
+
+.alerta-ip-btn{
+  background: linear-gradient(135deg, #00c6e6, #0072ff);
+  color: white;
+  border: none;
+  padding: 12px 36px;
+  border-radius: 12px;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Bricolage Grotesque";
+  box-shadow: 0 6px 18px rgba(0, 114, 255, 0.35);
+}
+
+.alerta-ip-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 114, 255, 0.5);
+}
+
+.alert-ip-box.tipo-error {
+  border-color: rgba(239,68,68,0.25);
+}
+
+.alerta-ip-box.tipo-error .alerta-ip-btn {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 6px 18px rgba(239,68,68,0.35);
+}
+
+.alerta-ip-box.tipo-error #alertaIP-rango {
+  color: #f87171;
+}
+
 @keyframes search-box {
   0% {
     top: 0;
