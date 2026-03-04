@@ -513,6 +513,18 @@ tbody tr:hover {
   display: none;                /* Chrome, Safari, Opera */
 }
 
+/* El modal de autenticación no necesita scroll — es pequeño */
+#modalAuth {
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  align-items: center;         /* centra el cuadro verticalmente */
+}
+
+#modalAuth::-webkit-scrollbar {
+  display: none;
+}
+
 .modal-auth {
   width: 95%;
   max-width: 380px;
@@ -928,6 +940,12 @@ tbody tr:hover {
   background: rgba(0, 0, 0, 0.65);
   justify-content: center;
   align-items: center;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE / Edge */
+}
+
+.alerta-ip-overlay::-webkit-scrollbar {
+  display: none;               /* Chrome, Safari, Opera */
 }
 
 .alerta-ip-overlay.visible{
