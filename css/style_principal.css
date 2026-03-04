@@ -1017,6 +1017,7 @@ tbody tr:hover {
 .alerta-ip-box.tipo-error .alerta-ip-btn {
   background: linear-gradient(135deg, #ef4444, #b91c1c);
   box-shadow: 0 6px 18px rgba(239,68,68,0.35);
+  justify-items: center;
 }
 
 .alerta-ip-box.tipo-error #alertaIP-rango {
