@@ -441,13 +441,30 @@ async function confirmarCambioEstado(event) {
       cerrarModalEstado();
       await cargarInventario();
       mostrarDetalleEquipo(equipoActualId);
-      alert("✅ Equipo marcado como OCUPADA");
+      mostrarAlertaIP(
+        "success",
+        "✅ Estado actualizado",
+        "El equipo fue marcado como OCUPADA exitosamente.",
+        null,
+      );
     } else {
-      alert("Error: " + result.error);
+      const err = result.error || "";
+      if (err.includes("ya está asignada")) {
+        mostrarAlertaIP("error", "IP ya está en uso", err, null);
+      } else if (err.includes("no pertenece al rango")) {
+        mostrarAlertaIP("warning", "IP de otro departamento", err, null);
+      } else {
+        mostrarAlertaIP("error", "Error al actualizar", err, null);
+      }
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Error al cambiar el estado");
+    mostrarAlertaIP(
+      "error",
+      "Error de conexión",
+      "No se pudo conectar con el servidor.",
+      null,
+    );
   }
 }
 
