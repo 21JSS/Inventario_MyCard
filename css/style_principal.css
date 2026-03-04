@@ -1023,6 +1023,16 @@ tbody tr:hover {
   color: #f87171;
 }
 
+/* Variante verde: éxito */
+.alerta-ip-box.tipo-success {
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.alerta-ip-box.tipo-success .alerta-ip-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+}
+
 @keyframes search-box {
   0% {
     top: 0;
