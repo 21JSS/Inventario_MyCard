@@ -495,15 +495,33 @@ async function agregarEquipo(event) {
     const result = await response.json();
 
     if (result.success) {
-      alert("Equipo agregado exitosamente");
       cerrarModal();
       cargarInventario();
+      mostrarAlertaIP(
+        "success",
+        "✅ Equipo agregado",
+        "El equipo fue registrado exitosamente en el inventario.",
+        null,
+      );
     } else {
-      alert("Error: " + result.error);
+      // Detectar si el error es de IP para usar el cuadro personalizado
+      const err = result.error || "";
+      if (err.includes("ya está asignada")) {
+        mostrarAlertaIP("error", "IP ya está en uso", err, null);
+      } else if (err.includes("no pertenece al rango")) {
+        mostrarAlertaIP("warning", "IP de otro departamento", err, null);
+      } else {
+        mostrarAlertaIP("error", "Error al guardar", err, null);
+      }
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Error al conectar con el servidor");
+    mostrarAlertaIP(
+      "error",
+      "Error de conexión",
+      "No se pudo conectar con el servidor.",
+      null,
+    );
   }
 }
 
@@ -810,18 +828,30 @@ function cargarIPDisponibleEstado(selectArea) {
 
 function mostrarAlertaIP(tipo, titulo, mensaje, rango) {
   const box = document.getElementById("alertaIP-box");
-  box.classList.remove("tipo-error");
+  box.classList.remove("tipo-error", "tipo-success");
 
   if (tipo === "error") {
     box.classList.add("tipo-error");
     document.getElementById("alertaIP-icono").textContent = "❌";
+  } else if (tipo === "success") {
+    box.classList.add("tipo-success");
+    document.getElementById("alertaIP-icono").textContent = "✅";
   } else {
     document.getElementById("alertaIP-icono").textContent = "⚠️";
   }
 
   document.getElementById("alertaIP-titulo").textContent = titulo;
   document.getElementById("alertaIP-mensaje").textContent = mensaje;
-  document.getElementById("alertaIP-rango").textContent = rango || "—";
+
+  // Mostrar u ocultar la sección del rango según corresponda
+  const rangoBox = document.querySelector(".alerta-ip-rango");
+  if (rango) {
+    rangoBox.style.display = "block";
+    document.getElementById("alertaIP-rango").textContent = rango;
+  } else {
+    rangoBox.style.display = "none";
+  }
+
   document.getElementById("alertaIP").classList.add("visible");
 }
 
