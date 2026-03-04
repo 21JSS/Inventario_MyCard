@@ -1003,6 +1003,8 @@ tbody tr:hover {
   transition: all 0.3s ease;
   font-family: "Bricolage Grotesque";
   box-shadow: 0 6px 18px rgba(0, 114, 255, 0.35);
+  display: block;
+  margin: 0 auto;
 }
 
 .alerta-ip-btn:hover{
