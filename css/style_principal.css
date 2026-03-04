@@ -413,7 +413,8 @@ tbody tr:hover {
   position: relative;
 }
 
-#togglePassword {
+#togglePassword,
+#togglePasswordEstado {
   position: absolute;
   top: 50%;
   right: 10px;
@@ -426,20 +427,24 @@ tbody tr:hover {
   transition: opacity 0.2s ease;
 }
 
-#togglePassword:hover {
+#togglePassword:hover,
+#togglePasswordEstado:hover {
   opacity: 1;
   color: #374151;
 }
 
-#password {
+#password,
+#password_estado {
   padding-right: 40px;
 }
 
-#password {
+#password,
+#password_estado {
   padding-right: 35px;
 }
 
-#togglePassword:hover {
+#togglePassword:hover,
+#togglePasswordEstado:hover {
   opacity: 0.8;
 }
 
@@ -505,12 +510,15 @@ tbody tr:hover {
   -webkit-overflow-scrolling: touch;
   padding: 20px 0;
   /* Ocultar scrollbar */
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE / Edge legacy */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE / Edge legacy */
 }
 
 .modal::-webkit-scrollbar {
-  display: none;                /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 
 /* El modal de autenticación no necesita scroll — es pequeño */
@@ -540,7 +548,9 @@ tbody tr:hover {
     0 0 40px rgba(0, 198, 230, 0.1);
   animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  overflow: hidden;
+  overflow: hidden !important;
+  overflow-y: hidden !important;
+  max-height: none !important;
   display: flex;
   flex-direction: column;
   scrollbar-width: none;
@@ -661,13 +671,15 @@ tbody tr:hover {
   transform: translateY(-2px);
 }
 
-.modal-auth .password-wrapper #togglePassword {
+.modal-auth .password-wrapper #togglePassword,
+.modal-auth .password-wrapper #togglePasswordEstado {
   right: 20px;
   color: #64748b;
   font-size: 1.2em;
 }
 
-.modal-auth .password-wrapper #togglePassword:hover {
+.modal-auth .password-wrapper #togglePassword:hover,
+.modal-auth .password-wrapper #togglePasswordEstado:hover {
   color: var(--mycard-color);
 }
 
@@ -736,7 +748,8 @@ tbody tr:hover {
   box-shadow: 0 0 15px rgba(248, 113, 113, 0.4);
 }
 
-#error-message {
+#error-message,
+#error-message-estado {
   background: #fef2f2;
   color: #dc2626;
   padding: 12px 16px;
@@ -941,15 +954,18 @@ tbody tr:hover {
   background: rgba(0, 0, 0, 0.65);
   justify-content: center;
   align-items: center;
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* IE / Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE / Edge */
 }
 
 .alerta-ip-overlay::-webkit-scrollbar {
-  display: none;               /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 
-.alerta-ip-overlay.visible{
+.alerta-ip-overlay.visible {
   display: flex;
 }
 
@@ -963,7 +979,7 @@ tbody tr:hover {
   width: 90%;
   text-align: center;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-  animation: modalSlipeUp 0.3s cubic-bezier(0.16,1,0.3,1);
+  animation: modalSlipeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .alerta-ip-icono {
@@ -1010,7 +1026,7 @@ tbody tr:hover {
   font-size: 0.95em;
 }
 
-.alerta-ip-btn{
+.alerta-ip-btn {
   background: linear-gradient(135deg, #00c6e6, #0072ff);
   color: white;
   border: none;
@@ -1026,18 +1042,18 @@ tbody tr:hover {
   margin: 0 auto;
 }
 
-.alerta-ip-btn:hover{
+.alerta-ip-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(0, 114, 255, 0.5);
 }
 
 .alert-ip-box.tipo-error {
-  border-color: rgba(239,68,68,0.25);
+  border-color: rgba(239, 68, 68, 0.25);
 }
 
 .alerta-ip-box.tipo-error .alerta-ip-btn {
   background: linear-gradient(135deg, #ef4444, #b91c1c);
-  box-shadow: 0 6px 18px rgba(239,68,68,0.35);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.35);
   justify-items: center;
 }
 
@@ -1240,21 +1256,21 @@ tbody tr:hover {
   }
 
   .modal-content {
-  background: rgba(59, 130, 246, 0.5);
-  backdrop-filter: blur(15px);
-  font-family: "Bricolage Grotesque";
-  padding: 45px;
-  border-radius: 28px;
-  max-width: 600px;
-  width: 92%;
-  max-height: 92vh;
-  overflow-y: auto;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  position: relative;
-  scrollbar-width: thin;
-  scrollbar-color: var(--mycard-color) transparent;
-}
+    background: rgba(59, 130, 246, 0.5);
+    backdrop-filter: blur(15px);
+    font-family: "Bricolage Grotesque";
+    padding: 45px;
+    border-radius: 28px;
+    max-width: 600px;
+    width: 92%;
+    max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--mycard-color) transparent;
+  }
 
   .container {
     padding-bottom: 20px;
