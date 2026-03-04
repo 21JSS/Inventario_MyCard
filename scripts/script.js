@@ -435,10 +435,12 @@ function mostrarDialogConfirmar(titulo, mensaje, onConfirmar) {
   };
 
   document.getElementById("dialogConfirmar").classList.add("visible");
+  bloquearScrollFondo();
 }
 
 function cerrarDialogConfirmar() {
   document.getElementById("dialogConfirmar").classList.remove("visible");
+  restaurarScrollFondo();
 }
 
 // Función para confirmar el cambio de estado desde el modal
@@ -909,10 +911,12 @@ function mostrarAlertaIP(tipo, titulo, mensaje, rango) {
   }
 
   document.getElementById("alertaIP").classList.add("visible");
+  bloquearScrollFondo();
 }
 
 function cerrarAlertaIP() {
   document.getElementById("alertaIP").classList.remove("visible");
+  restaurarScrollFondo();
 }
 
 function validarIPManual(inputIP, areaSelectId) {
