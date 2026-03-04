@@ -374,32 +374,71 @@ async function cambiarEstadoEquipo() {
       bloquearScrollFondo();
     }
   } else {
-    // Si pasa a disponible, confirmar directamente
-    if (!confirm("¿Marcar este equipo como DISPONIBLE?")) return;
+    // Pasa a disponible → mostrar diálogo de confirmación personalizado
+    mostrarDialogConfirmar(
+      "¿Marcar como Disponible?",
+      `El equipo "${equipo.nombre}" quedará libre y se borrarán sus datos de asignación.`,
+      async () => {
+        try {
+          const formData = new FormData();
+          formData.append("id", equipoActualId);
 
-    try {
-      const formData = new FormData();
-      formData.append("id", equipoActualId);
+          const response = await fetch("../php/cambiar_estado.php", {
+            method: "POST",
+            body: formData,
+          });
 
-      const response = await fetch("../php/cambiar_estado.php", {
-        method: "POST",
-        body: formData,
-      });
+          const result = await response.json();
 
-      const result = await response.json();
-
-      if (result.success) {
-        await cargarInventario();
-        mostrarDetalleEquipo(equipoActualId);
-        alert("✅ Equipo marcado como DISPONIBLE");
-      } else {
-        alert("Error: " + result.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Error al cambiar el estado");
-    }
+          if (result.success) {
+            await cargarInventario();
+            mostrarDetalleEquipo(equipoActualId);
+            mostrarAlertaIP(
+              "success",
+              "✅ Equipo disponible",
+              "El equipo fue marcado como DISPONIBLE exitosamente.",
+              null,
+            );
+          } else {
+            mostrarAlertaIP(
+              "error",
+              "Error al actualizar",
+              result.error || "",
+              null,
+            );
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          mostrarAlertaIP(
+            "error",
+            "Error de conexión",
+            "No se pudo conectar con el servidor.",
+            null,
+          );
+        }
+      },
+    );
   }
+}
+
+// ===== Diálogo de confirmación personalizado =====
+
+function mostrarDialogConfirmar(titulo, mensaje, onConfirmar) {
+  document.getElementById("dialogConfirmar-titulo").textContent = titulo;
+  document.getElementById("dialogConfirmar-mensaje").textContent = mensaje;
+
+  // Asignar el callback al botón Sí
+  const btnSi = document.getElementById("dialogConfirmar-si");
+  btnSi.onclick = () => {
+    cerrarDialogConfirmar();
+    onConfirmar();
+  };
+
+  document.getElementById("dialogConfirmar").classList.add("visible");
+}
+
+function cerrarDialogConfirmar() {
+  document.getElementById("dialogConfirmar").classList.remove("visible");
 }
 
 // Función para confirmar el cambio de estado desde el modal
