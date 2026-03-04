@@ -79,9 +79,10 @@ if ($validar_ip) {
 
 echo json_encode([
     'ip_disponible' => $ip_disponible,
-    'area' => $area['nombre'],
-    'rango' => $area['ip_inicio'] . ' - ' . $area['ip_fin'],
-    'ips_usadas' => count($ips_usadas)
+    'area'          => $area['nombre'],
+    'rango'         => $area['ip_inicio'] . ' - ' . $area['ip_fin'],
+    'ips_usadas'    => count($ips_usadas),
+    'validacion'    => $validacion,
 ]);
 
 $conexion->close();

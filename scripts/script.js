@@ -804,65 +804,63 @@ function cargarIPDisponibleEstado(selectArea) {
         inputIP.placeholder = "No hay IPs disponibles en este rango";
       }
     });
+}
 
-  // ===== Alerta personalizada de IP =====
+// ===== Alerta personalizada de IP =====
 
-  function mostrarAlertaIP(tipo, titulo, mensaje, rango) {
-    const box = document.getElementById("alertaIP-box");
-    box.classList.remove("tipo-error");
+function mostrarAlertaIP(tipo, titulo, mensaje, rango) {
+  const box = document.getElementById("alertaIP-box");
+  box.classList.remove("tipo-error");
 
-    if (tipo === "error") {
-      box.classList.add("tipo-error");
-      document.getElementById("alertaIP-icono").textContent = "❌";
-    } else {
-      document.getElementById("alertaIP-icono").textContent = "⚠️";
-    }
-
-    document.getElementById("alertaIP-titulo").textContent = titulo;
-    document.getElementById("alertaIP-mensaje").textContent = mensaje;
-    document.getElementById("alertaIP-rango").textContent = rango || "—";
-    document.getElementById("alertaIP").classList.add("visible");
+  if (tipo === "error") {
+    box.classList.add("tipo-error");
+    document.getElementById("alertaIP-icono").textContent = "❌";
+  } else {
+    document.getElementById("alertaIP-icono").textContent = "⚠️";
   }
 
-  function cerrarAlertaIP() {
-    document.getElementById("alertaIP").classList.remove("visible");
-  }
+  document.getElementById("alertaIP-titulo").textContent = titulo;
+  document.getElementById("alertaIP-mensaje").textContent = mensaje;
+  document.getElementById("alertaIP-rango").textContent = rango || "—";
+  document.getElementById("alertaIP").classList.add("visible");
+}
 
-  // Se llama en el evento onblur del input de IP
-  function validarIPManual(inputIP, areaSelectId) {
-    const ip = inputIP.value.trim();
-    const area = document.getElementById(areaSelectId).value;
+function cerrarAlertaIP() {
+  document.getElementById("alertaIP").classList.remove("visible");
+}
 
-    if (!ip || !area) return;
+function validarIPManual(inputIP, areaSelectId) {
+  const ip = inputIP.value.trim();
+  const area = document.getElementById(areaSelectId).value;
 
-    // Reutiliza tu PHP existente con el parámetro nuevo
-    const url = `../php/obtener_ip_disponible.php?area=${encodeURIComponent(area)}&validar_ip=${encodeURIComponent(ip)}`;
+  if (!ip || !area) return;
 
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        const v = data.validacion;
-        if (!v) return;
+  const url = `../php/obtener_ip_disponible.php?area=${encodeURIComponent(area)}&validar_ip=${encodeURIComponent(ip)}`;
 
-        if (v.ocupada) {
-          mostrarAlertaIP(
-            "error",
-            "❌ IP ya está en uso",
-            "Esta dirección IP ya se encuentra asignada a otro equipo. Elige la sugerida o introduce otra.",
-            data.rango,
-          );
-        } else if (!v.en_rango) {
-          const detalle = v.area_pertenece
-            ? `Esta IP pertenece al área "${v.area_pertenece}" (rango: ${v.rango_pertenece}).`
-            : "Esta IP no pertenece al rango del área seleccionada.";
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      const v = data.validacion;
+      if (!v) return;
 
-          mostrarAlertaIP(
-            "warning",
-            "⚠️ IP de otro departamento",
-            detalle,
-            data.rango, // rango del área que SÍ está seleccionada
-          );
-        }
-      });
-  }
+      if (v.ocupada) {
+        mostrarAlertaIP(
+          "error",
+          "IP ya está en uso",
+          "Esta dirección IP ya se encuentra asignada a otro equipo. Elige la sugerida o introduce otra.",
+          data.rango,
+        );
+      } else if (!v.en_rango) {
+        const detalle = v.area_pertenece
+          ? `Esta IP pertenece al área "${v.area_pertenece}" (rango: ${v.rango_pertenece}).`
+          : "Esta IP no pertenece al rango del área seleccionada.";
+
+        mostrarAlertaIP(
+          "warning",
+          "IP de otro departamento",
+          detalle,
+          data.rango,
+        );
+      }
+    });
 }
