@@ -131,6 +131,21 @@ if (togglePassword && password) {
   });
 }
 
+// Toggle password para modal de autenticación de cambio de estado
+const togglePasswordEstado = document.querySelector("#togglePasswordEstado");
+const passwordEstado = document.querySelector("#password_estado");
+
+if (togglePasswordEstado && passwordEstado) {
+  togglePasswordEstado.addEventListener("click", function () {
+    const type =
+      passwordEstado.getAttribute("type") === "password" ? "text" : "password";
+    passwordEstado.setAttribute("type", type);
+
+    this.classList.toggle("bi-eye-slash-fill");
+    this.classList.toggle("bi-eye-fill");
+  });
+}
+
 // Función para mostrar/ocultar el campo de IP en el modal Agregar Equipo
 function toggleCampoIP() {
   const chk = document.getElementById("chk_asignar_ip");
@@ -346,13 +361,63 @@ function mostrarDetalleEquipo(equipoId) {
   }
 }
 
-// Acciones de Equipo
-async function cambiarEstadoEquipo() {
+// Acciones de Equipo — Ahora requiere autenticación de admin
+
+/** Abre el modal de autenticación antes de cambiar estado */
+function cambiarEstadoEquipo() {
   if (!equipoActualId) {
     alert("Error: No hay equipo seleccionado");
     return;
   }
 
+  // Abrir modal de autenticación para cambiar estado
+  const modalAuth = document.getElementById("modalAuthEstado");
+  if (modalAuth) {
+    modalAuth.style.display = "flex";
+    bloquearScrollFondo();
+    const formAuth = document.getElementById("formAuthEstado");
+    if (formAuth) formAuth.reset();
+    const errMsg = document.getElementById("error-message-estado");
+    if (errMsg) errMsg.style.display = "none";
+    setTimeout(() => {
+      const usr = document.getElementById("username_estado");
+      if (usr) usr.focus();
+    }, 100);
+  }
+}
+
+/** Cierra el modal de autenticación para cambiar estado */
+function cerrarModalAuthEstado() {
+  const modal = document.getElementById("modalAuthEstado");
+  if (modal) {
+    modal.style.display = "none";
+    restaurarScrollFondo();
+  }
+}
+
+/** Verifica credenciales y luego ejecuta el cambio de estado */
+function verificarCredencialesEstado(event) {
+  event.preventDefault();
+  const username = document.getElementById("username_estado").value.trim();
+  const password = document.getElementById("password_estado").value;
+  const errMsg = document.getElementById("error-message-estado");
+
+  const ADMIN_USER = "admin";
+  const ADMIN_PASS = "mycard2026";
+
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    cerrarModalAuthEstado();
+    // Ahora sí ejecutar la lógica de cambio de estado
+    ejecutarCambioEstado();
+  } else {
+    if (errMsg) errMsg.style.display = "block";
+    document.getElementById("password_estado").value = "";
+    document.getElementById("password_estado").focus();
+  }
+}
+
+/** Ejecuta la lógica real de cambio de estado (después de autenticarse) */
+async function ejecutarCambioEstado() {
   const equipo = inventario.find((item) => item.id == equipoActualId);
 
   if (equipo.estado === "disponible") {
@@ -644,10 +709,10 @@ function exportarDatos() {
   }
 
   let csv =
-    "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Area,Descripción Equipo,IP Asignada,Máscara,Gateway,DNS Primario,DNS Secundario,Estado\n";
+    "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Area,Descripcion Equipo,IP Asignada,Estado\n";
 
   inventario.forEach((item) => {
-    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.area || "N/A"}","${item.descripcion_equipo || "Sin descripción"}","${item.ip_asignada || "Sin IP"}","${item.mascara || "N/A"}","${item.gateway || "N/A"}","${item.dns_primario || "N/A"}","${item.dns_secundario || "N/A"}","${item.estado || "N/A"}"\n`;
+    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.area || "N/A"}","${item.descripcion_equipo || "Sin descripcion"}","${item.ip_asignada || "Sin IP"}","${item.estado || "N/A"}"\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv" });
@@ -740,6 +805,12 @@ window.onclick = function (event) {
   const modal = document.getElementById("modalAgregar");
   if (event.target == modal) {
     cerrarModal();
+  }
+
+  // Cerrar modal de auth estado al hacer clic fuera
+  const modalAuthEst = document.getElementById("modalAuthEstado");
+  if (event.target == modalAuthEst) {
+    cerrarModalAuthEstado();
   }
 
   // Cerrar dropdown de Más Opciones al hacer clic fuera
