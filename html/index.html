@@ -378,12 +378,25 @@
         <div class="alerta-ip-box" id="alertaIP-box">
             <div class="alerta-ip-icono" id="alertaIP-icono">⚠️</div>
             <h3 id="alertaIP-titulo">Titulo</h3>
-            <p id="alertaIP-mensaje">Mensaje</p>
+            <p  id="alertaIP-mensaje">Mensaje</p>
             <div class="alerta-ip-rango">
                 <span class="alerta-ip-rango-label">Rango del area seleccionada:</span>
-                <span id="alertaIP-rango" >- </span>
+                <span id="alertaIP-rango">- </span>
             </div>
             <button class="alerta-ip-btn" onclick="cerrarAlertaIP()">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Diálogo de confirmación personalizado -->
+    <div id="dialogConfirmar" class="alerta-ip-overlay">
+        <div class="alerta-ip-box">
+            <div class="alerta-ip-icono">🔄</div>
+            <h3 id="dialogConfirmar-titulo">¿Confirmar acción?</h3>
+            <p  id="dialogConfirmar-mensaje">Mensaje</p>
+            <div class="confirmar-botones">
+                <button class="alerta-ip-btn confirmar-si"  id="dialogConfirmar-si">Sí, confirmar</button>
+                <button class="alerta-ip-btn confirmar-no"  onclick="cerrarDialogConfirmar()">No, cancelar</button>
+            </div>
         </div>
     </div>
 

@@ -1036,6 +1036,43 @@ tbody tr:hover {
   box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
 }
 
+/* Diálogo de confirmación — fila de botones */
+.confirmar-botones {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.confirmar-botones .alerta-ip-btn {
+  display: inline-block;
+  margin: 0;
+  flex: 1;
+  max-width: 160px;
+}
+
+.confirmar-botones .confirmar-si {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+}
+
+.confirmar-botones .confirmar-si:hover {
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.5);
+}
+
+.confirmar-botones .confirmar-no {
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+}
+
+.confirmar-botones .confirmar-no:hover {
+  background: rgba(255, 255, 255, 0.13);
+  box-shadow: none;
+  color: #f1f5f9;
+}
+
 @keyframes search-box {
   0% {
     top: 0;
