@@ -13,7 +13,7 @@ $Departamento = $_POST['Departamento'] ?? '';
 $area = $_POST['area'] ?? '';
 $descripcion_equipo = $_POST['descripcion_equipo'] ?? '';
 $encargado = $_POST['encargado'] ?? '';
-$estado = $_POST['estado'] ?? 'disponible';
+$estado = $_POST['estado'] ?? 1;
 $nota = $_POST['nota'] ?? null;
 $ip_asignada = $_POST['ip_asignada'] ?? null;
 
@@ -38,10 +38,10 @@ if ($ip_final !== null) {
         exit;
     }
 
-    // Validar que la IP esté dentro del rango del área seleccionada
-    $sql_rango = "SELECT ip_inicio, ip_fin FROM areas WHERE nombre = ?";
+    // Validar que la IP esté dentro del rango del departamento
+    $sql_rango = "SELECT ip_inicio, ip_fin, nombre FROM departamentos WHERE id = ?";
     $stmt_rango = $conexion->prepare($sql_rango);
-    $stmt_rango->bind_param("s", $area);
+    $stmt_rango->bind_param("i", $Departamento);
     $stmt_rango->execute();
     $rango = $stmt_rango->get_result()->fetch_assoc();
 
@@ -51,7 +51,7 @@ if ($ip_final !== null) {
         $rango_fin = ip2long($rango['ip_fin']);
 
         if ($ip_num < $rango_inicio || $ip_num > $rango_fin) {
-            echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' no pertenece al rango del área ' . $area . ' (' . $rango['ip_inicio'] . ' - ' . $rango['ip_fin'] . ')']);
+            echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' no pertenece al rango del departamento ' . $rango['nombre'] . ' (' . $rango['ip_inicio'] . ' - ' . $rango['ip_fin'] . ')']);
             exit;
         }
     }

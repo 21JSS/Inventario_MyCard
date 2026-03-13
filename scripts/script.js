@@ -26,6 +26,9 @@ window.onload = function () {
   cargarDepartamentos();
 };
 
+// ===== Manejo de Modales =====
+
+// Abre el modal de agregar equipo (previa autenticación) //
 function abrirModal() {
   const modalAuth = document.getElementById("modalAuth");
   if (modalAuth) {
@@ -44,6 +47,7 @@ function abrirModal() {
   }
 }
 
+// Cierra el modal de autenticación //
 function cerrarModalAuth() {
   const modal = document.getElementById("modalAuth");
   if (modal) {
@@ -52,37 +56,49 @@ function cerrarModalAuth() {
   }
 }
 
-function verificarCredenciales(event) {
+// Verifica las credenciales del administrador.
+
+async function verificarCredenciales(event) {
   event.preventDefault();
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value;
   const errMsg = document.getElementById("error-message");
 
-  // Credenciales hardcoded (para producción usar validación en PHP)
-  const ADMIN_USER = "admin";
-  const ADMIN_PASS = "mycard2026";
+  // Preguntar al servidor si las credenciales son correctas
+  const formData = new FormData();
+  formData.append("username", username);
+  formData.append("password", password);
 
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    cerrarModalAuth();
-    // Abrir el modal de agregar equipo
-    const modalAgregar = document.getElementById("modalAgregar");
-    if (modalAgregar) {
-      const formAgregar = document.getElementById("formAgregar");
-      if (formAgregar) formAgregar.reset();
-      // Resetear estados de campos condicionales
-      const grupoIP = document.getElementById("grupoIP");
-      if (grupoIP) grupoIP.style.display = "none";
-      const grupoMotivoUso = document.getElementById("grupoMotivoUso");
-      if (grupoMotivoUso) grupoMotivoUso.style.display = "none";
-      const ipInput = document.getElementById("ip_asignada");
-      if (ipInput) ipInput.removeAttribute("required");
-      modalAgregar.style.display = "flex";
-      bloquearScrollFondo();
+  try {
+    const response = await fetch("../php/login.php", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+
+    if (result.success) {
+      cerrarModalAuth();
+      const modalAgregar = document.getElementById("modalAgregar");
+      if (modalAgregar) {
+        const formAgregar = document.getElementById("formAgregar");
+        if (formAgregar) formAgregar.reset();
+        const grupoIP = document.getElementById("grupoIP");
+        if (grupoIP) grupoIP.style.display = "none";
+        const grupoMotivoUso = document.getElementById("grupoMotivoUso");
+        if (grupoMotivoUso) grupoMotivoUso.style.display = "none";
+        const ipInput = document.getElementById("ip_asignada");
+        if (ipInput) ipInput.removeAttribute("required");
+        modalAgregar.style.display = "flex";
+        bloquearScrollFondo();
+      }
+    } else {
+      if (errMsg) errMsg.style.display = "block";
+      document.getElementById("password").value = "";
+      document.getElementById("password").focus();
     }
-  } else {
-    if (errMsg) errMsg.style.display = "block";
-    document.getElementById("password").value = "";
-    document.getElementById("password").focus();
+  } catch (error) {
+    console.error("Error de conexión:", error);
+    alert("No se pudo conectar con el servidor");
   }
 }
 
@@ -183,7 +199,8 @@ function toggleMotivoUso(estado) {
 
   if (!grupoMotivo) return;
 
-  if (estado === "ocupada") {
+  if (estado == 0) {
+    // ocupada
     grupoMotivo.style.display = "block";
     inputNota.setAttribute("required", "required");
     if (selectAsignado) selectAsignado.setAttribute("required", "required");
@@ -254,7 +271,7 @@ function filtrarPorEstado(estado) {
     if (filtroIndicador) filtroIndicador.style.display = "block";
     if (filtroTexto) {
       filtroTexto.textContent =
-        estado === "disponible"
+        estado == 1
           ? "🟢 Mostrando: Solo equipos disponibles"
           : "🟡 Mostrando: Solo equipos ocupados";
     }
@@ -263,7 +280,7 @@ function filtrarPorEstado(estado) {
   const rows = document.querySelectorAll("#inventarioBody tr");
   rows.forEach((row) => {
     const estadoEquipo = row.getAttribute("data-estado");
-    if (estado === "todos" || estadoEquipo === estado) {
+    if (estado === "todos" || estadoEquipo == estado) {
       row.style.display = "";
     } else {
       row.style.display = "none";
@@ -329,7 +346,7 @@ function mostrarDetalleEquipo(equipoId) {
   const infoNota = document.getElementById("info-nota");
   const detalleNota = document.getElementById("detalle-nota");
   if (infoNota && detalleNota) {
-    if (equipo.estado === "ocupada" && equipo.nota_estado) {
+    if (equipo.estado == 0 && equipo.nota_estado) {
       detalleNota.textContent = equipo.nota_estado;
       infoNota.style.display = "block";
     } else {
@@ -342,7 +359,7 @@ function mostrarDetalleEquipo(equipoId) {
   // Configurar botón según estado
   const btnCambiar = document.getElementById("btnCambiarEstado");
   if (btnCambiar) {
-    if (equipo.estado === "disponible") {
+    if (equipo.estado == 1) {
       btnCambiar.textContent = "Marcar como Ocupada";
       btnCambiar.className = "btn-cambiar-estado disponible";
     } else {
@@ -387,23 +404,34 @@ function cerrarModalAuthEstado() {
 }
 
 /** Verifica credenciales y luego ejecuta el cambio de estado */
-function verificarCredencialesEstado(event) {
+async function verificarCredencialesEstado(event) {
   event.preventDefault();
   const username = document.getElementById("username_estado").value.trim();
   const password = document.getElementById("password_estado").value;
   const errMsg = document.getElementById("error-message-estado");
 
-  const ADMIN_USER = "admin";
-  const ADMIN_PASS = "mycard2026";
+  const formData = new FormData();
+  formData.append("username", username);
+  formData.append("password", password);
 
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    cerrarModalAuthEstado();
-    // Ahora sí ejecutar la lógica de cambio de estado
-    ejecutarCambioEstado();
-  } else {
-    if (errMsg) errMsg.style.display = "block";
-    document.getElementById("password_estado").value = "";
-    document.getElementById("password_estado").focus();
+  try {
+    const response = await fetch("../php/login.php", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+
+    if (result.success) {
+      cerrarModalAuthEstado();
+      ejecutarCambioEstado();
+    } else {
+      if (errMsg) errMsg.style.display = "block";
+      document.getElementById("password_estado").value = "";
+      document.getElementById("password_estado").focus();
+    }
+  } catch (error) {
+    console.error("Error de conexión:", error);
+    alert("No se pudo conectar con el servidor");
   }
 }
 
@@ -411,7 +439,7 @@ function verificarCredencialesEstado(event) {
 async function ejecutarCambioEstado() {
   const equipo = inventario.find((item) => item.id == equipoActualId);
 
-  if (equipo.estado === "disponible") {
+  if (equipo.estado == 1) {
     // Abrir modo para llenar datos de ocupación
     const modal = document.getElementById("modalCambiarEstado");
     if (modal) {
@@ -505,10 +533,7 @@ async function confirmarCambioEstado(event) {
 
   const nota = document.getElementById("ce_nota").value;
   const enc = document.getElementById("ce_encargado").value;
-  const selectDepto = document.getElementById("ce_departamento");
-  const depto =
-    selectDepto.options[selectDepto.selectedIndex].dataset.nombre ||
-    selectDepto.value;
+  const depto = document.getElementById("ce_departamento").value;
   const area = document.getElementById("ce_area").value;
   const descEq = document.getElementById("ce_descripcion").value;
   const chkIP = document.getElementById("ce_chk_ip");
@@ -586,17 +611,9 @@ async function agregarEquipo(event) {
   event.preventDefault();
 
   const formData = new FormData(event.target);
-  // Convertir ID de departamento a nombre
-  const selectDepto = document.getElementById("departamento");
-  const deptoNombre =
-    selectDepto.options[selectDepto.selectedIndex].dataset.nombre;
-  formData.set("Departamento", deptoNombre);
 
   // Lógica de respaldo para descripción si está ocupada
-  if (
-    formData.get("estado") === "ocupada" &&
-    !formData.get("descripcion_equipo")
-  ) {
+  if (formData.get("estado") == 0 && !formData.get("descripcion_equipo")) {
     formData.set("descripcion_equipo", formData.get("nota"));
   }
 
@@ -658,10 +675,10 @@ function cargarTabla() {
 
     let estadoStyle = "";
     let estadoTexto = item.estado;
-    if (item.estado === "disponible") {
+    if (item.estado == 1) {
       estadoStyle = 'style="color: #10b981; font-weight: 600;"';
       estadoTexto = "Disponible";
-    } else if (item.estado === "ocupada") {
+    } else if (item.estado == 0) {
       estadoStyle = 'style="color: #f59e0b; font-weight: 600;"';
       estadoTexto = "Ocupada";
     }
@@ -725,12 +742,12 @@ function obtenerParametroURL(nombre) {
 }
 
 function obtenerTextoEstado(estado) {
-  const estados = { disponible: "Disponible", ocupada: "Ocupada" };
+  const estados = { 1: "Disponible", 0: "Ocupada" };
   return estados[estado] || estado;
 }
 
 function obtenerColorEstado(estado) {
-  const colores = { disponible: "#10b981", ocupada: "#f59e0b" };
+  const colores = { 1: "#10b981", 0: "#f59e0b" };
   return colores[estado] || "#6b7280";
 }
 
@@ -886,20 +903,21 @@ function cargarAreas(selectDepto, areaSelectId) {
       selectArea.innerHTML = '<option value="">Seleccionar área...</option>';
       areas.forEach((a) => {
         const option = document.createElement("option");
-        option.value = a.nombre;
+        option.value = a.id;
         option.textContent = a.nombre;
+        option.dataset.nombre = a.nombre;
         selectArea.appendChild(option);
       });
     });
 }
-// Obtener IP disponible para el formulario de Agregar
-// Obtener IP disponible según el área seleccionada
-function cargarIPDisponible(selectArea) {
-  const areaNombre = selectArea.value;
-  if (!areaNombre) return;
+// Obtener IP disponible según el departamento seleccionado (formulario Agregar)
+function cargarIPDisponibleDepto(selectDepto) {
+  const deptoId = selectDepto.value;
+  if (!deptoId) return;
 
   fetch(
-    "../php/obtener_ip_disponible.php?area=" + encodeURIComponent(areaNombre),
+    "../php/obtener_ip_por_depto.php?departamento_id=" +
+      encodeURIComponent(deptoId),
   )
     .then((res) => res.json())
     .then((data) => {
@@ -918,14 +936,14 @@ function cargarIPDisponible(selectArea) {
     });
 }
 
-// Obtener IP disponible para el formulario de Cambiar Estado
-// Obtener IP disponible para el formulario de Cambiar Estado
-function cargarIPDisponibleEstado(selectArea) {
-  const areaNombre = selectArea.value;
-  if (!areaNombre) return;
+// Obtener IP disponible según el departamento seleccionado (formulario Cambiar Estado)
+function cargarIPDisponibleDeptoEstado(selectDepto) {
+  const deptoId = selectDepto.value;
+  if (!deptoId) return;
 
   fetch(
-    "../php/obtener_ip_disponible.php?area=" + encodeURIComponent(areaNombre),
+    "../php/obtener_ip_por_depto.php?departamento_id=" +
+      encodeURIComponent(deptoId),
   )
     .then((res) => res.json())
     .then((data) => {

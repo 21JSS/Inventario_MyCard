@@ -32,22 +32,21 @@ if ($result->num_rows === 0) {
 }
 
 $equipo = $result->fetch_assoc();
-$estado_actual = $equipo['estado'];
+$estado_actual = (int)$equipo['estado'];
 
-$nuevo_estado = ($estado_actual === 'disponible') ? 'ocupada' : 'disponible';
+$nuevo_estado = ($estado_actual === 1) ? 0 : 1;
 
-// Si el nuevo estado es disponible, borramos la nota, el encargado, departamento y la IP
-if ($nuevo_estado === 'disponible') {
+// Si el nuevo estado es disponible (1), borramos la nota, el encargado, departamento y la IP
+if ($nuevo_estado === 1) {
     $nota = null;
-    $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, encargado = '', departamento = '', area = '', ip_asignada = NULL WHERE id = ?";
+    $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, encargado = '', departamento = NULL, area = NULL, ip_asignada = NULL WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
-    $stmt_update->bind_param("ssi", $nuevo_estado, $nota, $equipo_id);
+    $stmt_update->bind_param("isi", $nuevo_estado, $nota, $equipo_id);
 } else {
-    // Si pasa a ocupada, actualizamos el estado, la nota, descripcion, encargado, departamento, area e IP
-    // Si ip_asignada es cadena vacía, guardamos NULL
+    // Si pasa a ocupada, actualizamos 
     $ip_final = (!empty($ip_asignada)) ? $ip_asignada : null;
 
-    // Validar que la IP no esté repetida (excluyendo este equipo)
+    // Validar que la IP no esté repetida 
     if ($ip_final !== null) {
         $sql_check = "SELECT id FROM equipos_pc WHERE ip_asignada = ? AND id != ?";
         $stmt_check = $conexion->prepare($sql_check);
@@ -60,10 +59,10 @@ if ($nuevo_estado === 'disponible') {
             exit;
         }
 
-        // Validar que la IP esté dentro del rango del área seleccionada
-        $sql_rango = "SELECT ip_inicio, ip_fin FROM areas WHERE nombre = ?";
+        // Validar que la IP esté dentro del rango del departamento
+        $sql_rango = "SELECT ip_inicio, ip_fin, nombre FROM departamentos WHERE id = ?";
         $stmt_rango = $conexion->prepare($sql_rango);
-        $stmt_rango->bind_param("s", $area);
+        $stmt_rango->bind_param("i", $departamento);
         $stmt_rango->execute();
         $rango = $stmt_rango->get_result()->fetch_assoc();
 
@@ -73,7 +72,7 @@ if ($nuevo_estado === 'disponible') {
             $rango_fin = ip2long($rango['ip_fin']);
 
             if ($ip_num < $rango_inicio || $ip_num > $rango_fin) {
-                echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' no pertenece al rango del área ' . $area . ' (' . $rango['ip_inicio'] . ' - ' . $rango['ip_fin'] . ')']);
+                echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' no pertenece al rango del departamento ' . $rango['nombre'] . ' (' . $rango['ip_inicio'] . ' - ' . $rango['ip_fin'] . ')']);
                 exit;
             }
         }
@@ -81,7 +80,7 @@ if ($nuevo_estado === 'disponible') {
 
     $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, descripcion_equipo = ?, encargado = ?, departamento = ?, area = ?, ip_asignada = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
-    $stmt_update->bind_param("sssssssi", $nuevo_estado, $nota, $descripcion_equipo, $encargado, $departamento, $area, $ip_final, $equipo_id);
+    $stmt_update->bind_param("issssssi", $nuevo_estado, $nota, $descripcion_equipo, $encargado, $departamento, $area, $ip_final, $equipo_id);
 }
 
 if ($stmt_update->execute()) {
