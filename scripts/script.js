@@ -29,7 +29,7 @@ window.onload = function () {
 
 // ===== Manejo de Modales =====
 
-/** Abre el modal de agregar equipo (previa autenticación) */
+// Abre el modal de agregar equipo (previa autenticación) //
 function abrirModal() {
   const modalAuth = document.getElementById("modalAuth");
   if (modalAuth) {
@@ -48,7 +48,7 @@ function abrirModal() {
   }
 }
 
-/** Cierra el modal de autenticación */
+// Cierra el modal de autenticación //
 function cerrarModalAuth() {
   const modal = document.getElementById("modalAuth");
   if (modal) {
@@ -57,43 +57,52 @@ function cerrarModalAuth() {
   }
 }
 
-/**
- * Verifica las credenciales del administrador.
- * Credenciales por defecto: admin / mycard2026
- */
-function verificarCredenciales(event) {
+// Verifica las credenciales del administrador.
+
+async function verificarCredenciales(event) {
   event.preventDefault();
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value;
   const errMsg = document.getElementById("error-message");
 
-  // Credenciales hardcoded (para producción usar validación en PHP)
-  const ADMIN_USER = "admin";
-  const ADMIN_PASS = "mycard2026";
+  // Preguntar al servidor si las credenciales son correctas
+  const formData = new FormData();
+  formData.append("username", username);
+  formData.append("password", password);
 
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    cerrarModalAuth();
-    // Abrir el modal de agregar equipo
-    const modalAgregar = document.getElementById("modalAgregar");
-    if (modalAgregar) {
-      const formAgregar = document.getElementById("formAgregar");
-      if (formAgregar) formAgregar.reset();
-      // Resetear estados de campos condicionales
-      const grupoIP = document.getElementById("grupoIP");
-      if (grupoIP) grupoIP.style.display = "none";
-      const grupoMotivoUso = document.getElementById("grupoMotivoUso");
-      if (grupoMotivoUso) grupoMotivoUso.style.display = "none";
-      const ipInput = document.getElementById("ip_asignada");
-      if (ipInput) ipInput.removeAttribute("required");
-      modalAgregar.style.display = "flex";
-      bloquearScrollFondo();
+  try {
+    const response = await fetch("../php/login.php", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+
+    if (result.success) {
+      cerrarModalAuth();
+      const modalAgregar = document.getElementById("modalAgregar");
+      if (modalAgregar) {
+        const formAgregar = document.getElementById("formAgregar");
+        if (formAgregar) formAgregar.reset();
+        const grupoIP = document.getElementById("grupoIP");
+        if (grupoIP) grupoIP.style.display = "none";
+        const grupoMotivoUso = document.getElementById("grupoMotivoUso");
+        if (grupoMotivoUso) grupoMotivoUso.style.display = "none";
+        const ipInput = document.getElementById("ip_asignada");
+        if (ipInput) ipInput.removeAttribute("required");
+        modalAgregar.style.display = "flex";
+        bloquearScrollFondo();
+      }
+    } else {
+      if (errMsg) errMsg.style.display = "block";
+      document.getElementById("password").value = "";
+      document.getElementById("password").focus();
     }
-  } else {
-    if (errMsg) errMsg.style.display = "block";
-    document.getElementById("password").value = "";
-    document.getElementById("password").focus();
+  } catch (error) {
+    console.error("Error de conexión:", error);
+    alert("No se pudo conectar con el servidor");
   }
 }
+
 
 /** Cierra el modal de agregar equipo */
 function cerrarModal() {
@@ -397,25 +406,37 @@ function cerrarModalAuthEstado() {
 }
 
 /** Verifica credenciales y luego ejecuta el cambio de estado */
-function verificarCredencialesEstado(event) {
+async function verificarCredencialesEstado(event) {
   event.preventDefault();
   const username = document.getElementById("username_estado").value.trim();
   const password = document.getElementById("password_estado").value;
   const errMsg = document.getElementById("error-message-estado");
 
-  const ADMIN_USER = "admin";
-  const ADMIN_PASS = "mycard2026";
+  const formData = new FormData();
+  formData.append("username", username);
+  formData.append("password", password);
 
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    cerrarModalAuthEstado();
-    // Ahora sí ejecutar la lógica de cambio de estado
-    ejecutarCambioEstado();
-  } else {
-    if (errMsg) errMsg.style.display = "block";
-    document.getElementById("password_estado").value = "";
-    document.getElementById("password_estado").focus();
+  try {
+    const response = await fetch("../php/login.php", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+
+    if (result.success) {
+      cerrarModalAuthEstado();
+      ejecutarCambioEstado();
+    } else {
+      if (errMsg) errMsg.style.display = "block";
+      document.getElementById("password_estado").value = "";
+      document.getElementById("password_estado").focus();
+    }
+  } catch (error) {
+    console.error("Error de conexión:", error);
+    alert("No se pudo conectar con el servidor");
   }
 }
+
 
 /** Ejecuta la lógica real de cambio de estado (después de autenticarse) */
 async function ejecutarCambioEstado() {
