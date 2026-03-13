@@ -1,4 +1,6 @@
 <?php
+require_once 'check_session.php';
+
 /**
  * Flujo:
  *   Navegador → proxy_bloqueo.php (XAMPP) → Flask 192.168.1.79:5050 → LockWorkStation

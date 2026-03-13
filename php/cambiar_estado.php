@@ -1,4 +1,5 @@
 <?php
+require_once 'check_session.php';
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 

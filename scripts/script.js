@@ -2,9 +2,7 @@ let inventario = [];
 let equipoActualId = null;
 let filtroActivo = "todos";
 
-// ===== Helpers para bloquear scroll del fondo con modales =====
 
-/** Bloquea el scroll del body guardando la posición actual */
 function bloquearScrollFondo() {
   const scrollY = window.scrollY || window.pageYOffset;
   document.body.style.top = `-${scrollY}px`;
@@ -12,7 +10,7 @@ function bloquearScrollFondo() {
   document.body.classList.add("modal-open");
 }
 
-/** Restaura el scroll del body a donde estaba antes de abrir el modal */
+
 function restaurarScrollFondo() {
   const scrollY = Math.abs(parseInt(document.body.style.top || "0", 10));
   document.documentElement.classList.remove("modal-open");
@@ -27,7 +25,6 @@ window.onload = function () {
   cargarDepartamentos();
 };
 
-// ===== Manejo de Modales =====
 
 // Abre el modal de agregar equipo (previa autenticación) //
 function abrirModal() {
@@ -104,7 +101,7 @@ async function verificarCredenciales(event) {
 }
 
 
-/** Cierra el modal de agregar equipo */
+// Cierra el modal de agregar equipo //
 function cerrarModal() {
   const modal = document.getElementById("modalAgregar");
   if (modal) {
@@ -371,9 +368,8 @@ function mostrarDetalleEquipo(equipoId) {
   }
 }
 
-// Acciones de Equipo — Ahora requiere autenticación de admin
 
-/** Abre el modal de autenticación antes de cambiar estado */
+// Abre el modal de autenticación antes de cambiar estado //
 function cambiarEstadoEquipo() {
   if (!equipoActualId) {
     alert("Error: No hay equipo seleccionado");
@@ -396,7 +392,7 @@ function cambiarEstadoEquipo() {
   }
 }
 
-/** Cierra el modal de autenticación para cambiar estado */
+// Cierra el modal de autenticación para cambiar estado //
 function cerrarModalAuthEstado() {
   const modal = document.getElementById("modalAuthEstado");
   if (modal) {
@@ -405,7 +401,7 @@ function cerrarModalAuthEstado() {
   }
 }
 
-/** Verifica credenciales y luego ejecuta el cambio de estado */
+//Verifica credenciales y luego ejecuta el cambio de estado //
 async function verificarCredencialesEstado(event) {
   event.preventDefault();
   const username = document.getElementById("username_estado").value.trim();
@@ -508,7 +504,7 @@ async function ejecutarCambioEstado() {
   }
 }
 
-// ===== Diálogo de confirmación personalizado =====
+//Diálogo de confirmación personalizado //
 
 function mostrarDialogConfirmar(titulo, mensaje, onConfirmar) {
   document.getElementById("dialogConfirmar-titulo").textContent = titulo;
@@ -688,18 +684,18 @@ function cargarTabla() {
       estadoStyle = 'style="color: #f59e0b; font-weight: 600;"';
       estadoTexto = "Ocupada";
     }
-
+    //
     tr.innerHTML = `
-            <td>${formatearId(item.id)}</td>
-            <td><strong>${item.nombre}</strong></td>
-            <td>${item.tipo}</td>
-            <td>${item.marca}</td>
-            <td>${item.modelo}</td>
-            <td>${item.encargado || "N/A"}</td>
-            <td>${item.departamento || "N/A"}</td>
-            <td>${item.area || "N/A"}</td>
-            <td>${item.descripcion_equipo || "Sin descripción"}</td>
-            <td style="color: #2563eb; font-weight: 600;">${item.ip_asignada || "Sin IP"}</td>
+            <td>${escapeHTML(formatearId(item.id))}</td>
+            <td><strong>${escapeHTML(item.nombre)}</strong></td>
+            <td>${escapeHTML(item.tipo)}</td>
+            <td>${escapeHTML(item.marca)}</td>
+            <td>${escapeHTML(item.modelo)}</td>
+            <td>${escapeHTML(item.encargado || "N/A")}</td>
+            <td>${escapeHTML(item.departamento || "N/A")}</td>
+            <td>${escapeHTML(item.area || "N/A")}</td>
+            <td>${escapeHTML(item.descripcion_equipo || "Sin descripción")}</td>
+            <td style="color: #2563eb; font-weight: 600;">${escapeHTML(item.ip_asignada || "Sin IP")}</td>
             <td ${estadoStyle}>${estadoTexto}</td>
         `;
     tbody.appendChild(tr);
@@ -737,7 +733,7 @@ function exportarDatos() {
   a.click();
 }
 
-// 8. Utilidades Misceláneas
+// Utilidades Misceláneas//
 function formatearId(id) {
   return String(id).padStart(4, "0");
 }
@@ -835,7 +831,7 @@ window.onclick = function (event) {
   }
 };
 
-// ===== Más Opciones: Dropdown =====
+// Más Opciones: Dropdown //
 function toggleMasOpciones(event) {
   event.stopPropagation();
   const dropdown = document.getElementById("dropdownOpciones");
@@ -966,7 +962,7 @@ function cargarIPDisponibleDeptoEstado(selectDepto) {
     });
 }
 
-// ===== Alerta personalizada de IP =====
+// Alerta personalizada de IP //
 
 function mostrarAlertaIP(tipo, titulo, mensaje, rango) {
   const box = document.getElementById("alertaIP-box");
@@ -1038,3 +1034,16 @@ function validarIPManual(inputIP, areaSelectId) {
       }
     });
 }
+
+//escapa caracteres especiales para evitar XSS
+function escapeHTML(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// se filttran los datos antes de ser mostrados en la tabla
