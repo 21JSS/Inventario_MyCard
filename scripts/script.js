@@ -21,26 +21,22 @@ function restaurarScrollFondo() {
   window.scrollTo(0, scrollY);
 }
 
-// Inicialización
 window.onload = function () {
   cargarInventario();
   cargarDepartamentos();
 };
 
-// ===== Manejo de Modales =====
-
-/** Abre el modal de agregar equipo (previa autenticación) */
 function abrirModal() {
   const modalAuth = document.getElementById("modalAuth");
   if (modalAuth) {
     modalAuth.style.display = "flex";
     bloquearScrollFondo();
-    // Limpiar campos del form de autenticación
+
     const formAuth = document.getElementById("formAuth");
     if (formAuth) formAuth.reset();
     const errMsg = document.getElementById("error-message");
     if (errMsg) errMsg.style.display = "none";
-    // Enfocar usuario
+
     setTimeout(() => {
       const usr = document.getElementById("username");
       if (usr) usr.focus();
@@ -48,7 +44,6 @@ function abrirModal() {
   }
 }
 
-/** Cierra el modal de autenticación */
 function cerrarModalAuth() {
   const modal = document.getElementById("modalAuth");
   if (modal) {
@@ -57,10 +52,6 @@ function cerrarModalAuth() {
   }
 }
 
-/**
- * Verifica las credenciales del administrador.
- * Credenciales por defecto: admin / mycard2026
- */
 function verificarCredenciales(event) {
   event.preventDefault();
   const username = document.getElementById("username").value.trim();
