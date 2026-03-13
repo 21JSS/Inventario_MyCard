@@ -19,7 +19,6 @@ function restaurarScrollFondo() {
   window.scrollTo(0, scrollY);
 }
 
-// Inicialización
 window.onload = function () {
   cargarInventario();
   cargarDepartamentos();
@@ -32,12 +31,12 @@ function abrirModal() {
   if (modalAuth) {
     modalAuth.style.display = "flex";
     bloquearScrollFondo();
-    // Limpiar campos del form de autenticación
+
     const formAuth = document.getElementById("formAuth");
     if (formAuth) formAuth.reset();
     const errMsg = document.getElementById("error-message");
     if (errMsg) errMsg.style.display = "none";
-    // Enfocar usuario
+
     setTimeout(() => {
       const usr = document.getElementById("username");
       if (usr) usr.focus();
@@ -100,8 +99,12 @@ async function verificarCredenciales(event) {
   }
 }
 
+<<<<<<< HEAD
 
 // Cierra el modal de agregar equipo //
+=======
+/** Cierra el modal de agregar equipo */
+>>>>>>> a42131d5672d3c7bbac7c74e2e98fcc9efac5f5f
 function cerrarModal() {
   const modal = document.getElementById("modalAgregar");
   if (modal) {
@@ -433,7 +436,6 @@ async function verificarCredencialesEstado(event) {
   }
 }
 
-
 /** Ejecuta la lógica real de cambio de estado (después de autenticarse) */
 async function ejecutarCambioEstado() {
   const equipo = inventario.find((item) => item.id == equipoActualId);
@@ -612,10 +614,7 @@ async function agregarEquipo(event) {
   const formData = new FormData(event.target);
 
   // Lógica de respaldo para descripción si está ocupada
-  if (
-    formData.get("estado") == 0 &&
-    !formData.get("descripcion_equipo")
-  ) {
+  if (formData.get("estado") == 0 && !formData.get("descripcion_equipo")) {
     formData.set("descripcion_equipo", formData.get("nota"));
   }
 
@@ -918,7 +917,8 @@ function cargarIPDisponibleDepto(selectDepto) {
   if (!deptoId) return;
 
   fetch(
-    "../php/obtener_ip_por_depto.php?departamento_id=" + encodeURIComponent(deptoId),
+    "../php/obtener_ip_por_depto.php?departamento_id=" +
+      encodeURIComponent(deptoId),
   )
     .then((res) => res.json())
     .then((data) => {
@@ -943,7 +943,8 @@ function cargarIPDisponibleDeptoEstado(selectDepto) {
   if (!deptoId) return;
 
   fetch(
-    "../php/obtener_ip_por_depto.php?departamento_id=" + encodeURIComponent(deptoId),
+    "../php/obtener_ip_por_depto.php?departamento_id=" +
+      encodeURIComponent(deptoId),
   )
     .then((res) => res.json())
     .then((data) => {
