@@ -2,14 +2,12 @@ let inventario = [];
 let equipoActualId = null;
 let filtroActivo = "todos";
 
-
 function bloquearScrollFondo() {
   const scrollY = window.scrollY || window.pageYOffset;
   document.body.style.top = `-${scrollY}px`;
   document.documentElement.classList.add("modal-open");
   document.body.classList.add("modal-open");
 }
-
 
 function restaurarScrollFondo() {
   const scrollY = Math.abs(parseInt(document.body.style.top || "0", 10));
@@ -23,7 +21,6 @@ window.onload = function () {
   cargarInventario();
   cargarDepartamentos();
 };
-
 
 // Abre el modal de agregar equipo (previa autenticación) //
 function abrirModal() {
@@ -99,12 +96,7 @@ async function verificarCredenciales(event) {
   }
 }
 
-<<<<<<< HEAD
-
-// Cierra el modal de agregar equipo //
-=======
 /** Cierra el modal de agregar equipo */
->>>>>>> a42131d5672d3c7bbac7c74e2e98fcc9efac5f5f
 function cerrarModal() {
   const modal = document.getElementById("modalAgregar");
   if (modal) {
@@ -370,7 +362,6 @@ function mostrarDetalleEquipo(equipoId) {
     }
   }
 }
-
 
 // Abre el modal de autenticación antes de cambiar estado //
 function cambiarEstadoEquipo() {
@@ -1038,13 +1029,13 @@ function validarIPManual(inputIP, areaSelectId) {
 
 //escapa caracteres especiales para evitar XSS
 function escapeHTML(str) {
-  if (str === null || str === undefined) return '';
+  if (str === null || str === undefined) return "";
   return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 // se filttran los datos antes de ser mostrados en la tabla
