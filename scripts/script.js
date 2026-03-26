@@ -813,43 +813,7 @@ window.onclick = function (event) {
     cerrarModalAuthEstado();
   }
 
-  // Cerrar dropdown de Más Opciones al hacer clic fuera
-  const dropdown = document.getElementById("dropdownOpciones");
-  const btnMas = document.getElementById("btnMasOpciones");
-  if (dropdown && btnMas && !btnMas.contains(event.target)) {
-    dropdown.classList.remove("abierto");
-  }
 };
-
-// Más Opciones: Dropdown //
-function toggleMasOpciones(event) {
-  event.stopPropagation();
-  const dropdown = document.getElementById("dropdownOpciones");
-  dropdown.classList.toggle("abierto");
-}
-
-function ejecutarBloqueo() {
-  // Cerrar dropdown
-  const dropdown = document.getElementById("dropdownOpciones");
-  if (dropdown) dropdown.classList.remove("abierto");
-
-  const equipo = inventario.find((item) => item.id == equipoActualId);
-  if (!equipo) {
-    alert("No hay equipo seleccionado.");
-    return;
-  }
-
-  // Usar la IP guardada en BD si existe, si no pedirla
-  let ip = equipo.ip_asignada || "";
-  if (!ip || ip.trim() === "") {
-    ip = prompt(
-      `Ingresa la IP del equipo "${equipo.nombre}" para bloquear su pantalla:`,
-    );
-    if (!ip || ip.trim() === "") return;
-  }
-
-  bloquearPantalla(ip.trim(), equipo.nombre);
-}
 
 // Cargar departamentos desde la BD
 function cargarDepartamentos() {
