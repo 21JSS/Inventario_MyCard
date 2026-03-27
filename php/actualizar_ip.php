@@ -22,7 +22,7 @@ echo "Regenerando códigos QR para todos los equipos...\n";
 $resultado = $conexion->query("SELECT id, redireccion FROM equipos_pc");
 
 $python_path = "python";
-$script_path = "../python/generar_qr_unico.py";
+$script_path = "../python/code_qr.py";
 
 while ($fila = $resultado->fetch_assoc()) {
     $id = $fila['id'];
