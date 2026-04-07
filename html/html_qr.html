@@ -3,6 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Forzar HTTPS para que la cámara funcione en dispositivos externos
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            location.replace(`https://${location.hostname}${location.pathname}${location.search}`);
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Escanear QR - MyCard</title>
     <link
@@ -14,8 +20,6 @@
 <body>
 
     <div id="scanner-wrapper">
-        <div id="my-qr-reader"></div>
-
         <div class="titulo-qr">
             <h1>Escanea el codigo QR</h1>
         </div>
@@ -25,6 +29,17 @@
             <div class="corner top-right"></div>
             <div class="corner bottom-left"></div>
             <div class="corner bottom-right"></div>
+        </div>
+
+        <div id="my-qr-reader"></div>
+
+        <div id="qr-error-msg" style="display:none; background:#fee2e2; color:#991b1b; border-radius:10px; padding:16px 20px; margin-top:20px; text-align:center; font-size:0.97em;">
+            <strong>⚠️ No se pudo acceder a la cámara.</strong><br>
+            Asegúrate de dar permisos de cámara y que la página cargue en <strong>HTTPS</strong> o <strong>localhost</strong>.
+        </div>
+
+        <div style="text-align:center; margin-top:18px;">
+            <button onclick="history.back()" style="background:#4f46e5; color:#fff; border:none; border-radius:8px; padding:10px 28px; font-size:1em; cursor:pointer;">← Regresar</button>
         </div>
     </div>
 

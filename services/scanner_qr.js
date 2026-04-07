@@ -31,18 +31,23 @@ document.addEventListener("DOMContentLoaded", function () {
   html5QrCode.start(
     { facingMode: "environment" },
     {
-      fps: 60,
+      fps: 10,
+      qrbox: { width: 250, height: 250 },
       useBarCodeDetectorIfSupported: true,
       experimentalFeatures: {
         useBarCodeDetectorIfSupported: true,
       },
       videoConstraints: {
-        facingMode: "environment",
+        facingMode: { ideal: "environment" },
         width: { min: 640, ideal: 1280, max: 1920 },
         height: { min: 480, ideal: 720, max: 1080 },
       },
     },
     onScanSuccess,
     onScanFailure,
-  );
+  ).catch(function (err) {
+    console.error("Error al iniciar el escáner QR:", err);
+    const errorMsg = document.getElementById("qr-error-msg");
+    if (errorMsg) errorMsg.style.display = "block";
+  });
 });
