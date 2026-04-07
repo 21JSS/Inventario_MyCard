@@ -9,8 +9,11 @@ require_once 'db.php';
 try {
     #hace la consulta a la base de datos
     $sql = "SELECT e.id, e.nombre, e.tipo, e.marca, e.modelo, e.encargado, 
-            d.nombre AS departamento, a.nombre AS area, e.descripcion_equipo, 
-            e.ip_asignada, e.estado, e.nota_estado 
+            d.nombre AS departamento, d.id AS departamento_id,
+            d.ip_inicio AS depto_ip_inicio, d.ip_fin AS depto_ip_fin,
+            a.nombre AS area, e.descripcion_equipo, 
+            e.ip_asignada, e.estado, e.nota_estado,
+            e.fecha_creacion
             FROM equipos_pc e 
             LEFT JOIN departamentos d ON e.departamento = d.id 
             LEFT JOIN areas a ON e.area = a.id 
@@ -39,9 +42,20 @@ try {
         }
     }
 
+    // Obtener todos los departamentos para el filtro de exportación
+    $sql_deptos = "SELECT id, nombre, ip_inicio, ip_fin FROM departamentos ORDER BY nombre ASC";
+    $res_deptos = $conexion->query($sql_deptos);
+    $departamentos = [];
+    if ($res_deptos) {
+        while ($d = $res_deptos->fetch_assoc()) {
+            $departamentos[] = $d;
+        }
+    }
+
     $response = [
         'success' => true,
         'data' => $equipos,
+        'departamentos' => $departamentos,
         'stats' => [
             'total_equipos' => $total_equipos,
             'total_disponibles' => $total_disponibles,

@@ -1,4 +1,5 @@
 let inventario = [];
+let departamentosDB = [];
 let equipoActualId = null;
 let filtroActivo = "todos";
 
@@ -225,6 +226,7 @@ async function cargarInventario() {
 
     if (result.success) {
       inventario = result.data;
+      departamentosDB = result.departamentos || [];
 
       document.getElementById("totalEquipos").textContent =
         result.stats.total_equipos;
@@ -702,26 +704,7 @@ function filtrarTabla() {
   });
 }
 
-function exportarDatos() {
-  if (inventario.length === 0) {
-    alert("No hay datos para exportar");
-    return;
-  }
 
-  let csv =
-    "ID,Nombre,Tipo,Marca,Modelo,Encargado,Departamento,Area,Descripcion Equipo,IP Asignada,Estado\n";
-
-  inventario.forEach((item) => {
-    csv += `${item.id},"${item.nombre}","${item.tipo}","${item.marca}","${item.modelo}","${item.encargado || "N/A"}","${item.departamento || "N/A"}","${item.area || "N/A"}","${item.descripcion_equipo || "Sin descripcion"}","${item.ip_asignada || "Sin IP"}","${item.estado || "N/A"}"\n`;
-  });
-
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `inventario_pcs_${new Date().toISOString().split("T")[0]}.csv`;
-  a.click();
-}
 
 // Utilidades Misceláneas//
 function formatearId(id) {

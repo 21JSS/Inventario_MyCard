@@ -59,7 +59,7 @@ if ($ip_final !== null) {
 }
 
 
-$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, ip_asignada, estado, nota_estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, ip_asignada, estado, nota_estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param("sssssssssss", $nombre, $tipo, $marca, $modelo, $encargado, $Departamento, $area, $descripcion_equipo, $ip_final, $estado, $nota);
 
@@ -67,7 +67,7 @@ if ($stmt->execute()) {
     $nuevo_id = $stmt->insert_id; 
     require_once 'utils_ip.php';
     $ip = getServerIP(); 
-    $url = "http://$ip/Inventario_MyCard/php/index.php?id=$nuevo_id";
+    $url = "http://$ip/Inventario_MyCard/html/index.html?id=$nuevo_id";
 
     
     $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?"; 
@@ -77,7 +77,7 @@ if ($stmt->execute()) {
 
     // código QR en segundo plano para evitar esperas
     $python_path = "python";
-    $script_path = "../python/generar_qr_unico.py";
+    $script_path = "../python/code_qr.py";
     // Pasamos el ID y la URL para que el script de Python sea más rápido
     $command = "start /B $python_path $script_path $nuevo_id \"$url\"";
     pclose(popen($command, "r"));
