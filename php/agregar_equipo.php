@@ -1,4 +1,5 @@
 <?php
+$required_role_max = 2; // Solo Admin (1) o Tecnico (2)
 require_once 'check_session.php';
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -24,40 +25,13 @@ if (empty($nombre) || empty($tipo) || empty($marca) || empty($modelo) || empty($
     exit;
 }
 
-$ip_final = (!empty($ip_asignada)) ? $ip_asignada : null;
-
-// Validar que la IP no esté repetida
-if ($ip_final !== null) {
-    $sql_check = "SELECT id FROM equipos_pc WHERE ip_asignada = ?";
-    $stmt_check = $conexion->prepare($sql_check);
-    $stmt_check->bind_param("s", $ip_final);
-    $stmt_check->execute();
-    $resultado_check = $stmt_check->get_result();
-
-    if ($resultado_check->num_rows > 0) {
-        echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' ya está asignada a otro equipo']);
-        exit;
-    }
-
-    // Validar que la IP esté dentro del rango del departamento
-    $sql_rango = "SELECT ip_inicio, ip_fin, nombre FROM departamentos WHERE id = ?";
-    $stmt_rango = $conexion->prepare($sql_rango);
-    $stmt_rango->bind_param("i", $Departamento);
-    $stmt_rango->execute();
-    $rango = $stmt_rango->get_result()->fetch_assoc();
-
-    if ($rango) {
-        $ip_num = ip2long($ip_final);
-        $rango_inicio = ip2long($rango['ip_inicio']);
-        $rango_fin = ip2long($rango['ip_fin']);
-
-        if ($ip_num < $rango_inicio || $ip_num > $rango_fin) {
-            echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' no pertenece al rango del departamento ' . $rango['nombre'] . ' (' . $rango['ip_inicio'] . ' - ' . $rango['ip_fin'] . ')']);
-            exit;
-        }
-    }
+require_once 'validator_ip.php';
+$validacion = ValidatorIP::validarAsignacionIP($conexion, $ip_asignada, $Departamento);
+if (!$validacion['success']) {
+    echo json_encode(['success' => false, 'error' => $validacion['error']]);
+    exit;
 }
-
+$ip_final = $validacion['ip'] ?? null;
 
 $sql = "INSERT INTO equipos_pc (nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, ip_asignada, estado, nota_estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 $stmt = $conexion->prepare($sql);
@@ -69,11 +43,18 @@ if ($stmt->execute()) {
     $ip = getServerIP(); 
     $url = "http://$ip/Inventario_MyCard/html/index.html?id=$nuevo_id";
 
-    
     $sql_update = "UPDATE equipos_pc SET redireccion = ? WHERE id = ?"; 
     $stmt_update = $conexion->prepare($sql_update);
     $stmt_update->bind_param("si", $url, $nuevo_id);
     $stmt_update->execute(); 
+
+    // Registro en auditoría
+    $accion_log = "ALTA_EQUIPO";
+    $detalle_log = "Equipo agregado a inventario: $nombre ($marca $modelo)";
+    $sql_log = "INSERT INTO logs_auditoria (usuario_id, accion, equipo_id, detalles) VALUES (?, ?, ?, ?)";
+    $stmt_log = $conexion->prepare($sql_log);
+    $stmt_log->bind_param("isis", $_SESSION['user_id'], $accion_log, $nuevo_id, $detalle_log);
+    $stmt_log->execute();
 
     // código QR en segundo plano para evitar esperas
     $python_path = "python";

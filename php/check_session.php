@@ -1,17 +1,32 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Si no existe la variable de sesión, denegamos el acceso
-if (!isset($_SESSION['admin_logged']) || $_SESSION['admin_logged'] !== true) {
-    header('Content-Type: application/json');//manda un formato de error 
+// 1. Verificación básica de que exista un humano conectado
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['rol_id'])) {
+    header('Content-Type: application/json');
     http_response_code(401); // No autorizado
     echo json_encode([
         'success' => false, 
-        'error' => 'Acceso denegado. Debes iniciar sesión para realizar esta acción.'
+        'error' => 'Acceso denegado. Sesión expirada o inválida.'
     ]);
     exit;
 }
 
-// si no existe la variable de sesion, no se puede acceder al sistema 
-// es un paso temporal que al poner las credenciales correctas genera un pase oficial para entrar al sistema
+// 2. Verificación de Roles (RBAC) basándose en Jerarquía
+// Roles: 1 = Admin, 2 = Técnico, 3 = Consulta, 4 = Auditor
+// Si el archivo solicitó permisos específicos, lo revisamos:
+if (isset($required_role_max) && $_SESSION['rol_id'] > $required_role_max) {
+    // Si eres rol 3 (Consulta) y el endpoint pide máximo 2 (Técnico), mueres aquí.
+    if (!isset($allow_auditor) || !($allow_auditor === true && $_SESSION['rol_id'] == 4)) {
+        header('Content-Type: application/json');
+        http_response_code(403); // Prohibido
+        echo json_encode([
+            'success' => false, 
+            'error' => 'Acceso denegado. Tu perfil no tiene permisos para realizar esta acción.'
+        ]);
+        exit;
+    }
+}
 ?>

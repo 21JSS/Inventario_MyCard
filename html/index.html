@@ -20,9 +20,13 @@
 <body>
     <div class="wrapper">
         <div class="container">
-            <div class="header">
-                <h1>MyCard</h1>
-                <p class="parrafo-principal" style="color: #f0efef; font-size: 1.1em;">Gestión de equipos de computo</p>
+            <div class="header" style="position: relative; text-align: center;">
+                <h1 style="color: white; margin: 0; padding-top: 10px;">MyCard</h1>
+                <p class="parrafo-principal" style="color: #f0efef; font-size: 1.1em; margin-top: 5px;">Gestión de equipos de computo</p>
+                
+                <button onclick="cerrarSesion()" style="position: absolute; right: 0; top: 10px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                    <i class="bi bi-box-arrow-right"></i> Salir
+                </button>
             </div>
 
             <!-- Vista de Detalle Individual -->
@@ -128,6 +132,10 @@
                     </button>
                     <button class="btn-qr" onclick="interfazQR()" id="pushgointerfaz">
                         <i class="fa-solid fa-qrcode"></i>Leer QR
+                    </button>
+                    <!-- Botón exclusivo para Admin/Auditor oculto por defecto -->
+                    <button class="btn-auditoria" id="btnAuditoria" onclick="window.location.href='visor_logs.html'" style="display: none; background-color: #6366f1; color: white;">
+                        <i class="fa-solid fa-clipboard-list"></i> Ver Movimientos
                     </button>
                     <div class="search-wrapper">
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -428,10 +436,19 @@
         </div>
     </div>
 
-    <script src="../services/bloquearPantalla.js"></script>
-    <script src="../scripts/app.js"></script>
-    <script src="../scripts/exportar.js"></script>
-
+    <script src="../services/bloquearPantalla.js?v=3"></script>
+    <!-- Módulos Core -->
+    <script src="../scripts/variables_globales.js?v=3"></script>
+    <script src="../scripts/utilidades.js?v=3"></script>
+    <!-- Módulos de Backend (APIs) -->
+    <script src="../scripts/peticiones_bd.js?v=3"></script>
+    <!-- Módulos de Frontend (UI) -->
+    <script src="../scripts/autenticacion.js?v=3"></script>
+    <script src="../scripts/formularios_modales.js?v=3"></script>
+    <script src="../scripts/interfaz_inventario.js?v=3"></script>
+    <script src="../scripts/exportar.js?v=3"></script>
+    <!-- Boot principal -->
+    <script src="../scripts/app.js?v=3"></script>
 </body>
 
 </html>

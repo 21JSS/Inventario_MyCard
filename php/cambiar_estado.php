@@ -1,4 +1,5 @@
 <?php
+$required_role_max = 2; // Solo Admin (1) o Tecnico (2)
 require_once 'check_session.php';
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -45,39 +46,13 @@ if ($nuevo_estado === 1) {
     $stmt_update->bind_param("isi", $nuevo_estado, $nota, $equipo_id);
 } else {
     // Si pasa a ocupada, actualizamos 
-    $ip_final = (!empty($ip_asignada)) ? $ip_asignada : null;
-
-    // Validar que la IP no esté repetida 
-    if ($ip_final !== null) {
-        $sql_check = "SELECT id FROM equipos_pc WHERE ip_asignada = ? AND id != ?";
-        $stmt_check = $conexion->prepare($sql_check);
-        $stmt_check->bind_param("si", $ip_final, $equipo_id);
-        $stmt_check->execute();
-        $resultado_check = $stmt_check->get_result();
-
-        if ($resultado_check->num_rows > 0) {
-            echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' ya está asignada a otro equipo']);
-            exit;
-        }
-
-        // Validar que la IP esté dentro del rango del departamento
-        $sql_rango = "SELECT ip_inicio, ip_fin, nombre FROM departamentos WHERE id = ?";
-        $stmt_rango = $conexion->prepare($sql_rango);
-        $stmt_rango->bind_param("i", $departamento);
-        $stmt_rango->execute();
-        $rango = $stmt_rango->get_result()->fetch_assoc();
-
-        if ($rango) {
-            $ip_num = ip2long($ip_final);
-            $rango_inicio = ip2long($rango['ip_inicio']);
-            $rango_fin = ip2long($rango['ip_fin']);
-
-            if ($ip_num < $rango_inicio || $ip_num > $rango_fin) {
-                echo json_encode(['success' => false, 'error' => 'La IP ' . $ip_final . ' no pertenece al rango del departamento ' . $rango['nombre'] . ' (' . $rango['ip_inicio'] . ' - ' . $rango['ip_fin'] . ')']);
-                exit;
-            }
-        }
+    require_once 'validator_ip.php';
+    $validacion = ValidatorIP::validarAsignacionIP($conexion, $ip_asignada, $departamento, $equipo_id);
+    if (!$validacion['success']) {
+        echo json_encode(['success' => false, 'error' => $validacion['error']]);
+        exit;
     }
+    $ip_final = $validacion['ip'] ?? null;
 
     $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, descripcion_equipo = ?, encargado = ?, departamento = ?, area = ?, ip_asignada = ? WHERE id = ?";
     $stmt_update = $conexion->prepare($sql_update);
@@ -85,6 +60,15 @@ if ($nuevo_estado === 1) {
 }
 
 if ($stmt_update->execute()) {
+    // Registro en auditoría
+    $str_estado = ($nuevo_estado === 1) ? "DISPONIBLE" : "OCUPADO";
+    $accion_log = "CAMBIO_ESTADO";
+    $detalle_log = "Equipo {$equipo_id} cambió estado a: $str_estado";
+    $sql_log = "INSERT INTO logs_auditoria (usuario_id, accion, equipo_id, detalles) VALUES (?, ?, ?, ?)";
+    $stmt_log = $conexion->prepare($sql_log);
+    $stmt_log->bind_param("isis", $_SESSION['user_id'], $accion_log, $equipo_id, $detalle_log);
+    $stmt_log->execute();
+
     echo json_encode([
         'success' => true,
         'nuevo_estado' => $nuevo_estado,

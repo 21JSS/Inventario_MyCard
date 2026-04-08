@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - MyCard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Inventario MyCard</h2>
+        <p>Inicia sesión para continuar</p>
+
+        <div class="error-message" id="login-error"></div>
+
+        <form id="formLogin">
+            <div class="form-group">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" placeholder="ej. mycard" required autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                <i class="bi bi-eye-slash-fill toggle-password" id="togglePassword"></i>
+            </div>
+            
+            <button type="submit" class="btn-submit">Ingresar al Sistema</button>
+        </form>
+    </div>
+
+    <script src="../scripts/autenticacion.js"></script>
+    <script src="../scripts/login.js"></script>
+</body>
+</html>

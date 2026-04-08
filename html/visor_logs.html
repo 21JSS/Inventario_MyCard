@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría de Logs - MyCard</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap">
+    <link rel="stylesheet" href="../css/style_principal.css?v=1.1">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>Panel de Auditoría Central</h1>
+                    <p class="parrafo-principal" style="color: #f0efef;">Visualización de transacciones históricas</p>
+                </div>
+                <div>
+                    <button onclick="window.location.href='index.html'"
+                        style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-right: 10px;">
+                        ← Volver a Inventario
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="logsTable">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Usuario</th>
+                            <th>Acción</th>
+                            <th>Detalle de Movimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logsBody">
+                        <tr>
+                            <td colspan="4" style="text-align: center;">Cargando histórico...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchLogs() {
+            try {
+                const response = await fetch("../php/api_logs.php");
+                if (response.status === 401 || response.status === 403) {
+                    alert("Acceso denegado: Necesitas ser Administrador o Auditor.");
+                    window.location.href = "index.html";
+                    return;
+                }
+                const result = await response.json();
+
+                const tbody = document.getElementById("logsBody");
+                tbody.innerHTML = "";
+
+                if (result.success) {
+                    result.data.forEach(log => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+                            <td>${log.fecha}</td>
+                            <td><strong style="color: #086cee;">${log.username}</strong></td>
+                            <td style="font-weight: 600; color: #555;">${log.accion.replace('_', ' ')}</td>
+                            <td>${log.detalles || 'Sin detalle extra'}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="4">Error: ${result.error}</td></tr>`;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        window.onload = fetchLogs;
+    </script>
+</body>
+
+</html>
