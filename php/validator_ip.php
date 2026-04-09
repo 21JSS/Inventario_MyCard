@@ -1,14 +1,8 @@
 <?php
-/**
- * Clase estática helper para la modularización de validaciones backend.
- * Abstrae la lógica repetitiva de comprobación de IPs en la base de datos.
- */
 class ValidatorIP {
 
     /**
      * Valida si la IP proporcionada está disponible y si pertenece al rango correcto.
-     * Retorna un arreglo asociativo con 'success' y un 'error' si falla.
-     * O retorna 'success' => true si todo es correcto.
      */
     public static function validarAsignacionIP($conexion, $ip_asignada, $departamento_id, $equipo_ignorado_id = null) {
         $ip_final = (!empty($ip_asignada)) ? $ip_asignada : null;

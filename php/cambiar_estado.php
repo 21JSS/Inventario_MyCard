@@ -38,7 +38,7 @@ $estado_actual = (int)$equipo['estado'];
 
 $nuevo_estado = ($estado_actual === 1) ? 0 : 1;
 
-// Si el nuevo estado es disponible (1), borramos la nota, el encargado, departamento y la IP
+// Si el nuevo estado es disponible (1), se borra la nota, el encargado, departamento y la IP
 if ($nuevo_estado === 1) {
     $nota = null;
     $sql_update = "UPDATE equipos_pc SET estado = ?, nota_estado = ?, encargado = '', departamento = NULL, area = NULL, ip_asignada = NULL WHERE id = ?";

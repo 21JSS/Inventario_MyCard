@@ -312,7 +312,7 @@ table {
 }
 
 thead {
-  background: #086ceea8;
+  background: #086cee;
   color: white;
 }
 
@@ -506,23 +506,18 @@ tbody tr:hover {
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
-  /* Evita que el scroll se propague al fondo (scroll chaining) */
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding: 20px 0;
-  /* Ocultar scrollbar */
   scrollbar-width: none;
-  /* Firefox */
   -ms-overflow-style: none;
-  /* IE / Edge legacy */
 }
 
 .modal::-webkit-scrollbar {
   display: none;
-  /* Chrome, Safari, Opera */
 }
 
-/* El modal de autenticación no necesita scroll — es pequeño */
+
 #modalAuth,
 #modalAuthEstado {
   overflow: hidden;
@@ -541,7 +536,6 @@ tbody tr:hover {
   width: 95%;
   max-width: 380px;
   background: transparent !important;
-  /* Heredar fondo del modal-content */
   padding: 35px 30px !important;
   border-radius: 30px !important;
   animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1180,7 +1174,7 @@ tbody tr:hover {
   }
 
   .modal-content {
-    background: rgba(59, 130, 246, 0.5);
+    background: rgba(0, 0, 0, 0.193);
     backdrop-filter: blur(15px);
     font-family: "Bricolage Grotesque";
     padding: 45px;

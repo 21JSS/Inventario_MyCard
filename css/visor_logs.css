@@ -1,0 +1,119 @@
+.header-logs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.header-logs .parrafo-principal {
+    color: #f0efef;
+}
+
+.btn-volver {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background 0.3s ease;
+}
+
+.btn-volver:hover {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: none;
+    transform: none;
+}
+
+.log-username {
+    color: #086cee;
+    font-weight: bold;
+}
+
+.log-action {
+    font-weight: 600;
+    color: #555;
+}
+
+/* Diseño de la tabla de logs independiente */
+.table-logs-container {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow-x: auto;
+}
+
+#logsTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#logsTable thead {
+    background: #086cee;
+    color: white;
+}
+
+#logsTable th {
+    justify-items: center;
+    align-items: center;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 0.95em;
+    text-align: center;
+}
+
+#logsTable th:first-child {
+    border-top-left-radius: 10px;
+}
+
+#logsTable th:last-child {
+    border-top-right-radius: 10px;
+}
+
+#logsTable td {
+    padding: 15px;
+    border-bottom: 1px solid #000000;
+    text-align: center;
+}
+
+#logsTable tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#logsTable tbody tr:hover {
+    background-color: #f8f9ff;
+}
+
+/* Diseño Responsivo */
+@media (max-width: 768px) {
+    .header-logs {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .btn-volver {
+        margin-right: 0;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .table-logs-container {
+        padding: 15px;
+    }
+
+    #logsTable th,
+    #logsTable td {
+        padding: 10px;
+        font-size: 0.85em;
+    }
+}

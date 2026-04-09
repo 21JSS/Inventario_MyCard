@@ -9,7 +9,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/style_principal.css?v=2.4">
+    <link rel="stylesheet" href="../css/style_principal.css?v=2.5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../css/modal_exportar.css">
@@ -20,11 +20,14 @@
 <body>
     <div class="wrapper">
         <div class="container">
-            <div class="header" style="position: relative; text-align: center;">
-                <h1 style="color: white; margin: 0; padding-top: 10px;">MyCard</h1>
-                <p class="parrafo-principal" style="color: #f0efef; font-size: 1.1em; margin-top: 5px;">Gestión de equipos de computo</p>
-                
-                <button onclick="cerrarSesion()" style="position: absolute; right: 0; top: 10px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+            <div class="header" style="display: flex; flex-direction: column; align-items: center; padding: 15px 20px; gap: 10px;">
+                <h1 style="color: white; margin: 0; padding-top: 0;">MyCard</h1>
+                <p class="parrafo-principal" style="color: #f0efef; font-size: 1.1em; margin: 0;">Gestión de equipos de computo</p>
+
+                <button onclick="cerrarSesion()" class="btn-salir-header"
+                    style="margin-top: 10px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background 0.3s; box-shadow: none !important; display: flex; align-items: center; gap: 8px;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.4)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.2)'">
                     <i class="bi bi-box-arrow-right"></i> Salir
                 </button>
             </div>
@@ -90,10 +93,16 @@
 
                     </div>
 
-                    <!-- Botón de cambio de estado -->
-                    <button id="btnCambiarEstado" onclick="cambiarEstadoEquipo()" class="btn-cambiar-estado">
-                        Marcar como Ocupada
-                    </button>
+                    <!-- Botones de administración -->
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button id="btnCambiarEstado" onclick="cambiarEstadoEquipo()" class="btn-cambiar-estado" style="flex: 1; margin-top: 0;">
+                            Marcar como Ocupada
+                        </button>
+                        
+                        <button id="btnEliminarEquipo" onclick="solicitarEliminarEquipo()" class="btn-cancel" style="display: none; background-color: #ef4444; border: none; color: white; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; flex: 1; margin-top: 0;">
+                            <i class="fa-solid fa-trash"></i> Eliminar Equipo
+                        </button>
+                    </div>
 
 
                 </div>
@@ -134,8 +143,14 @@
                         <i class="fa-solid fa-qrcode"></i>Leer QR
                     </button>
                     <!-- Botón exclusivo para Admin/Auditor oculto por defecto -->
-                    <button class="btn-auditoria" id="btnAuditoria" onclick="window.location.href='visor_logs.html'" style="display: none; background-color: #6366f1; color: white;">
+                    <button class="btn-auditoria" id="btnAuditoria" onclick="window.location.href='visor_logs.html'"
+                        style="display: none; background-color: #6366f1; color: white;">
                         <i class="fa-solid fa-clipboard-list"></i> Ver Movimientos
+                    </button>
+                    <!-- Botón exclusivo para Administrador (rol 1) -->
+                    <button id="btnGestionUsuarios" onclick="window.location.href='gestion_usuarios.html'"
+                        style="display: none; background-color: #086cee; color: white;">
+                        <i class="fa-solid fa-users-gear"></i> Gestionar Usuarios
                     </button>
                     <div class="search-wrapper">
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -429,26 +444,27 @@
         <div class="alerta-ip-box">
             <div class="alerta-ip-icono">🔄</div>
             <h3 id="dialogConfirmar-titulo">¿Confirmar acción?</h3>
-                        <div class="confirmar-botones">
+            <p id="dialogConfirmar-mensaje" style="margin-bottom: 20px; color: #555;">Mensaje</p>
+            <div class="confirmar-botones">
                 <button class="alerta-ip-btn confirmar-si" id="dialogConfirmar-si">Sí, confirmar</button>
                 <button class="alerta-ip-btn confirmar-no" onclick="cerrarDialogConfirmar()">No, cancelar</button>
             </div>
         </div>
     </div>
 
-    <script src="../services/bloquearPantalla.js?v=3"></script>
+    <script src="../services/bloquearPantalla.js?v=4"></script>
     <!-- Módulos Core -->
-    <script src="../scripts/variables_globales.js?v=3"></script>
-    <script src="../scripts/utilidades.js?v=3"></script>
+    <script src="../scripts/variables_globales.js?v=4"></script>
+    <script src="../scripts/utilidades.js?v=4"></script>
     <!-- Módulos de Backend (APIs) -->
-    <script src="../scripts/peticiones_bd.js?v=3"></script>
+    <script src="../scripts/peticiones_bd.js?v=4"></script>
     <!-- Módulos de Frontend (UI) -->
-    <script src="../scripts/autenticacion.js?v=3"></script>
-    <script src="../scripts/formularios_modales.js?v=3"></script>
-    <script src="../scripts/interfaz_inventario.js?v=3"></script>
-    <script src="../scripts/exportar.js?v=3"></script>
+    <script src="../scripts/autenticacion.js?v=4"></script>
+    <script src="../scripts/formularios_modales.js?v=4"></script>
+    <script src="../scripts/interfaz_inventario.js?v=4"></script>
+    <script src="../scripts/exportar.js?v=4"></script>
     <!-- Boot principal -->
-    <script src="../scripts/app.js?v=3"></script>
+    <script src="../scripts/app.js?v=4"></script>
 </body>
 
 </html>

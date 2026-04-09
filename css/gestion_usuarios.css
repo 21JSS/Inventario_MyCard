@@ -1,0 +1,565 @@
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --accent-blue: #086cee;
+}
+
+/* ---- OVERRIDE: h1 de esta página (style_principal lo pone muy grande) ---- */
+.header h1 {
+  font-size: 2.4em !important;
+}
+
+.header .parrafo-principal {
+  font-size: 1em !important;
+}
+
+/* ---- BARRA DE ACCIONES ---- */
+.gu-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.btn-nuevo-usuario {
+  background: linear-gradient(135deg, var(--accent-blue), #0ea5e9);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 1em;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  box-shadow: 0 4px 20px rgba(8, 108, 238, 0.4);
+}
+
+.btn-nuevo-usuario:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(8, 108, 238, 0.5);
+}
+
+.gu-search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 340px;
+}
+
+.gu-search-wrapper i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9em;
+}
+
+.gu-search-input {
+  width: 100%;
+  padding: 11px 16px 11px 40px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: white;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.95em;
+  transition: border 0.25s;
+}
+
+.gu-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.gu-search-input:focus {
+  outline: none;
+  border-color: var(--mycard-color);
+}
+
+/* ---- TABLA ---- */
+.gu-table-container {
+  background: rgba(15, 20, 35, 0.85) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.gu-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent !important;
+}
+
+.gu-table thead tr {
+  background: #086cee !important;
+}
+
+.gu-table thead th {
+  padding: 15px 20px;
+  text-align: center;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+  font-weight: 700;
+  font-size: 0.9em;
+  color: white !important;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  background: #086cee !important;
+}
+
+.gu-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  transition: background 0.2s;
+  background: transparent;
+}
+
+.gu-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.gu-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.gu-table td {
+  padding: 14px 20px;
+  color: #e0edff !important;
+  font-size: 0.95em;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+  background: transparent !important;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* ---- BADGES ---- */
+.badge-rol {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.82em;
+  font-weight: 700;
+  display: inline-block;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+.badge-admin {
+  background: rgba(239, 68, 68, 0.25);
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.badge-tecnico {
+  background: rgba(8, 108, 238, 0.25);
+  color: #93c5fd !important;
+  border: 1px solid rgba(8, 108, 238, 0.4);
+}
+
+.badge-consulta {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac !important;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.badge-auditor {
+  background: rgba(168, 85, 247, 0.2);
+  color: #d8b4fe !important;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.badge-activo {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac !important;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.82em;
+  font-weight: 700;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+.badge-inactivo {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5 !important;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.82em;
+  font-weight: 700;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+/* ---- BOTONES DE ACCIÓN EN TABLA ---- */
+.acciones-td {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-editar-u {
+  background: rgba(8, 108, 238, 0.25);
+  border: 1px solid rgba(8, 108, 238, 0.4);
+  color: #93c5fd !important;
+  padding: 7px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-editar-u:hover {
+  background: rgba(8, 108, 238, 0.5);
+  color: white !important;
+}
+
+.btn-eliminar-u {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5 !important;
+  padding: 7px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+}
+
+.btn-eliminar-u:hover {
+  background: rgba(239, 68, 68, 0.5);
+  color: white !important;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.55);
+}
+
+/* ---- MODAL ---- */
+.gu-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.gu-modal-overlay.activo {
+  display: flex;
+}
+
+.gu-modal {
+  background: rgba(25, 30, 43, 0.95);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.gu-modal * {
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+.gu-modal h2 {
+  font-size: 1.5em;
+  font-weight: 800;
+  color: white !important;
+  margin-bottom: 6px;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+.gu-modal p.subtitulo-modal {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.9em;
+  margin-bottom: 28px;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+.gu-form-group {
+  margin-bottom: 18px;
+}
+
+.gu-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700 !important;
+  color: #c7dcf5 !important;
+  font-size: 0.9em;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+.gu-form-group input,
+.gu-form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 12px !important;
+  color: white !important;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+  font-size: 0.95em !important;
+  transition: border 0.25s;
+}
+
+.gu-form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+.gu-form-group input:focus,
+.gu-form-group select:focus {
+  outline: none;
+  border-color: #00c6e6 !important;
+  box-shadow: none !important;
+}
+
+.gu-form-group select option {
+  background: #191e2b !important;
+  color: white !important;
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+}
+
+.gu-modal-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.btn-guardar {
+  flex: 1;
+  background: linear-gradient(135deg, var(--accent-blue), #0ea5e9);
+  border: none;
+  color: white;
+  padding: 13px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 1em;
+  transition: transform 0.2s;
+}
+
+.btn-guardar:hover {
+  transform: translateY(-2px);
+}
+
+.btn-cancelar-modal {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 13px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 1em;
+  transition: background 0.2s;
+}
+
+.btn-cancelar-modal:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ---- TOAST NOTIFICACIONES ---- */
+.gu-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.95em;
+  color: white;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.35s, transform 0.35s;
+  pointer-events: none;
+  max-width: 360px;
+}
+
+.gu-toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gu-toast.exito {
+  background: rgba(34, 197, 94, 0.9);
+  border: 1px solid rgba(34, 197, 94, 0.5);
+}
+
+.gu-toast.error {
+  background: rgba(239, 68, 68, 0.9);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+/* ---- LOADING ---- */
+.gu-loading {
+  text-align: center;
+  padding: 50px 20px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.1em;
+}
+
+/* ---- RESPONSIVE: TABLET (≤ 768px) ---- */
+@media (max-width: 768px) {
+
+  /* Header: h1 más pequeño en móvil */
+  .header h1 {
+    font-size: 1.6em !important;
+  }
+
+  .header .parrafo-principal {
+    font-size: 0.9em !important;
+  }
+
+  /* Barra de acciones en columna */
+  .gu-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .btn-nuevo-usuario {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .gu-search-wrapper {
+    max-width: 100%;
+  }
+
+  /* Tabla: ocultar columna ID y scroll horizontal como fallback */
+  .gu-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ocultar columna ID en móvil para ganar espacio */
+  .gu-table thead th:first-child,
+  .gu-table td:first-child {
+    display: none;
+  }
+
+  .gu-table thead th,
+  .gu-table td {
+    padding: 10px 8px;
+    font-size: 0.82em;
+  }
+
+  .acciones-td {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .btn-editar-u,
+  .btn-eliminar-u {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.8em;
+    padding: 7px 8px;
+  }
+
+  /* Modal: full screen casi completo */
+  .gu-modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .gu-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 24px 24px 0 0;
+    padding: 28px 20px 36px;
+    max-height: 92vh;
+    overflow-y: auto;
+    animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes modalSlideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);   opacity: 1; }
+  }
+
+  .gu-modal h2 {
+    font-size: 1.3em !important;
+  }
+
+  .gu-modal-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-guardar,
+  .btn-cancelar-modal {
+    width: 100%;
+    padding: 14px;
+    font-size: 1em;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Toast en mobile */
+  .gu-toast {
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    max-width: unset;
+    text-align: center;
+  }
+}
+
+/* ---- RESPONSIVE: MÓVIL PEQUEÑO (≤ 480px) ---- */
+@media (max-width: 480px) {
+
+  .gu-table thead th,
+  .gu-table td {
+    padding: 8px 10px;
+    font-size: 0.78em;
+  }
+
+  .badge-rol,
+  .badge-activo,
+  .badge-inactivo {
+    font-size: 0.75em;
+    padding: 3px 9px;
+  }
+
+  .gu-form-group input,
+  .gu-form-group select {
+    font-size: 0.92em !important;
+    padding: 11px 13px !important;
+  }
+
+  .gu-modal {
+    padding: 22px 16px 32px;
+  }
+}

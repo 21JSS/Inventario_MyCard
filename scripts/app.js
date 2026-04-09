@@ -27,6 +27,32 @@ function aplicarRestriccionesUI(rolId) {
     if(btnCambiarEst) btnCambiarEst.style.display = "none";
   }
 
+  // Eliminar equipo exclusivo para Admin y Técnico (<= 2)
+  const btnEliminar = document.getElementById("btnEliminarEquipo");
+  if (btnEliminar) {
+    if (rolId <= 2) {
+      btnEliminar.style.display = "flex";
+      btnEliminar.style.alignItems = "center";
+      btnEliminar.style.justifyContent = "center";
+      btnEliminar.style.gap = "8px";
+    } else {
+      btnEliminar.style.display = "none";
+    }
+  }
+
+  // Gestión de Usuarios estricto para Administrador (1)
+  const btnUsuarios = document.getElementById("btnGestionUsuarios");
+  if (btnUsuarios) {
+    if (rolId === 1) {
+      btnUsuarios.style.display = "flex";
+      btnUsuarios.style.alignItems = "center";
+      btnUsuarios.style.justifyContent = "center";
+      btnUsuarios.style.gap = "5px";
+    } else {
+      btnUsuarios.style.display = "none";
+    }
+  }
+
   // Ocultar exportación a menos que seas Admin(1) o Auditor(4) - Opcional, pero para fines del ejemplo dejaremos full a 1 y 2.
   if (rolId === 3) {
      const btnExportar = document.getElementById("btnExportarExcel");
