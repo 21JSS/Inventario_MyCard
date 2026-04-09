@@ -45,10 +45,10 @@ function renderizarTabla(lista) {
   }
 
   tbody.innerHTML = '';
-  lista.forEach(u => {
+  lista.forEach((u, index) => {
     const fila = document.createElement('tr');
     fila.innerHTML = `
-      <td style="color:#e0edff; font-family:'Bricolage Grotesque',sans-serif;">#${u.id}</td>
+      <td style="color:#e0edff; font-family:'Bricolage Grotesque',sans-serif;">#${index + 1}</td>
       <td>
         <span style="font-weight:700; color:white; font-family:'Bricolage Grotesque',sans-serif; display:block;">${u.nombre_completo}</span>
         <span style="font-size:0.82em; color:rgba(255,255,255,0.5); font-family:'Bricolage Grotesque',sans-serif;">@${u.username}</span>
