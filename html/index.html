@@ -20,95 +20,20 @@
 <body>
     <div class="wrapper">
         <div class="container">
-            <div class="header" style="display: flex; flex-direction: column; align-items: center; padding: 15px 20px; gap: 10px;">
+            <div class="header"
+                style="display: flex; flex-direction: column; align-items: center; padding: 15px 20px; gap: 10px;">
                 <h1 style="color: white; margin: 0; padding-top: 0;">MyCard</h1>
-                <p class="parrafo-principal" style="color: #f0efef; font-size: 1.1em; margin: 0;">Gestión de equipos de computo</p>
+                <p class="parrafo-principal" style="color: #f0efef; font-size: 1.1em; margin: 0;">Gestión de equipos de
+                    computo</p>
 
-<<<<<<< HEAD
-        
-        <div id="detalleEquipo" style="display: none;">
-            <button onclick="regresarInventario()" class="btn-regresar">← Regresar al Inventario</button>
-
-            <div class="detalle-card">
-                <h2 id="detalle-nombre"></h2>
-                <div class="detalle-info">
-                
-                    <div class="detalle-row" style="margin-bottom: 5px;">
-                        <span class="detalle-label">Estado:</span>
-                        <span class="detalle-badge" id="detalle-estado"></span>
-                    </div>
-
-                    <div class="info-item">
-                        <span class="label">Departamento:</span>
-                        <span id="detalle-departamento" style="font-weight: 600;"></span>
-                    </div>
-
-                    <div class="info-item">
-                        <span class="label">Area:</span>
-                        <span id="detalle-area" style="font-weight: 600;"></span>
-                    </div>
-
-                    <div class="info-item">
-                        <span class="label">Encargado:</span>
-                        <span id="detalle-encargado" style="font-weight: 600;"></span>
-                    </div>
-
-                    <div class="info-item">
-                        <span class="label">Descripción Equipo:</span>
-                        <span id="detalle-descripcion"></span>
-                    </div>
-
-                    <div class="info-item">
-                        <span class="label">Modelo:</span>
-                        <span id="detalle-modelo"></span>
-                    </div>
-
-                    <div class="info-item">
-                        <span class="label">Marca:</span>
-                        <span id="detalle-marca"></span>
-                    </div>
-
-                    <div class="info-item">
-                        <span class="label">Tipo:</span>
-                        <span id="detalle-tipo"></span>
-                    </div>
-
-                    <div class="info-item">
-                        <span class="label">ID del Equipo:</span>
-                        <span id="detalle-id"></span>
-                    </div>
-
-
-                    <div class="info-item">
-                        <span class="label">IP Asignada:</span>
-                        <span id="detalle-ip"></span>
-                    </div>
-
-                </div>
-
-               
-                <button id="btnCambiarEstado" onclick="cambiarEstadoEquipo()" class="btn-cambiar-estado">
-                    Marcar como Ocupada
-=======
                 <button onclick="cerrarSesion()" class="btn-salir-header"
                     style="margin-top: 10px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background 0.3s; box-shadow: none !important; display: flex; align-items: center; gap: 8px;"
                     onmouseover="this.style.background='rgba(255,255,255,0.4)'"
                     onmouseout="this.style.background='rgba(255,255,255,0.2)'">
                     <i class="bi bi-box-arrow-right"></i> Salir
->>>>>>> 1def05717e8284fd4efcc5e0993808f631ce6afc
                 </button>
             </div>
 
-<<<<<<< HEAD
-                
-                <div class="mas-opciones-wrapper">
-                    <button class="btn-mas-opciones" id="btnMasOpciones" onclick="toggleMasOpciones(event)">
-                        <i class="fa-solid fa-ellipsis-vertical"></i> Más opciones
-                    </button>
-                    <div class="dropdown-opciones" id="dropdownOpciones">
-                        <button class="dropdown-item-bloquear" id="btnBloquearPantalla" onclick="ejecutarBloqueo()">
-                            <i class="fa-solid fa-lock"></i> Bloquear Pantalla
-=======
             <!-- Vista de Detalle Individual -->
             <div id="detalleEquipo" style="display: none;">
                 <button onclick="regresarInventario()" class="btn-regresar">← Regresar al Inventario</button>
@@ -172,65 +97,20 @@
 
                     <!-- Botones de administración -->
                     <div style="display: flex; gap: 10px; margin-top: 20px;">
-                        <button id="btnCambiarEstado" onclick="cambiarEstadoEquipo()" class="btn-cambiar-estado" style="flex: 1; margin-top: 0;">
+                        <button id="btnCambiarEstado" onclick="cambiarEstadoEquipo()" class="btn-cambiar-estado"
+                            style="flex: 1; margin-top: 0;">
                             Marcar como Ocupada
                         </button>
-                        
-                        <button id="btnEliminarEquipo" onclick="solicitarEliminarEquipo()" class="btn-cancel" style="display: none; background-color: #ef4444; border: none; color: white; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; flex: 1; margin-top: 0;">
+
+                        <button id="btnEliminarEquipo" onclick="solicitarEliminarEquipo()" class="btn-cancel"
+                            style="display: none; background-color: #ef4444; border: none; color: white; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; flex: 1; margin-top: 0;">
                             <i class="fa-solid fa-trash"></i> Eliminar Equipo
->>>>>>> 1def05717e8284fd4efcc5e0993808f631ce6afc
                         </button>
                     </div>
 
 
                 </div>
             </div>
-<<<<<<< HEAD
-        </div>
-        
-
-
-
-
-        <div class="stats-container">
-            <div class="stat-card" onclick="filtrarPorEstado('todos')" style="cursor: pointer;" id="cardTodos">
-                <div class="stat-label">Total de Equipos</div>
-                <div class="stat-value" id="totalEquipos">0</div>
-            </div>
-            <div class="stat-card" onclick="filtrarPorEstado('disponible')" style="cursor: pointer;"
-                id="cardDisponible">
-                <div class="stat-label">Disponibles</div>
-                <div class="stat-value" id="totalDisponibles">0</div>
-            </div>
-            <div class="stat-card" onclick="filtrarPorEstado('ocupada')" style="cursor: pointer;" id="cardOcupada">
-                <div class="stat-label">Ocupadas</div>
-                <div class="stat-value" id="totalOcupadas">0</div>
-            </div>
-        </div>
-
-       
-        <div id="filtroIndicador"
-            style="text-align: center; margin: 20px 0; font-size: 1.1em; color: #666; display: none;">
-            <span id="filtroTexto">Mostrando: Todos los equipos</span>
-        </div>
-
-        <div class="controls" id="controls" style="display: block;">
-            <div class="button-group">
-                <button onclick="abrirModal()"><i id="icono_computo" class="fa-solid fa-laptop-code"></i>
-                    Agregar Equipo
-                </button>
-                <button class="btn-exportar" onclick="exportarDatos()"><i id="icono_excel"
-                        class="fa-solid fa-file-excel"></i>
-                    Exportar a Excel
-                </button>
-                <button class="btn-qr" onclick="interfazQR()" id="pushgointerfaz">
-                    <i class="fa-solid fa-qrcode"></i>Leer QR
-                </button>
-                <div class="search-wrapper">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" class="search-box" id="searchBox"
-                        placeholder="Buscar por nombre, marca o modelo..." onkeyup="filtrarTabla()">
-=======
             <!-- FIN Vista de Detalle Individual -->
 
             <div class="stats-container">
@@ -245,7 +125,6 @@
                 <div class="stat-card" onclick="filtrarPorEstado(0)" style="cursor: pointer;" id="cardOcupada">
                     <div class="stat-label">Ocupadas</div>
                     <div class="stat-value" id="totalOcupadas">0</div>
->>>>>>> 1def05717e8284fd4efcc5e0993808f631ce6afc
                 </div>
             </div>
 
@@ -255,20 +134,6 @@
                 <span id="filtroTexto">Mostrando: Todos los equipos</span>
             </div>
 
-<<<<<<< HEAD
-        
-        <div id="modalAuth" class="modal" style="display: none;">
-            <div class="modal-content modal-auth">
-                <span class="close" onclick="cerrarModalAuth()">&times;</span>
-                <h2>Acceso de Administrador</h2>
-                <p class="parrafo-auth" style="color: #3a3c41; margin-bottom: 20px;">Ingresa tus credenciales para
-                    continuar</p>
-
-                <form id="formAuth" onsubmit="verificarCredenciales(event)" action="#">
-                    <div class="form-group">
-                        <label for="username"><i class="bi bi-person" id="icon-admin-user"></i>Usuario:</label>
-                        <input type="text" id="username" name="username" required autocomplete="username">
-=======
             <div class="controls" id="controls" style="display: block;">
                 <div class="button-group">
                     <button onclick="abrirModal()"><i id="icono_computo" class="fa-solid fa-laptop-code"></i>
@@ -295,7 +160,6 @@
                         <i class="fa-solid fa-magnifying-glass search-icon"></i>
                         <input type="text" class="search-box" id="searchBox"
                             placeholder="Buscar por nombre, marca o modelo..." onkeyup="filtrarTabla()">
->>>>>>> 1def05717e8284fd4efcc5e0993808f631ce6afc
                     </div>
                 </div>
             </div>
@@ -463,13 +327,8 @@
             </div>
         </div>
 
-<<<<<<< HEAD
-       
-        <div id="modalAgregar" class="modal" style="display: none;">
-=======
         <!-- Modal para Cambiar Estado -->
         <div id="modalCambiarEstado" class="modal" style="display: none;">
->>>>>>> 1def05717e8284fd4efcc5e0993808f631ce6afc
             <div class="modal-content">
                 <span class="close" onclick="cerrarModalEstado()">&times;</span>
                 <h2>Cambiar Estado del Equipo</h2>
@@ -532,13 +391,6 @@
 
     </div>
 
-<<<<<<< HEAD
-    
-    <div id="modalCambiarEstado" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModalEstado()">&times;</span>
-            <h2>Cambiar Estado del Equipo</h2>
-=======
     <div id="alertaIP" class="alerta-ip-overlay">
         <div class="alerta-ip-box" id="alertaIP-box">
             <div class="alerta-ip-icono" id="alertaIP-icono">⚠️</div>
@@ -551,7 +403,6 @@
             <button class="alerta-ip-btn" onclick="cerrarAlertaIP()">Entendido</button>
         </div>
     </div>
->>>>>>> 1def05717e8284fd4efcc5e0993808f631ce6afc
 
     <!-- Modal de Autenticación para Cambiar Estado -->
     <div id="modalAuthEstado" class="modal" style="display: none;">

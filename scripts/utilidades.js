@@ -1,5 +1,3 @@
-// ===== UTILS =====
-// Funciones misceláneas y utilitarias de uso global de la aplicación.
 
 /** Bloquea el scroll de la página de fondo cuando un modal está activo */
 function bloquearScrollFondo() {
@@ -55,7 +53,7 @@ function escapeHTML(str) {
 /** Sistema de Alertas Personalizadas de IP - Muestra el mensaje interactivo tipo toast o alert */
 function mostrarAlertaIP(tipo, titulo, mensaje, rango) {
   const box = document.getElementById("alertaIP-box");
-  if(!box) return;
+  if (!box) return;
   box.classList.remove("tipo-error", "tipo-success");
 
   if (tipo === "error") {
@@ -74,21 +72,21 @@ function mostrarAlertaIP(tipo, titulo, mensaje, rango) {
   // Mostrar u ocultar la sección del rango según corresponda
   const rangoBox = document.querySelector(".alerta-ip-rango");
   if (rango) {
-    if(rangoBox) rangoBox.style.display = "block";
+    if (rangoBox) rangoBox.style.display = "block";
     const rangeEl = document.getElementById("alertaIP-rango");
-    if(rangeEl) rangeEl.textContent = rango;
+    if (rangeEl) rangeEl.textContent = rango;
   } else {
-    if(rangoBox) rangoBox.style.display = "none";
+    if (rangoBox) rangoBox.style.display = "none";
   }
 
   const alertContainer = document.getElementById("alertaIP");
-  if(alertContainer) alertContainer.classList.add("visible");
+  if (alertContainer) alertContainer.classList.add("visible");
   bloquearScrollFondo();
 }
 
 /** Oculta el sistema de alertas personalizadas */
 function cerrarAlertaIP() {
   const alertContainer = document.getElementById("alertaIP");
-  if(alertContainer) alertContainer.classList.remove("visible");
+  if (alertContainer) alertContainer.classList.remove("visible");
   restaurarScrollFondo();
 }
