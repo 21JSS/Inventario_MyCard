@@ -42,7 +42,9 @@ if ($stmt->execute()) {
 
     // Registrar en auditoría
     $admin_id = $_SESSION['user_id'];
-    $detalle  = "Administrador creó al usuario '$username' con rol_id $rol_id.";
+    $roles_map = [1 => 'Administrador', 2 => 'Técnico de Sistemas', 3 => 'Usuario de Consulta', 4 => 'Auditor / Supervisor'];
+    $rol_nombre = $roles_map[$rol_id] ?? 'Desconocido';
+    $detalle  = "Administrador creó al usuario '$username' con rol de: $rol_nombre.";
     $log = $conexion->prepare("INSERT INTO logs_auditoria (usuario_id, accion, detalles) VALUES (?, 'CREAR_USUARIO', ?)");
     $log->bind_param("is", $admin_id, $detalle);
     $log->execute();

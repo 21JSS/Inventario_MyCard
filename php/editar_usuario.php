@@ -36,7 +36,9 @@ if (!empty($nueva_password)) {
 if ($stmt->execute()) {
     // Registrar en auditoría
     $admin_id = $_SESSION['user_id'];
-    $detalle  = "Administrador editó al usuario ID $id. Nuevo rol: $rol_id, Estatus: $estatus.";
+    $roles_map = [1 => 'Administrador', 2 => 'Técnico de Sistemas', 3 => 'Usuario de Consulta', 4 => 'Auditor / Supervisor'];
+    $rol_nombre = $roles_map[$rol_id] ?? 'Desconocido';
+    $detalle  = "Administrador editó al usuario ID $id. Nuevo rol de: $rol_nombre, Estatus: $estatus.";
     $log = $conexion->prepare("INSERT INTO logs_auditoria (usuario_id, accion, detalles) VALUES (?, 'EDITAR_USUARIO', ?)");
     $log->bind_param("is", $admin_id, $detalle);
     $log->execute();
