@@ -1,4 +1,5 @@
 <?php
+require_once 'check_session.php';
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
@@ -8,7 +9,16 @@ require_once 'db.php';
 
 try {
     #hace la consulta a la base de datos
-    $sql = "SELECT id, nombre, tipo, marca, modelo, encargado, departamento, area, descripcion_equipo, ip_asignada, estado, nota_estado FROM equipos_pc ORDER BY id ASC";
+    $sql = "SELECT e.id, e.nombre, e.tipo, e.marca, e.modelo, e.encargado, 
+            d.nombre AS departamento, d.id AS departamento_id,
+            d.ip_inicio AS depto_ip_inicio, d.ip_fin AS depto_ip_fin,
+            a.nombre AS area, e.descripcion_equipo, 
+            e.ip_asignada, e.estado, e.nota_estado,
+            e.fecha_creacion
+            FROM equipos_pc e 
+            LEFT JOIN departamentos d ON e.departamento = d.id 
+            LEFT JOIN areas a ON e.area = a.id 
+            ORDER BY e.id ASC";
     $resultado = $conexion->query($sql);
 
     if (!$resultado) { 
@@ -26,16 +36,27 @@ try {
     $total_ocupadas = 0;
 
     foreach ($equipos as $e) {
-        if ($e['estado'] === 'disponible') {
+        if ((int)$e['estado'] === 1) {
             $total_disponibles++;
-        } elseif ($e['estado'] === 'ocupada') {
+        } elseif ((int)$e['estado'] === 0) {
             $total_ocupadas++;
+        }
+    }
+
+    // Obtener todos los departamentos para el filtro de exportación
+    $sql_deptos = "SELECT id, nombre, ip_inicio, ip_fin FROM departamentos ORDER BY nombre ASC";
+    $res_deptos = $conexion->query($sql_deptos);
+    $departamentos = [];
+    if ($res_deptos) {
+        while ($d = $res_deptos->fetch_assoc()) {
+            $departamentos[] = $d;
         }
     }
 
     $response = [
         'success' => true,
         'data' => $equipos,
+        'departamentos' => $departamentos,
         'stats' => [
             'total_equipos' => $total_equipos,
             'total_disponibles' => $total_disponibles,

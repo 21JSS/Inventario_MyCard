@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <script>
+<<<<<<< HEAD
         // Forzar HTTPS para que la cámara funcione en dispositivos externos
+=======
+        // La cámara REQUIERE HTTPS — redirigir si viene por HTTP
+>>>>>>> 1def05717e8284fd4efcc5e0993808f631ce6afc
         if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
             location.replace(`https://${location.hostname}${location.pathname}${location.search}`);
         }

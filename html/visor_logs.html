@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría de Logs - MyCard</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap">
+    <link rel="stylesheet" href="../css/style_principal.css?v=1.2">
+    <link rel="stylesheet" href="../css/visor_logs.css?v=1.23">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="header header-logs">
+                <div>
+                    <h1>Panel de Auditoría Central</h1>
+                    <p class="parrafo-principal">Visualización de movimientos históricos</p>
+                </div>
+                <div>
+                    <button onclick="window.location.href='index.html'" class="btn-volver">
+                        ← Volver a Inventario
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-logs-container">
+                <table id="logsTable">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Usuario</th>
+                            <th>Acción</th>
+                            <th>Detalle de Movimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logsBody">
+                        <tr>
+                            <td colspan="4" style="text-align: center;">Cargando histórico...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/visor_logs.js?v=1.01"></script>
+</body>
+
+</html>

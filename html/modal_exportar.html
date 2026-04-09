@@ -1,0 +1,67 @@
+<div id="modalFiltrosExport" class="modal" style="display:none;">
+    <div class="modal-content modal-filtros">
+        <span class="close" onclick="cerrarModalFiltros()">&times;</span>
+        <div class="filtros-header">
+            <div class="filtros-icon">📊</div>
+            <h2>Exportar Reporte Excel</h2>
+            <p class="filtros-subtitle">Selecciona los filtros para tu reporte</p>
+        </div>
+
+
+        <div class="filtro-seccion">
+            <div class="filtro-seccion-titulo">
+                <i class="fa-solid fa-circle-dot"></i> Estado de disponibilidad
+            </div>
+            <div class="filtro-chips" id="chips-estado">
+                <button type="button" class="chip chip-active" data-value="todos"
+                    onclick="seleccionarChip('estado', this)">Todos</button>
+                <button type="button" class="chip" data-value="disponible" onclick="seleccionarChip('estado', this)">🟢
+                    Disponible</button>
+                <button type="button" class="chip" data-value="ocupada" onclick="seleccionarChip('estado', this)">🟡
+                    Ocupada</button>
+            </div>
+        </div>
+
+
+        <div class="filtro-seccion">
+            <div class="filtro-seccion-titulo">
+                <i class="fa-solid fa-calendar"></i> Período de tiempo
+            </div>
+            <div class="filtro-chips" id="chips-fecha">
+                <button type="button" class="chip chip-active" data-value="todos"
+                    onclick="seleccionarChip('fecha', this)">Todo el tiempo</button>
+                <button type="button" class="chip" data-value="semana" onclick="seleccionarChip('fecha', this)">📅
+                    Última semana</button>
+                <button type="button" class="chip" data-value="mes" onclick="seleccionarChip('fecha', this)">📅 Último
+                    mes</button>
+                <button type="button" class="chip" data-value="trimestre" onclick="seleccionarChip('fecha', this)">📅
+                    Últimos 3 meses</button>
+            </div>
+        </div>
+
+
+        <div class="filtro-seccion">
+            <div class="filtro-seccion-titulo">
+                <i class="fa-solid fa-network-wired"></i> Departamento (rango IP)
+            </div>
+            <div class="filtro-chips" id="chips-depto">
+                <button type="button" class="chip chip-active" data-value="todos"
+                    onclick="seleccionarChip('depto', this)">Todos</button>
+
+            </div>
+        </div>
+
+
+        <div id="filtro-preview" class="filtro-preview">
+            <span id="filtro-preview-texto">Se exportarán <strong id="filtro-conteo">0</strong> registros con los
+                filtros seleccionados.</span>
+        </div>
+
+        <div class="form-buttons" style="margin-top: 28px;">
+            <button type="button" class="btn-export-confirm" id="btnConfirmarExport" onclick="ejecutarExportFiltrado()">
+                <i class="fa-solid fa-file-excel"></i> Generar Excel
+            </button>
+            <button type="button" class="btn-cancel" onclick="cerrarModalFiltros()">Cancelar</button>
+        </div>
+    </div>
+</div>

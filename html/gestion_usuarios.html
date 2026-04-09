@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - MyCard</title>
+    <meta name="description"
+        content="Panel exclusivo del Administrador para crear, editar y eliminar usuarios del sistema MyCard.">
+
+    <!-- Fuente -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="../css/style_principal.css?v=4">
+    <link rel="stylesheet" href="../css/gestion_usuarios.css?v=2">
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="container">
+
+
+            <div class="header"
+                style="display: flex; flex-direction: column; align-items: center; padding: 15px 20px; gap: 10px;">
+                <h1 style="color: white; margin: 0; padding-top: 0;">Gestión de Usuarios</h1>
+                <p class="parrafo-principal" style="color: #f0efef; font-size: 1.1em; margin: 0;">Administración de
+                    accesos y perfiles del sistema</p>
+                <button onclick="window.location.href='index.html'"
+                    style="margin-top: 10px; background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background 0.3s; box-shadow: none !important; display: flex; align-items: center; gap: 8px;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.4)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                    <i class="bi bi-arrow-left"></i> Regresar al Inventario
+                </button>
+            </div>
+
+
+            <div class="gu-actions-bar">
+                <button class="btn-nuevo-usuario" onclick="abrirModalNuevo()">
+                    <i class="fa-solid fa-user-plus"></i> Nuevo Usuario
+                </button>
+
+                <div class="gu-search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchUsuarios" class="gu-search-input"
+                        placeholder="Buscar por nombre, usuario o rol...">
+                </div>
+            </div>
+
+            <!-- TABLA DE USUARIOS -->
+            <div class="gu-table-container">
+                <table class="gu-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre / Usuario</th>
+                            <th>Rol</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyUsuarios">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL CREAR / EDITAR -->
+    <div class="gu-modal-overlay" id="modalOverlay">
+        <div class="gu-modal">
+            <h2 id="modalTitulo">Crear Nuevo Usuario</h2>
+            <p class="subtitulo-modal" id="modalSubtitulo">Completa todos los campos.</p>
+
+            <form id="formUsuario" onsubmit="event.preventDefault(); guardarUsuario();">
+
+                <div class="gu-form-group">
+                    <label for="inputNombre">Nombre Completo</label>
+                    <input type="text" id="inputNombre" placeholder="Ej. María García López" required>
+                </div>
+
+                <div class="gu-form-group" id="grupoUsername">
+                    <label for="inputUsername">Nombre de Usuario (login)</label>
+                    <input type="text" id="inputUsername" placeholder="Ej. m.garcia" autocomplete="off">
+                </div>
+
+                <div class="gu-form-group" id="campoPassword">
+                    <label for="inputPassword" id="labelPassword">Contraseña</label>
+                    <input type="password" id="inputPassword" placeholder="Mínimo 6 caracteres"
+                        autocomplete="new-password">
+                </div>
+
+                <div class="gu-form-group">
+                    <label for="inputRol">Rol del Sistema</label>
+                    <select id="inputRol" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="1">👑 Administrador</option>
+                        <option value="2">🔧 Técnico de Sistemas</option>
+                        <option value="3">👁️ Usuario de Consulta</option>
+                        <option value="4">🔍 Auditor / Supervisor</option>
+                    </select>
+                </div>
+
+                <div class="gu-form-group" id="estatusGroup" style="display:none;">
+                    <label for="inputEstatus">Estatus de la Cuenta</label>
+                    <select id="inputEstatus">
+                        <option value="1">✓ Activo</option>
+                        <option value="0">✕ Suspendido</option>
+                    </select>
+                </div>
+
+                <div class="gu-modal-buttons">
+                    <button type="button" class="btn-cancelar-modal" onclick="cerrarModal()">Cancelar</button>
+                    <button type="submit" class="btn-guardar" id="btnGuardar">
+                        <i class=></i>✅Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICACIÓN -->
+    <div class="gu-toast" id="guToast"></div>
+
+    <!-- SCRIPTS -->
+    <script src="../scripts/gestion_usuarios.js?v=2"></script>
+
+</body>
+
+</html>
