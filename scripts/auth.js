@@ -1,5 +1,3 @@
-
-
 // --- Manejo de la Interfaz: Toggles de Password ---
 document.addEventListener("DOMContentLoaded", () => {
   // Toggle password genérico del modal de Agregar Equipo
@@ -31,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// --- Modal Admin Auth (Agregar Equipo) ---
+// --- Modal Admin Auth PARA Agregar Equipo ---
 
 /** Abre el modal primario de autenticación */
 function abrirModal() {
@@ -61,7 +59,7 @@ function cerrarModalAuth() {
   }
 }
 
-/** Verifica las credenciales para Agregar un nuevo Equipo */
+/** Verifica las credenciales para agregar un nuevo Equipo */
 async function verificarCredenciales(event) {
   event.preventDefault();
   const username = document.getElementById("username").value.trim();
@@ -106,7 +104,7 @@ async function verificarCredenciales(event) {
   }
 }
 
-// --- Modal Admin Auth (Cambiar Estado) ---
+// --- Modal Admin Auth para cambiar el estado del equipo ---
 
 /** Abre el modal de autenticación antes de cambiar estado */
 function cambiarEstadoEquipo() {

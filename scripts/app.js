@@ -1,7 +1,6 @@
-// ===== ENTRY POINT (MAIN APP) =====
 
 window.onload = function () {
-  // Verificación visual rápida de Roles (RBAC) UI Lock
+  // Verificación visual rápida de Roles 
   const userRole = parseInt(localStorage.getItem("user_role") || "3", 10);
   aplicarRestriccionesUI(userRole);
 
@@ -16,18 +15,18 @@ window.onload = function () {
   }
 };
 
-/** Oculta o pinta botones de la interfaz HTML dependiendo del perfil que accedió */
+
 function aplicarRestriccionesUI(rolId) {
   // Si es Usuario de Consulta (3) o Auditor (4), ocultar edición
   if (rolId > 2) {
     const btnAgregar = document.querySelector("button[onclick='abrirModal()']");
-    if(btnAgregar) btnAgregar.style.display = "none";
-    
+    if (btnAgregar) btnAgregar.style.display = "none";
+
     const btnCambiarEst = document.getElementById("btnCambiarEstado");
-    if(btnCambiarEst) btnCambiarEst.style.display = "none";
+    if (btnCambiarEst) btnCambiarEst.style.display = "none";
   }
 
-  // Eliminar equipo exclusivo para Admin y Técnico (<= 2)
+  // Eliminar equipo exclusivo para Admin y Técnico SOLO SI ES UNO DE ESTOS DOS ROLES, SINO SE NIEGA
   const btnEliminar = document.getElementById("btnEliminarEquipo");
   if (btnEliminar) {
     if (rolId <= 2) {
@@ -53,16 +52,16 @@ function aplicarRestriccionesUI(rolId) {
     }
   }
 
-  // Ocultar exportación a menos que seas Admin(1) o Auditor(4) - Opcional, pero para fines del ejemplo dejaremos full a 1 y 2.
+  // Ocultar exportación a menos que seas Admin O AUDITOR
   if (rolId === 3) {
-     const btnExportar = document.getElementById("btnExportarExcel");
-     if(btnExportar) btnExportar.style.display = "none";
+    const btnExportar = document.getElementById("btnExportarExcel");
+    if (btnExportar) btnExportar.style.display = "none";
   }
 
   // Diferenciador visual clave: Botón para entrar a los Logs de Auditoría
   if (rolId === 1 || rolId === 4) {
     const btnAuditor = document.getElementById("btnAuditoria");
-    if(btnAuditor) {
+    if (btnAuditor) {
       btnAuditor.style.display = "inline-flex";
       btnAuditor.style.alignItems = "center";
       btnAuditor.style.justifyContent = "center";

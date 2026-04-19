@@ -10,7 +10,7 @@ try {
     $sql = "SELECT l.id, u.username, l.accion, l.detalles, l.fecha 
             FROM logs_auditoria l 
             JOIN usuarios u ON l.usuario_id = u.id 
-            ORDER BY l.fecha DESC LIMIT 100";
+            ORDER BY l.fecha DESC LIMIT 500";
     
     $result = $conexion->query($sql);
     

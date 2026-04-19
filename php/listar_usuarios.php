@@ -1,5 +1,5 @@
 <?php
-// Permite solo Admin (1) listar usuarios
+// Permite solo el adminisrador  listar usuarios
 $required_role_max = 1;
 require_once 'check_session.php';
 require_once 'db.php';

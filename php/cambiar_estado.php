@@ -1,5 +1,5 @@
 <?php
-$required_role_max = 2; // Solo Admin (1) o Tecnico (2)
+$required_role_max = 2; // Solo Admin o Tecnico de sistemas
 require_once 'check_session.php';
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

@@ -1,5 +1,5 @@
 <?php
-$required_role_max = 2; // Admin(1) y Tecnico(2) pueden borrar equipos
+$required_role_max = 2; // Solo el Administrador y Tecnico pueden borrar equipos
 require_once 'check_session.php';
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -40,7 +40,7 @@ if ($stmt_delete->execute()) {
     $sql_log = "INSERT INTO logs_auditoria (usuario_id, accion, equipo_id, detalles) VALUES (?, ?, ?, ?)";
     $stmt_log = $conexion->prepare($sql_log);
     
-    // equipo_id quedará registrado pero el target ya no existirá, sin embargo dejar rastro es vital.
+    // equipo_id quedará registrado pero el target ya no existirá, pero dejare el target por si es importante a futuro
     $stmt_log->bind_param("isis", $_SESSION['user_id'], $accion_log, $equipo_id, $detalle_log);
     $stmt_log->execute();
 

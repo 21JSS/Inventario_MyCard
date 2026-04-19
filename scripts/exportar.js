@@ -1,4 +1,3 @@
-
 // Este archivo maneja todo lo relacionado a la exportación de manera modular
 
 const filtrosExport = { estado: "todos", fecha: "todos", depto: "todos" };
@@ -111,7 +110,7 @@ function aplicarFiltrosExport() {
   });
 }
 
-/** Actualiza el contador de preview */
+/** Actualiza el contador */
 function actualizarPreviewFiltros() {
   const resultado = aplicarFiltrosExport();
   const conteoEl = document.getElementById("filtro-conteo");
@@ -122,7 +121,7 @@ function actualizarPreviewFiltros() {
   if (btnConfirmar) { btnConfirmar.disabled = resultado.length === 0; btnConfirmar.style.opacity = resultado.length === 0 ? "0.5" : "1"; }
 }
 
-/** Genera y descarga el reporte Excel (.xlsx) nativo y estilizado usando ExcelJS */
+/** Genera y descarga el reporte Excel (.xlsx) */
 async function ejecutarExportFiltrado() {
   const datos = aplicarFiltrosExport();
   if (datos.length === 0) { alert("No hay registros que coincidan con los filtros."); return; }
@@ -146,7 +145,6 @@ async function ejecutarExportFiltrado() {
   // Crear una hoja de cálculo
   const worksheet = workbook.addWorksheet("Inventario");
 
-  // Definir columnas y anchos (en ancho de carácter)
   worksheet.columns = [
     { header: "ID", key: "id", width: 8 },
     { header: "Nombre", key: "nombre", width: 25 },

@@ -8,24 +8,128 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Elms+Sans:ital,wght@0,100..900;1,100..900&family=Kanit&family=Lilita+One&display=swap">
     <link rel="stylesheet" href="../css/style_principal.css?v=1.2">
-    <link rel="stylesheet" href="../css/visor_logs.css?v=1.23">
+    <link rel="stylesheet" href="../css/visor_logs.css?v=2.4">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
     <div class="wrapper">
         <div class="container">
+
+            <!-- HEADER -->
             <div class="header header-logs">
-                <div>
+                <!-- Col 1: espaciado (espejo del botón) -->
+                <div class="header-logs-spacer"></div>
+                <!-- Col 2: título centrado -->
+                <div class="header-logs-info">
                     <h1>Panel de Auditoría Central</h1>
                     <p class="parrafo-principal">Visualización de movimientos históricos</p>
                 </div>
-                <div>
+                <!-- Col 3: botón derecha -->
+                <div class="header-logs-actions">
                     <button onclick="window.location.href='index.html'" class="btn-volver">
-                        ← Volver a Inventario
+                        <i class="fa-solid fa-arrow-left"></i> Volver a Inventario
                     </button>
                 </div>
             </div>
 
+            <!-- BARRA DE FILTROS -->
+            <div class="filtros-container" id="filtrosContainer">
+                <div class="filtros-titulo">
+                    <i class="fa-solid fa-filter"></i>
+                    <span>Filtrar registros</span>
+                </div>
+
+                <div class="filtros-grid">
+                    <!-- Búsqueda por nombre/usuario -->
+                    <div class="filtro-group">
+                        <label class="filtro-label" for="filtroUsuario">
+                            <i class="fa-solid fa-user"></i> Usuario
+                        </label>
+                        <div class="filtro-input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass filtro-icon"></i>
+                            <input
+                                type="text"
+                                id="filtroUsuario"
+                                class="filtro-input"
+                                placeholder="Buscar por usuario..."
+                                oninput="aplicarFiltros()"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Filtro por acción -->
+                    <div class="filtro-group">
+                        <label class="filtro-label" for="filtroAccion">
+                            <i class="fa-solid fa-bolt"></i> Acción
+                        </label>
+                        <div class="filtro-input-wrapper">
+                            <i class="fa-solid fa-chevron-down filtro-icon filtro-icon-select"></i>
+                            <select id="filtroAccion" class="filtro-input filtro-select" onchange="aplicarFiltros()">
+                                <option value="">Todas las acciones</option>
+                                <option value="login">Login</option>
+                                <option value="logout">Logout</option>
+                                <option value="agregar_equipo">Agregar equipo</option>
+                                <option value="cambiar_estado">Cambiar estado</option>
+                                <option value="eliminar_equipo">Eliminar equipo</option>
+                                <option value="crear_usuario">Crear usuario</option>
+                                <option value="editar_usuario">Editar usuario</option>
+                                <option value="eliminar_usuario">Eliminar usuario</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Filtro por fecha desde -->
+                    <div class="filtro-group">
+                        <label class="filtro-label" for="filtroFechaDesde">
+                            <i class="fa-solid fa-calendar-days"></i> Desde
+                        </label>
+                        <div class="filtro-input-wrapper">
+                            <i class="fa-solid fa-calendar filtro-icon"></i>
+                            <input
+                                type="date"
+                                id="filtroFechaDesde"
+                                class="filtro-input"
+                                onchange="aplicarFiltros()"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Filtro por fecha hasta -->
+                    <div class="filtro-group">
+                        <label class="filtro-label" for="filtroFechaHasta">
+                            <i class="fa-solid fa-calendar-check"></i> Hasta
+                        </label>
+                        <div class="filtro-input-wrapper">
+                            <i class="fa-solid fa-calendar filtro-icon"></i>
+                            <input
+                                type="date"
+                                id="filtroFechaHasta"
+                                class="filtro-input"
+                                onchange="aplicarFiltros()"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chips de filtros activos + botón limpiar -->
+                <div class="filtros-footer">
+                    <div id="filtrosActivos" class="filtros-chips"></div>
+                    <button class="btn-limpiar-filtros" id="btnLimpiarFiltros" onclick="limpiarFiltros()" style="display:none;">
+                        <i class="fa-solid fa-xmark"></i> Limpiar filtros
+                    </button>
+                </div>
+            </div>
+
+            <!-- CONTADOR DE RESULTADOS -->
+            <div class="logs-stats-bar">
+                <span id="logsContador" class="logs-contador">
+                    <i class="fa-solid fa-list-check"></i>
+                    Cargando...
+                </span>
+            </div>
+
+            <!-- TABLA DE LOGS -->
             <div class="table-logs-container">
                 <table id="logsTable">
                     <thead>
@@ -38,15 +142,28 @@
                     </thead>
                     <tbody id="logsBody">
                         <tr>
-                            <td colspan="4" style="text-align: center;">Cargando histórico...</td>
+                            <td colspan="4" class="logs-loading">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i>
+                                Cargando histórico...
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- Estado vacío -->
+                <div id="logsVacio" class="logs-vacio" style="display:none;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <p>No se encontraron registros con los filtros aplicados.</p>
+                    <button class="btn-limpiar-filtros" onclick="limpiarFiltros()">
+                        <i class="fa-solid fa-rotate-left"></i> Restablecer filtros
+                    </button>
+                </div>
             </div>
+
         </div>
     </div>
 
-    <script src="../scripts/visor_logs.js?v=1.01"></script>
+    <script src="../scripts/visor_logs.js?v=2.0"></script>
 </body>
 
 </html>

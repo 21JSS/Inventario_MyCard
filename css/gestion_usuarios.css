@@ -4,7 +4,6 @@
   --accent-blue: #086cee;
 }
 
-/* ---- OVERRIDE: h1 de esta página (style_principal lo pone muy grande) ---- */
 .header h1 {
   font-size: 2.4em !important;
 }
@@ -13,7 +12,7 @@
   font-size: 1em !important;
 }
 
-/* ---- BARRA DE ACCIONES ---- */
+
 .gu-actions-bar {
   display: flex;
   justify-content: space-between;
@@ -81,7 +80,7 @@
   border-color: var(--mycard-color);
 }
 
-/* ---- TABLA ---- */
+
 .gu-table-container {
   background: rgba(15, 20, 35, 0.85) !important;
   backdrop-filter: blur(20px);
@@ -137,7 +136,7 @@
   vertical-align: middle;
 }
 
-/* ---- BADGES ---- */
+
 .badge-rol {
   padding: 5px 14px;
   border-radius: 20px;
@@ -191,7 +190,7 @@
   font-family: 'Bricolage Grotesque', sans-serif !important;
 }
 
-/* ---- BOTONES DE ACCIÓN EN TABLA ---- */
+
 .acciones-td {
   display: flex;
   gap: 8px;
@@ -242,7 +241,7 @@
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.55);
 }
 
-/* ---- MODAL ---- */
+
 .gu-modal-overlay {
   display: none;
   position: fixed;
@@ -421,7 +420,7 @@
   border: 1px solid rgba(239, 68, 68, 0.5);
 }
 
-/* ---- LOADING ---- */
+
 .gu-loading {
   text-align: center;
   padding: 50px 20px;
@@ -441,7 +440,6 @@
     font-size: 0.9em !important;
   }
 
-  /* Barra de acciones en columna */
   .gu-actions-bar {
     flex-direction: column;
     align-items: stretch;
@@ -457,13 +455,12 @@
     max-width: 100%;
   }
 
-  /* Tabla: ocultar columna ID y scroll horizontal como fallback */
+
   .gu-table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Ocultar columna ID en móvil para ganar espacio */
   .gu-table thead th:first-child,
   .gu-table td:first-child {
     display: none;
@@ -505,8 +502,15 @@
   }
 
   @keyframes modalSlideUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to   { transform: translateY(0);   opacity: 1; }
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   .gu-modal h2 {
@@ -527,7 +531,7 @@
     justify-content: center;
   }
 
-  /* Toast en mobile */
+
   .gu-toast {
     bottom: 20px;
     left: 16px;

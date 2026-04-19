@@ -29,7 +29,7 @@ while ($fila = $resultado->fetch_assoc()) {
     $url = $fila['redireccion'];
     echo "Generando QR para ID $id... ";
     
-    // Ejecutamos el script de python para cada equipo
+    // script de python para cada equipo
     $command = "$python_path $script_path $id \"$url\"";
     exec($command, $out, $status);
     
