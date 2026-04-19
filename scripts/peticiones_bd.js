@@ -3,6 +3,40 @@
 
 /** Carga de Inventario Principal y estadísticas globales */
 async function cargarInventario() {
+  const equipoId = obtenerParametroURL("id");
+  const userRole = localStorage.getItem("user_role");
+
+  // Modo Público (sin login) cuando se lee un código QR
+  if (equipoId && !userRole) {
+    try {
+      const response = await fetch("../php/api_equipo_publico.php?id=" + encodeURIComponent(equipoId));
+      const result = await response.json();
+
+      if (result.success) {
+        inventario = [result.data]; // Fake inventario array to mock single view
+        
+        // Esconder toda la dashboard
+        const stats = document.querySelector(".stats-container");
+        if (stats) stats.style.display = "none";
+        const controls = document.getElementById("controls");
+        if (controls) controls.style.display = "none";
+        const tableContainer = document.getElementById("tableContainer");
+        if (tableContainer) tableContainer.style.display = "none";
+
+        if (typeof mostrarDetalleEquipo === "function") {
+          mostrarDetalleEquipo(equipoId);
+        }
+      } else {
+        alert("Equipo no encontrado en la base de datos pública: " + (result.error || ""));
+      }
+    } catch (error) {
+      console.error("Error de conexión:", error);
+      alert("No se pudo conectar con la base de datos.");
+    }
+    return;
+  }
+
+  // Flujo Normal Autenticado
   try {
     const response = await fetch("../php/api_inventario.php");
     
@@ -29,7 +63,6 @@ async function cargarInventario() {
       if (typeof cargarTabla === "function") cargarTabla();
 
       // Si hay un ID en la URL (desde QR), mostrar vista de detalle
-      const equipoId = obtenerParametroURL("id");
       if (equipoId && typeof mostrarDetalleEquipo === "function") {
         mostrarDetalleEquipo(equipoId);
       }

@@ -13,11 +13,19 @@ document.addEventListener("DOMContentLoaded", function () {
         equipoId = idParam;
       }
     } catch (e) {
-
       equipoId = decodeText;
     }
 
+    // Asegurar que el ID extraído es un número limpio
+    equipoId = parseInt(equipoId, 10);
     console.log("ID extraído:", equipoId);
+
+    if (isNaN(equipoId)) {
+        alert("El código QR no es válido o no contiene un ID de equipo.");
+        const frame = document.getElementById("scan-frame");
+        if (frame) frame.classList.remove("detected");
+        return;
+    }
 
     setTimeout(() => {
       // Forzar HTTP porque el scanner está en HTTPS (por la cámara)

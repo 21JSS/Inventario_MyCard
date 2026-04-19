@@ -17,8 +17,8 @@ window.onload = function () {
 
 
 function aplicarRestriccionesUI(rolId) {
-  // Si es Usuario de Consulta (3) o Auditor (4), ocultar edición
-  if (rolId > 2) {
+  // Si es Usuario de Consulta (3), Auditor (4), o público (NaN), ocultar edición
+  if (rolId > 2 || isNaN(rolId)) {
     const btnAgregar = document.querySelector("button[onclick='abrirModal()']");
     if (btnAgregar) btnAgregar.style.display = "none";
 

@@ -171,6 +171,20 @@ function mostrarDetalleEquipo(equipoId) {
 
 /** Restaura la interfaz a la tabla general */
 function regresarInventario() {
+  const userRole = localStorage.getItem("user_role");
+  if (!userRole) {
+    // Modo público: si no hay sesión, al intentar "regresar" lo obligamos a loguearse para no mostrar la dashboard
+    window.location.href = "login.html";
+    return;
+  }
+
+  // Si solo habíamos cargado la vista rápida de QR pero resulta que SÍ tiene sesión activa, 
+  // redirigimos para que cargue toda la dashboard sin el filtro URL id
+  if (inventario.length === 1 && obtenerParametroURL("id")) {
+    window.location.href = "index.html";
+    return;
+  }
+
   const detalleVal = document.getElementById("detalleEquipo");
   if (detalleVal) detalleVal.style.display = "none";
 
